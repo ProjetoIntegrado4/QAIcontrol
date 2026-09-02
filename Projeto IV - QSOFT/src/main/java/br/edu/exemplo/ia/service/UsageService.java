@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class UsageService implements UsageUseCase {
 
     private final UsageRepository usageRepo;
-    private final ProjectUseCase projects;
+    private final EmpresaUseCase projects;
     private final AlertClient alerts;
 
     public UsageService(
             UsageRepository usageRepo,
-            ProjectUseCase projects,
+            EmpresaUseCase projects,
             AlertClient alerts) {
         this.usageRepo = usageRepo;
         this.projects = projects;

@@ -22,7 +22,7 @@ class UsageServiceTest {
     void deveRegistrarConsumoEConsultarAlerta_AAA() {
         // Arrange
         UsageRepository repo = mock(UsageRepository.class);
-        ProjectUseCase projects = mock(ProjectUseCase.class);
+        EmpresaUseCase projects = mock(EmpresaUseCase.class);
         AlertClient alerts = mock(AlertClient.class);
 
         UUID projectId = UUID.randomUUID();

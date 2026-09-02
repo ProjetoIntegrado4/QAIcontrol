@@ -7,7 +7,7 @@ services:
     hostname: postgres
     restart: always
     environment:
-      POSTGRES_DB: usuario_db
+      POSTGRES_DB: projeto_IV
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
@@ -43,20 +43,65 @@ services:
     networks:
       - app_net
 
-  app:
-    build: .
-    container_name: usuario-api-app
+  alert-service:
+    build: ./alert-service
+    container_name: usuario-alert-service
     restart: always
+
+    environment:
+      PORT: 3001
+
+    ports:
+      - "3001:3001"
+
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3001/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - app_net
+
+
+  backend:
+    build: .
+    container_name: usuario-backend
+    restart: always
+
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/iadb
+      DB_USER: ia
+      DB_PASSWORD: ia
+      ALERT_SERVICE_URL: http://alert-service:3001
+
+    ports:
+      - "8080:8080"
+
     depends_on:
       postgres:
         condition: service_healthy
+      alert-service:
+        condition: service_healthy
+
+    networks:
+      - app_net
+
+
+  frontend:
+    build: ./frontend
+    container_name: usuario-frontend
+    restart: always
+
     environment:
-      SPRING_PROFILES_ACTIVE: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usuario_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      API_BASE_URL: http://backend:8080
+
     ports:
-      - "8080:8080"
+      - "3000:3000"
+
+    depends_on:
+      - backend
+
     networks:
       - app_net
 
