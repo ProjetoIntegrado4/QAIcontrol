@@ -1,0 +1,1 @@
+package br.edu.exemplo.ia.service; import br.edu.exemplo.ia.dto.*; public interface UsageUseCase { UsageResponse register(UsageRequest r); }
