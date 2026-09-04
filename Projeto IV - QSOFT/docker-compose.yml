@@ -42,27 +42,6 @@ services:
     networks:
       - app_net
 
-  alert-service:
-    build: ./alert-service
-    container_name: usuario-alert-service
-    restart: always
-
-    environment:
-      PORT: 3001
-
-    ports:
-      - "3001:3001"
-
-    healthcheck:
-      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3001/health" ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-    networks:
-      - app_net
-
-
   backend:
     build: .
     container_name: usuario-backend
@@ -80,29 +59,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      alert-service:
-        condition: service_healthy
 
     networks:
       - app_net
 
-
-  frontend:
-    build: ./frontend
-    container_name: usuario-frontend
-    restart: always
-
-    environment:
-      API_BASE_URL: http://backend:8080
-
-    ports:
-      - "3000:3000"
-
-    depends_on:
-      - backend
-
-    networks:
-      - app_net
 
 volumes:
   postgres_data:
