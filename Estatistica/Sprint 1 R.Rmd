@@ -78,7 +78,7 @@ security_events <- read.csv("security_events.csv")
 
 ## Relação entre as Bases
 
-### 1. O Núcleo Organizacional 
+### 1. O Núcleo Organizacional
 
 **Essas tabelas ditam a estrutura da empresa e quase todas as outras tabelas se conectam a elas.**
 
