@@ -9,7 +9,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping("/api/empresa")
 public class EmpresaController {
     private final EmpresaUseCase useCase;
 
