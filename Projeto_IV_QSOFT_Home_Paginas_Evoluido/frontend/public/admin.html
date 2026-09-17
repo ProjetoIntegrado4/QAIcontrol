@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QSOFT - Administradores</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a class="active" href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+  </nav>
+
+  <h1>Cadastro de Administradores</h1>
+  <p>Associe cada administrador a uma empresa já cadastrada e acompanhe os registros existentes.</p>
+
+  <section>
+    <h2>Novo administrador</h2>
+    <div class="form-row">
+      <input id="nome" placeholder="Nome do administrador" autocomplete="name">
+      <select id="empresaId" aria-label="Empresa do administrador">
+        <option value="">Selecione uma empresa</option>
+      </select>
+      <input id="cargo" placeholder="Cargo do administrador" autocomplete="organization-title">
+      <button type="button" onclick="criarAdmin()">Cadastrar admin</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+  </section>
+
+  <section class="info-box">
+    <h2>Vinculo com empresa</h2>
+    <p>O administrador depende de uma empresa existente e pode cadastrar funcionários vinculados a essa mesma empresa.</p>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>Administradores cadastrados</h2>
+      <button type="button" class="secondary-button" onclick="carregarAdmins()">Atualizar lista</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Area</th>
+            <th>Cargo</th>
+            <th>ID</th>
+          </tr>
+        </thead>
+        <tbody id="listaAdmins"></tbody>
+      </table>
+    </div>
+  </section>
+
+<script>
+const mensagem = document.getElementById('mensagem');
+const listaAdmins = document.getElementById('listaAdmins');
+const empresaSelect = document.getElementById('empresaId');
+
+async function lerResposta(response) {
+  const text = await response.text();
+  let body;
+  try { body = text ? JSON.parse(text) : {}; } catch { body = { raw: text }; }
+  if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+  return body;
+}
+
+async function carregarEmpresas() {
+  const empresas = await lerResposta(await fetch('/api/empresa'));
+
+  empresaSelect.innerHTML = '<option value="">Selecione uma empresa</option>';
+
+  if (!empresas.length) {
+    mensagem.textContent = 'Cadastre ao menos uma empresa antes de criar um administrador.';
+    return;
+  }
+
+  for (const empresa of empresas) {
+    const option = document.createElement('option');
+    option.value = empresa.id;
+    option.textContent = `${empresa.name} (${empresa.area})`;
+    empresaSelect.appendChild(option);
+  }
+}
+
+async function criarAdmin() {
+  try {
+    const nome = document.getElementById('nome').value.trim();
+    const empresaId = empresaSelect.value;
+    const cargo = document.getElementById('cargo').value.trim();
+
+    if (!nome || !empresaId || !cargo) {
+      throw new Error('Informe nome, empresa e cargo do administrador.');
+    }
+
+    const admin = await lerResposta(await fetch('/api/admin', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ nome, empresaId, cargo })
+    }));
+
+    mensagem.textContent = `Admin ${admin.nome} cadastrado com sucesso para a empresa ${admin.empresaNome}.`;
+    document.getElementById('nome').value = '';
+    document.getElementById('cargo').value = '';
+    await carregarAdmins();
+  } catch (e) {
+    mensagem.textContent = e.message;
+  }
+}
+
+async function carregarAdmins() {
+  try {
+    const admins = await lerResposta(await fetch('/api/admin'));
+    listaAdmins.innerHTML = '';
+
+    if (!admins.length) {
+      listaAdmins.innerHTML = '<tr><td colspan="5">Nenhum administrador cadastrado.</td></tr>';
+      return;
+    }
+
+    for (const admin of admins) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${admin.nome}</td>
+        <td>${admin.empresaNome}</td>
+        <td>${admin.empresaArea}</td>
+        <td>${admin.cargo}</td>
+        <td><code>${admin.id}</code></td>
+      `;
+      listaAdmins.appendChild(tr);
+    }
+  } catch (e) {
+    mensagem.textContent = e.message;
+  }
+}
+
+async function inicializarPagina() {
+  try {
+    await carregarEmpresas();
+    await carregarAdmins();
+  } catch (e) {
+    mensagem.textContent = e.message;
+  }
+}
+
+inicializarPagina();
+</script>
+</body>
+</html>

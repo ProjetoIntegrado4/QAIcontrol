@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Funcionarios</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a class="active" href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Cadastro de Funcionarios</h1>
+<p>Os admins podem cadastrar funcionários vinculados a uma empresa. Esses usuários possuem acesso mais restrito que o
+    administrador.</p>
+
+<section>
+    <h2>Novo funcionario</h2>
+    <div class="form-row">
+        <input id="nome" placeholder="Nome do funcionario" autocomplete="name">
+        <select id="empresaId" aria-label="Empresa do funcionario">
+            <option value="">Selecione uma empresa</option>
+        </select>
+        <input id="cargo" placeholder="Cargo do funcionario" autocomplete="organization-title">
+        <button type="button" onclick="criarFuncionario()">Cadastrar funcionario</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+</section>
+
+<section class="info-box">
+    <h2>Acesso do funcionario</h2>
+    <p>O funcionário fica associado a uma empresa, mas não possui permissão para gerenciar outros funcionários.</p>
+</section>
+
+<section>
+    <div class="section-heading">
+        <h2>Funcionarios cadastrados</h2>
+        <button type="button" class="secondary-button" onclick="carregarFuncionarios()">Atualizar lista</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Empresa</th>
+                <th>Area</th>
+                <th>Cargo</th>
+                <th>Gerencia funcionarios</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody id="listaFuncionarios"></tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    const mensagem = document.getElementById('mensagem');
+    const listaFuncionarios = document.getElementById('listaFuncionarios');
+    const empresaSelect = document.getElementById('empresaId');
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    async function carregarEmpresas() {
+        const empresas = await lerResposta(await fetch('/api/empresa'));
+
+        empresaSelect.innerHTML = '<option value="">Selecione uma empresa</option>';
+
+        if (!empresas.length) {
+            mensagem.textContent = 'Cadastre ao menos uma empresa antes de criar um funcionario.';
+            return;
+        }
+
+        for (const empresa of empresas) {
+            const option = document.createElement('option');
+            option.value = empresa.id;
+            option.textContent = `${empresa.name} (${empresa.area})`;
+            empresaSelect.appendChild(option);
+        }
+    }
+
+    async function criarFuncionario() {
+        try {
+            const nome = document.getElementById('nome').value.trim();
+            const empresaId = empresaSelect.value;
+            const cargo = document.getElementById('cargo').value.trim();
+
+            if (!nome || !empresaId || !cargo) {
+                throw new Error('Informe nome, empresa e cargo do funcionario.');
+            }
+
+            const funcionario = await lerResposta(await fetch('/api/funcionario', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({nome, empresaId, cargo})
+            }));
+
+            mensagem.textContent = `Funcionario ${funcionario.nome} cadastrado com sucesso para a empresa ${funcionario.empresaNome}.`;
+            document.getElementById('nome').value = '';
+            document.getElementById('cargo').value = '';
+            await carregarFuncionarios();
+        } catch (e) {
+            mensagem.textContent = e.message;
+        }
+    }
+
+    async function carregarFuncionarios() {
+        try {
+            const funcionarios = await lerResposta(await fetch('/api/funcionario'));
+            listaFuncionarios.innerHTML = '';
+
+            if (!funcionarios.length) {
+                listaFuncionarios.innerHTML = '<tr><td colspan="6">Nenhum funcionario cadastrado.</td></tr>';
+                return;
+            }
+
+            for (const funcionario of funcionarios) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td>${funcionario.nome}</td>
+        <td>${funcionario.empresaNome}</td>
+        <td>${funcionario.empresaArea}</td>
+        <td>${funcionario.cargo}</td>
+        <td>${funcionario.podeGerenciarFuncionarios ? 'Sim' : 'Nao'}</td>
+        <td><code>${funcionario.id}</code></td>
+      `;
+                listaFuncionarios.appendChild(tr);
+            }
+        } catch (e) {
+            mensagem.textContent = e.message;
+        }
+    }
+
+    async function inicializarPagina() {
+        try {
+            await carregarEmpresas();
+            await carregarFuncionarios();
+        } catch (e) {
+            mensagem.textContent = e.message;
+        }
+    }
+
+    inicializarPagina();
+</script>
+</body>
+</html>
