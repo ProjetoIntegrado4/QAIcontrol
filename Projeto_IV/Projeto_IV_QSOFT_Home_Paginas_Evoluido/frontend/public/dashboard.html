@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a class="active" href="./dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Dashboard</h1>
+<p>Visão consolidada fornecida pelo endpoint específico do BFF.</p>
+
+<section>
+    <div class="section-heading">
+        <h2>Indicadores</h2>
+        <button type="button" onclick="carregarDashboard()">Atualizar dashboard</button>
+    </div>
+
+    <div class="metric-grid">
+        <article class="metric-card">
+            <span>Empresas</span>
+            <strong id="totalEmpresas">0</strong>
+        </article>
+        <article class="metric-card">
+            <span>Consumos</span>
+            <strong id="totalConsumos">0</strong>
+        </article>
+        <article class="metric-card">
+            <span>Tokens</span>
+            <strong id="totalTokens">0</strong>
+        </article>
+    </div>
+
+    <pre id="out">Clique em atualizar para consultar o BFF.</pre>
+</section>
+
+<script>
+    const out = document.getElementById('out');
+
+    async function carregarDashboard() {
+        try {
+            const response = await fetch('/bff/dashboard');
+            const text = await response.text();
+            const body = text ? JSON.parse(text) : {};
+            if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
+
+            document.getElementById('totalEmpresas').textContent = body.totalEmpresas ?? 0;
+            document.getElementById('totalConsumos').textContent = body.totalConsumos ?? 0;
+            document.getElementById('totalTokens').textContent = body.totalTokens ?? 0;
+            out.textContent = JSON.stringify(body, null, 2);
+        } catch (e) {
+            out.textContent = e.message;
+        }
+    }
+
+    carregarDashboard();
+</script>
+</body>
+</html>

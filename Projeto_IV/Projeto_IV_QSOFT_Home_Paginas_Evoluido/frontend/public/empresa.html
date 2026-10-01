@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Empresas</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a class="active" href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Cadastro de Empresas</h1>
+<p>Cadastre uma empresa e consulte os registros existentes.</p>
+
+<section>
+    <h2>Nova empresa</h2>
+    <div class="form-row">
+        <input id="nome" placeholder="Nome da empresa" autocomplete="organization">
+        <input id="area" placeholder="Área de atuação">
+        <button type="button" onclick="criarEmpresa()">Cadastrar empresa</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+</section>
+
+<section>
+    <div class="section-heading">
+        <h2>Empresas cadastradas</h2>
+        <button type="button" class="secondary-button" onclick="carregarEmpresas()">Atualizar lista</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Área</th>
+            </tr>
+            </thead>
+            <tbody id="listaEmpresas"></tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    const mensagem = document.getElementById('mensagem');
+    const listaEmpresas = document.getElementById('listaEmpresas');
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    async function criarEmpresa() {
+        try {
+            const name = document.getElementById('nome').value.trim();
+            const area = document.getElementById('area').value.trim();
+
+            if (!name || !area) throw new Error('Informe o nome e a área da empresa.');
+
+            const empresa = await lerResposta(await fetch('/api/empresa', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, area})
+            }));
+
+            mensagem.textContent = `Empresa ${empresa.name} cadastrada com sucesso.`;
+            document.getElementById('nome').value = '';
+            document.getElementById('area').value = '';
+            await carregarEmpresas();
+        } catch (e) {
+            mensagem.textContent = e.message;
+        }
+    }
+
+    async function carregarEmpresas() {
+        try {
+            const empresas = await lerResposta(await fetch('/api/empresa'));
+            listaEmpresas.innerHTML = '';
+
+            if (!empresas.length) {
+                listaEmpresas.innerHTML = '<tr><td colspan="3">Nenhuma empresa cadastrada.</td></tr>';
+                return;
+            }
+
+            for (const empresa of empresas) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td><code>${empresa.id}</code></td>
+        <td>${empresa.name}</td>
+        <td>${empresa.area}</td>
+      `;
+                listaEmpresas.appendChild(tr);
+            }
+        } catch (e) {
+            mensagem.textContent = e.message;
+        }
+    }
+
+    carregarEmpresas();
+</script>
+</body>
+</html>

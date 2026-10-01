@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Home</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a class="active" href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+</nav>
+
+<header class="hero">
+    <span class="eyebrow">QSOFT</span>
+    <h1>Gestão de Consumo de IA</h1>
+    <p>Spring Boot + PostgreSQL + Node.js Alert Service + Front/BFF.</p>
+</header>
+
+<section>
+    <h2>O que você deseja fazer?</h2>
+    <div class="home-grid">
+        <a class="feature-card" href="./empresa.html">
+            <strong>Empresas</strong>
+            <span>Cadastre e consulte as empresas que utilizarão os serviços de IA.</span>
+        </a>
+
+        <a class="feature-card" href="./consumo.html">
+            <strong>Consumo de IA</strong>
+            <span>Registre o consumo de tokens de uma empresa e consulte o alerta gerado.</span>
+        </a>
+
+        <a class="feature-card" href="./admin.html">
+            <strong>Administradores</strong>
+            <span>Cadastre admins vinculados a uma empresa e consulte as informações associadas.</span>
+        </a>
+
+        <a class="feature-card" href="./funcionario.html">
+            <strong>Funcionarios</strong>
+            <span>Cadastre funcionários por empresa com acesso operacional mais restrito que o admin.</span>
+        </a>
+
+        <a class="feature-card" href="./dashboard.html">
+            <strong>Dashboard</strong>
+            <span>Visualize os dados consolidados pelo BFF.</span>
+        </a>
+    </div>
+</section>
+
+<section class="info-box">
+    <h2>Arquitetura da interface</h2>
+    <p>Estas páginas são arquivos HTML estáticos armazenados em <code>frontend/public</code>. O mesmo
+        <code>server.js</code> serve todas elas e também atua como BFF para as chamadas de API.</p>
+</section>
+</body>
+</html>

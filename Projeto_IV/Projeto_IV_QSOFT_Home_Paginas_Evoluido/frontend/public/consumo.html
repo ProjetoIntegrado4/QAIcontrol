@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Consumo de IA</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a class="active" href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Registrar Consumo de IA</h1>
+<p>Selecione uma empresa, informe o consumo e registre a utilização do modelo.</p>
+
+<section>
+    <h2>Novo consumo</h2>
+    <div class="form-row">
+        <select id="empresaId"></select>
+        <input id="tokens" type="number" min="1" value="100" placeholder="Tokens">
+        <input id="modelo" value="gpt-demo" placeholder="Modelo">
+        <button type="button" onclick="consumir()">Registrar consumo</button>
+    </div>
+    <div id="alerta">Nenhum alerta avaliado.</div>
+    <pre id="out">Selecione uma empresa para registrar o consumo.</pre>
+</section>
+
+<script>
+    const out = document.getElementById('out');
+    const alerta = document.getElementById('alerta');
+    const empresaSelect = document.getElementById('empresaId');
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    async function carregarEmpresas() {
+        const empresas = await lerResposta(await fetch('/api/empresa'));
+        empresaSelect.innerHTML = '';
+
+        for (const empresa of empresas) {
+            const option = document.createElement('option');
+            option.value = empresa.id;
+            option.textContent = `${empresa.name} — ${empresa.area}`;
+            empresaSelect.appendChild(option);
+        }
+
+        if (!empresas.length) {
+            const option = document.createElement('option');
+            option.textContent = 'Cadastre uma empresa primeiro';
+            option.value = '';
+            empresaSelect.appendChild(option);
+        }
+    }
+
+    async function consumir() {
+        try {
+            if (!empresaSelect.value) throw new Error('Cadastre e selecione uma empresa.');
+
+            const body = await lerResposta(await fetch('/api/usages', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    empresaId: empresaSelect.value,
+                    tokens: Number(document.getElementById('tokens').value),
+                    model: document.getElementById('modelo').value
+                })
+            }));
+
+            out.textContent = JSON.stringify(body, null, 2);
+            alerta.textContent = `${body.alertLevel}: ${body.alertMessage}`;
+        } catch (e) {
+            out.textContent = e.message;
+        }
+    }
+
+    carregarEmpresas().catch(e => {
+        out.textContent = e.message;
+    });
+</script>
+</body>
+</html>
