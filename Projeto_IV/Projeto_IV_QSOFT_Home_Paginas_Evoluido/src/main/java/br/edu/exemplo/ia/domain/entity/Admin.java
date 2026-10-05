@@ -1,5 +1,10 @@
 package br.edu.exemplo.ia.domain.entity;
 
+import br.edu.exemplo.ia.domain.vo.AdminVO;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -14,9 +19,18 @@ public class Admin {
     @Id
     private UUID id;
 
-    private String nome;
-
-    private String cargo;
+        @Embedded
+        @AttributeOverrides({
+            @AttributeOverride(name = "nome", column = @Column(name = "nome")),
+            @AttributeOverride(name = "cpf", column = @Column(name = "cpf")),
+            @AttributeOverride(name = "email", column = @Column(name = "email")),
+            @AttributeOverride(name = "telefone", column = @Column(name = "telefone")),
+            @AttributeOverride(name = "cargo", column = @Column(name = "cargo")),
+            @AttributeOverride(name = "senhaHash", column = @Column(name = "senha_hash")),
+            @AttributeOverride(name = "statusConta", column = @Column(name = "status_conta")),
+            @AttributeOverride(name = "nivelAcesso", column = @Column(name = "nivel_acesso"))
+        })
+        private AdminVO dados;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "empresa_id", nullable = false)
@@ -25,21 +39,21 @@ public class Admin {
     protected Admin() {
     }
 
-    public Admin(String nome, Empresa empresa, String cargo) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("Nome do admin obrigatorio");
+    public Admin(String nome, Long cpf, String email, Long telefone, Empresa empresa,
+                 String cargo, String senhaHash, String statusConta, String nivelAcesso) {
+        this(new AdminVO(nome, cpf, email, telefone, cargo, senhaHash, statusConta, nivelAcesso), empresa);
+    }
+
+    public Admin(AdminVO dados, Empresa empresa) {
+        if (dados == null) {
+            throw new IllegalArgumentException("Dados do admin obrigatórios");
         }
         if (empresa == null) {
-            throw new IllegalArgumentException("Empresa do admin obrigatoria");
+            throw new IllegalArgumentException("Empresa do admin obrigatória");
         }
-        if (cargo == null || cargo.isBlank()) {
-            throw new IllegalArgumentException("Cargo do admin obrigatorio");
-        }
-
         this.id = UUID.randomUUID();
-        this.nome = nome;
+        this.dados = dados;
         this.empresa = empresa;
-        this.cargo = cargo;
     }
 
     public UUID getId() {
@@ -47,7 +61,19 @@ public class Admin {
     }
 
     public String getNome() {
-        return nome;
+        return dados.nome();
+    }
+
+    public Long getCpf() {
+        return dados.cpf();
+    }
+
+    public String getEmail() {
+        return dados.email();
+    }
+
+    public Long getTelefone() {
+        return dados.telefone();
     }
 
     public Empresa getEmpresa() {
@@ -55,6 +81,18 @@ public class Admin {
     }
 
     public String getCargo() {
-        return cargo;
+        return dados.cargo();
+    }
+
+    public String getSenhaHash() {
+        return dados.senhaHash();
+    }
+
+    public String getStatusConta() {
+        return dados.statusConta();
+    }
+
+    public String getNivelAcesso() {
+        return dados.nivelAcesso();
     }
 }

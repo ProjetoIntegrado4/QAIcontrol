@@ -23,11 +23,25 @@
 <section>
     <h2>Novo funcionario</h2>
     <div class="form-row">
-        <input id="nome" placeholder="Nome do funcionario" autocomplete="name">
-        <select id="empresaId" aria-label="Empresa do funcionario">
+        <input id="nome" placeholder="Nome completo" aria-label="Nome completo" autocomplete="name" required>
+        <input id="cpf" type="number" min="1" step="1" placeholder="CPF" aria-label="CPF" inputmode="numeric" required>
+        <input id="emailCorporativo" type="email" placeholder="E-mail corporativo" aria-label="E-mail corporativo" autocomplete="email" required>
+        <input id="telefone" type="number" min="1" step="1" placeholder="Telefone" aria-label="Telefone" inputmode="numeric" required>
+        <select id="empresaId" aria-label="Empresa do funcionario" required>
             <option value="">Selecione uma empresa</option>
         </select>
-        <input id="cargo" placeholder="Cargo do funcionario" autocomplete="organization-title">
+        <input id="cargo" placeholder="Cargo/função" aria-label="Cargo/função" autocomplete="organization-title" required>
+        <input id="setor" placeholder="Setor/departamento" aria-label="Setor/departamento" required>
+        <input id="matricula" placeholder="Matrícula/código" aria-label="Matrícula/código" required>
+        <input id="senha" type="password" placeholder="Senha" aria-label="Senha" autocomplete="new-password" required>
+        <select id="statusConta" aria-label="Status da conta" required>
+            <option value="" disabled selected>Selecione o status</option>
+            <option value="ATIVO">Ativo</option>
+            <option value="INATIVO">Inativo</option>
+        </select>
+        <select id="gestorResponsavelId" aria-label="Gestor responsável (opcional)" disabled>
+            <option value="">Sem gestor responsável</option>
+        </select>
         <button type="button" onclick="criarFuncionario()">Cadastrar funcionario</button>
     </div>
     <div id="mensagem" class="message" aria-live="polite"></div>
@@ -48,9 +62,16 @@
             <thead>
             <tr>
                 <th>Nome</th>
+                <th>CPF</th>
+                <th>E-mail corporativo</th>
+                <th>Telefone</th>
                 <th>Empresa</th>
                 <th>Area</th>
+                <th>Setor/departamento</th>
                 <th>Cargo</th>
+                <th>Matrícula</th>
+                <th>Status</th>
+                <th>Gestor responsável</th>
                 <th>Gerencia funcionarios</th>
                 <th>ID</th>
             </tr>
@@ -64,6 +85,7 @@
     const mensagem = document.getElementById('mensagem');
     const listaFuncionarios = document.getElementById('listaFuncionarios');
     const empresaSelect = document.getElementById('empresaId');
+    const gestorSelect = document.getElementById('gestorResponsavelId');
 
     async function lerResposta(response) {
         const text = await response.text();
@@ -95,25 +117,53 @@
         }
     }
 
+    async function carregarGestores() {
+        gestorSelect.innerHTML = '<option value="">Sem gestor responsável</option>';
+        gestorSelect.disabled = !empresaSelect.value;
+        if (!empresaSelect.value) return;
+
+        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        for (const funcionario of funcionarios) {
+            const option = document.createElement('option');
+            option.value = funcionario.id;
+            option.textContent = funcionario.nome;
+            gestorSelect.appendChild(option);
+        }
+    }
+
     async function criarFuncionario() {
         try {
             const nome = document.getElementById('nome').value.trim();
+            const cpf = Number(document.getElementById('cpf').value);
+            const emailCorporativo = document.getElementById('emailCorporativo').value.trim();
+            const telefone = Number(document.getElementById('telefone').value);
             const empresaId = empresaSelect.value;
             const cargo = document.getElementById('cargo').value.trim();
+            const setor = document.getElementById('setor').value.trim();
+            const matricula = document.getElementById('matricula').value.trim();
+            const senha = document.getElementById('senha').value;
+            const statusConta = document.getElementById('statusConta').value;
 
-            if (!nome || !empresaId || !cargo) {
-                throw new Error('Informe nome, empresa e cargo do funcionario.');
+            if (!nome || !Number.isSafeInteger(cpf) || cpf <= 0 || !emailCorporativo || !Number.isSafeInteger(telefone) || telefone <= 0 || !empresaId || !cargo || !setor || !matricula || !senha || !statusConta) {
+                throw new Error('Preencha todos os campos obrigatórios do funcionário.');
             }
 
             const funcionario = await lerResposta(await fetch('/api/funcionario', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({nome, empresaId, cargo})
+                body: JSON.stringify({
+                    nome, cpf, emailCorporativo, telefone, cargo, setor, empresaId, matricula, senha, statusConta,
+                    gestorResponsavelId: gestorSelect.value || null
+                })
             }));
 
             mensagem.textContent = `Funcionario ${funcionario.nome} cadastrado com sucesso para a empresa ${funcionario.empresaNome}.`;
-            document.getElementById('nome').value = '';
-            document.getElementById('cargo').value = '';
+            for (const id of ['nome', 'cpf', 'emailCorporativo', 'telefone', 'cargo', 'setor', 'matricula', 'senha']) {
+                document.getElementById(id).value = '';
+            }
+            document.getElementById('statusConta').value = '';
+            gestorSelect.value = '';
+            await carregarGestores();
             await carregarFuncionarios();
         } catch (e) {
             mensagem.textContent = e.message;
@@ -126,20 +176,38 @@
             listaFuncionarios.innerHTML = '';
 
             if (!funcionarios.length) {
-                listaFuncionarios.innerHTML = '<tr><td colspan="6">Nenhum funcionario cadastrado.</td></tr>';
+                listaFuncionarios.innerHTML = '<tr><td colspan="13">Nenhum funcionario cadastrado.</td></tr>';
                 return;
             }
 
             for (const funcionario of funcionarios) {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-        <td>${funcionario.nome}</td>
-        <td>${funcionario.empresaNome}</td>
-        <td>${funcionario.empresaArea}</td>
-        <td>${funcionario.cargo}</td>
-        <td>${funcionario.podeGerenciarFuncionarios ? 'Sim' : 'Nao'}</td>
-        <td><code>${funcionario.id}</code></td>
-      `;
+                const values = [
+                    funcionario.nome,
+                    funcionario.cpf,
+                    funcionario.emailCorporativo,
+                    funcionario.telefone,
+                    funcionario.empresaNome,
+                    funcionario.empresaArea,
+                    funcionario.setor,
+                    funcionario.cargo,
+                    funcionario.matricula,
+                    funcionario.statusConta,
+                    funcionario.gestorResponsavelNome || 'Não informado',
+                    funcionario.podeGerenciarFuncionarios ? 'Sim' : 'Não',
+                    funcionario.id
+                ];
+                for (const value of values) {
+                    const cell = document.createElement('td');
+                    if (value === funcionario.id) {
+                        const code = document.createElement('code');
+                        code.textContent = value;
+                        cell.appendChild(code);
+                    } else {
+                        cell.textContent = value ?? '';
+                    }
+                    tr.appendChild(cell);
+                }
                 listaFuncionarios.appendChild(tr);
             }
         } catch (e) {
@@ -156,7 +224,12 @@
         }
     }
 
+    empresaSelect.addEventListener('change', () => {
+        carregarGestores().catch(e => mensagem.textContent = e.message);
+    });
+
     inicializarPagina();
 </script>
+<script src="./auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Entrar</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="login-page">
+<main>
+    <a class="login-brand" href="./login.html" aria-label="QSOFT, página de acesso">QSOFT</a>
+    <p class="login-kicker">GESTÃO DE CONSUMO DE IA</p>
+    <h1>Acesse sua conta</h1>
+    <p class="login-intro">Entre para continuar no painel de gestão.</p>
+
+    <form id="loginForm" class="login-form">
+        <label for="usuario">E-mail ou usuário</label>
+        <input id="usuario" name="usuario" type="text" autocomplete="username" required>
+
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+
+        <button id="entrar" type="submit">Entrar</button>
+        <p id="mensagem" class="login-message" aria-live="polite"></p>
+    </form>
+
+    <aside class="temporary-account" aria-label="Credenciais temporárias de desenvolvimento">
+        <strong>Acesso temporário de desenvolvimento</strong>
+        <span>Usuário: <code>admin@qsoft.com</code></span>
+        <span>Senha: <code>Qsoft123!</code></span>
+    </aside>
+</main>
+
+<script>
+const form = document.getElementById('loginForm');
+const message = document.getElementById('mensagem');
+const submitButton = document.getElementById('entrar');
+
+function readCsrfCookie() {
+    const cookie = document.cookie.split('; ').find((item) => item.startsWith('XSRF-TOKEN='));
+    return cookie ? decodeURIComponent(cookie.substring('XSRF-TOKEN='.length)) : '';
+}
+
+async function parseResponse(response) {
+    const text = await response.text();
+    let body = {};
+    try { body = text ? JSON.parse(text) : {}; } catch { body = {}; }
+    if (!response.ok) throw new Error(body.message || body.error || 'Não foi possível entrar.');
+    return body;
+}
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    message.textContent = '';
+    submitButton.disabled = true;
+
+    try {
+        await fetch('/api/auth/csrf', {credentials: 'same-origin'});
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': readCsrfCookie()
+            },
+            body: JSON.stringify({
+                usuario: document.getElementById('usuario').value.trim(),
+                senha: document.getElementById('senha').value
+            })
+        });
+        await parseResponse(response);
+        await fetch('/api/auth/csrf', {credentials: 'same-origin'});
+        window.location.assign('./index.html');
+    } catch (error) {
+        message.textContent = error.message;
+    } finally {
+        submitButton.disabled = false;
+    }
+});
+</script>
+</body>
+</html>

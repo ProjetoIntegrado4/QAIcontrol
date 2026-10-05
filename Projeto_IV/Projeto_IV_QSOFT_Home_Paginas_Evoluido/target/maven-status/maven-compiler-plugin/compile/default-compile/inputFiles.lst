@@ -1,5 +1,6 @@
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\AdminController.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\ApiExceptionHandler.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\AuthController.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\EmpresaController.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\FuncionarioController.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\controller\UsageController.java
@@ -7,9 +8,15 @@ C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_Q
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\entity\AIUsage.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\entity\Empresa.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\entity\Funcionario.java
-C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\EmpresaName.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\AdminVO.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\AIUsageVO.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\EmpresaDadosVO.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\EmpresaVO.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\domain\vo\FuncionarioVO.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\AdminRequest.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\AdminResponse.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\AuthRequest.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\AuthResponse.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\EmpresaRequest.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\EmpresaResponse.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\dto\FuncionarioRequest.java
@@ -27,9 +34,12 @@ C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_Q
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\repository\UsageRepository.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\AdminService.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\AdminUseCase.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\AuthService.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\AuthUseCase.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\EmpresaService.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\EmpresaUseCase.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\FuncionarioService.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\FuncionarioUseCase.java
+C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\SecurityConfig.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\UsageService.java
 C:\Users\pablo\OneDrive - ESPM\Area de Trabalho\4o SEMESTRE\Projeto\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\main\java\br\edu\exemplo\ia\service\UsageUseCase.java

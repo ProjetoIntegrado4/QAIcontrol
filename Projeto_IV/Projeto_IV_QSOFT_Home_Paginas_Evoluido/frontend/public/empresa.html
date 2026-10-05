@@ -22,8 +22,16 @@
 <section>
     <h2>Nova empresa</h2>
     <div class="form-row">
-        <input id="nome" placeholder="Nome da empresa" autocomplete="organization">
-        <input id="area" placeholder="Área de atuação">
+        <input id="nome" placeholder="Nome fantasia" aria-label="Nome fantasia" autocomplete="organization" required>
+        <input id="razaoSocial" placeholder="Razão social" aria-label="Razão social" required>
+        <input id="cnpj" placeholder="CNPJ" aria-label="CNPJ" inputmode="numeric" required>
+        <input id="numeroFuncionarios" type="number" min="0" step="1" placeholder="Número de funcionários" aria-label="Número de funcionários" required>
+        <input id="cep" placeholder="CEP" aria-label="CEP" autocomplete="postal-code" required>
+        <input id="endereco" placeholder="Endereço" aria-label="Endereço" autocomplete="street-address" required>
+        <input id="cidade" placeholder="Cidade" aria-label="Cidade" autocomplete="address-level2" required>
+        <input id="estado" placeholder="Estado" aria-label="Estado" autocomplete="address-level1" required>
+        <input id="adminResponsavel" placeholder="Nome do admin responsável" aria-label="Nome do admin responsável" autocomplete="name" required>
+        <input id="area" placeholder="Área de atuação" aria-label="Área de atuação" required>
         <button type="button" onclick="criarEmpresa()">Cadastrar empresa</button>
     </div>
     <div id="mensagem" class="message" aria-live="polite"></div>
@@ -39,7 +47,15 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Nome</th>
+                <th>Nome fantasia</th>
+                <th>Razão social</th>
+                <th>CNPJ</th>
+                <th>Número de funcionários</th>
+                <th>CEP</th>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Admin responsável</th>
                 <th>Área</th>
             </tr>
             </thead>
@@ -67,19 +83,34 @@
     async function criarEmpresa() {
         try {
             const name = document.getElementById('nome').value.trim();
+            const razaoSocial = document.getElementById('razaoSocial').value.trim();
+            const cnpj = document.getElementById('cnpj').value.trim();
+            const numeroFuncionariosInput = document.getElementById('numeroFuncionarios').value;
+            const numeroFuncionarios = Number(numeroFuncionariosInput);
+            const cep = document.getElementById('cep').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
+            const cidade = document.getElementById('cidade').value.trim();
+            const estado = document.getElementById('estado').value.trim();
+            const adminResponsavel = document.getElementById('adminResponsavel').value.trim();
             const area = document.getElementById('area').value.trim();
 
-            if (!name || !area) throw new Error('Informe o nome e a área da empresa.');
+            if (!name || !razaoSocial || !cnpj || !numeroFuncionariosInput || !Number.isInteger(numeroFuncionarios) || numeroFuncionarios < 0
+                || !cep || !endereco || !cidade || !estado || !adminResponsavel || !area) {
+                throw new Error('Preencha todos os campos da empresa com valores válidos.');
+            }
 
             const empresa = await lerResposta(await fetch('/api/empresa', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name, area})
+                body: JSON.stringify({
+                    name, razaoSocial, cnpj, numeroFuncionarios, cep, endereco, cidade, estado, adminResponsavel, area
+                })
             }));
 
             mensagem.textContent = `Empresa ${empresa.name} cadastrada com sucesso.`;
-            document.getElementById('nome').value = '';
-            document.getElementById('area').value = '';
+            for (const id of ['nome', 'razaoSocial', 'cnpj', 'numeroFuncionarios', 'cep', 'endereco', 'cidade', 'estado', 'adminResponsavel', 'area']) {
+                document.getElementById(id).value = '';
+            }
             await carregarEmpresas();
         } catch (e) {
             mensagem.textContent = e.message;
@@ -92,17 +123,36 @@
             listaEmpresas.innerHTML = '';
 
             if (!empresas.length) {
-                listaEmpresas.innerHTML = '<tr><td colspan="3">Nenhuma empresa cadastrada.</td></tr>';
+                listaEmpresas.innerHTML = '<tr><td colspan="11">Nenhuma empresa cadastrada.</td></tr>';
                 return;
             }
 
             for (const empresa of empresas) {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-        <td><code>${empresa.id}</code></td>
-        <td>${empresa.name}</td>
-        <td>${empresa.area}</td>
-      `;
+                const values = [
+                    empresa.id,
+                    empresa.name,
+                    empresa.razaoSocial,
+                    empresa.cnpj,
+                    empresa.numeroFuncionarios,
+                    empresa.cep,
+                    empresa.endereco,
+                    empresa.cidade,
+                    empresa.estado,
+                    empresa.adminResponsavel,
+                    empresa.area
+                ];
+                for (const value of values) {
+                    const cell = document.createElement('td');
+                    if (value === empresa.id) {
+                        const code = document.createElement('code');
+                        code.textContent = value;
+                        cell.appendChild(code);
+                    } else {
+                        cell.textContent = value ?? '';
+                    }
+                    tr.appendChild(cell);
+                }
                 listaEmpresas.appendChild(tr);
             }
         } catch (e) {
@@ -112,5 +162,6 @@
 
     carregarEmpresas();
 </script>
+<script src="./auth.js"></script>
 </body>
 </html>

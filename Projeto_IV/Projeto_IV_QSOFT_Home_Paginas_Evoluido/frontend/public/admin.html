@@ -22,11 +22,22 @@
   <section>
     <h2>Novo administrador</h2>
     <div class="form-row">
-      <input id="nome" placeholder="Nome do administrador" autocomplete="name">
-      <select id="empresaId" aria-label="Empresa do administrador">
+      <input id="nome" placeholder="Nome completo" aria-label="Nome completo" autocomplete="name" required>
+      <input id="cpf" type="number" min="1" step="1" placeholder="CPF" aria-label="CPF" inputmode="numeric" required>
+      <input id="email" type="email" placeholder="E-mail" aria-label="E-mail" autocomplete="email" required>
+      <input id="telefone" type="number" min="1" step="1" placeholder="Telefone" aria-label="Telefone" inputmode="numeric" required>
+      <select id="empresaId" aria-label="Empresa do administrador" required>
         <option value="">Selecione uma empresa</option>
       </select>
-      <input id="cargo" placeholder="Cargo do administrador" autocomplete="organization-title">
+      <input id="cargo" placeholder="Cargo" aria-label="Cargo" autocomplete="organization-title" required>
+      <input id="senha" type="password" placeholder="Senha" aria-label="Senha" autocomplete="new-password" required>
+      <input id="confirmacaoSenha" type="password" placeholder="Confirme a senha" aria-label="Confirme a senha" autocomplete="new-password" required>
+      <select id="statusConta" aria-label="Status da conta" required>
+        <option value="" disabled selected>Selecione o status</option>
+        <option value="ATIVO">Ativo</option>
+        <option value="INATIVO">Inativo</option>
+      </select>
+      <input id="nivelAcesso" placeholder="Nível de acesso" aria-label="Nível de acesso" required>
       <button type="button" onclick="criarAdmin()">Cadastrar admin</button>
     </div>
     <div id="mensagem" class="message" aria-live="polite"></div>
@@ -47,9 +58,14 @@
         <thead>
           <tr>
             <th>Nome</th>
+            <th>CPF</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
             <th>Empresa</th>
             <th>Area</th>
             <th>Cargo</th>
+            <th>Status</th>
+            <th>Nível de acesso</th>
             <th>ID</th>
           </tr>
         </thead>
@@ -92,22 +108,34 @@ async function carregarEmpresas() {
 async function criarAdmin() {
   try {
     const nome = document.getElementById('nome').value.trim();
+    const cpf = Number(document.getElementById('cpf').value);
+    const email = document.getElementById('email').value.trim();
+    const telefone = Number(document.getElementById('telefone').value);
     const empresaId = empresaSelect.value;
     const cargo = document.getElementById('cargo').value.trim();
+    const senha = document.getElementById('senha').value;
+    const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
+    const statusConta = document.getElementById('statusConta').value;
+    const nivelAcesso = document.getElementById('nivelAcesso').value.trim();
 
-    if (!nome || !empresaId || !cargo) {
-      throw new Error('Informe nome, empresa e cargo do administrador.');
+    if (!nome || !Number.isSafeInteger(cpf) || cpf <= 0 || !email || !Number.isSafeInteger(telefone) || telefone <= 0 || !empresaId || !cargo || !senha || !confirmacaoSenha || !statusConta || !nivelAcesso) {
+      throw new Error('Preencha todos os campos obrigatórios do administrador.');
+    }
+    if (senha !== confirmacaoSenha) {
+      throw new Error('A senha e a confirmação precisam ser iguais.');
     }
 
     const admin = await lerResposta(await fetch('/api/admin', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ nome, empresaId, cargo })
+      body: JSON.stringify({ nome, cpf, email, telefone, empresaId, cargo, senha, confirmacaoSenha, statusConta, nivelAcesso })
     }));
 
     mensagem.textContent = `Admin ${admin.nome} cadastrado com sucesso para a empresa ${admin.empresaNome}.`;
-    document.getElementById('nome').value = '';
-    document.getElementById('cargo').value = '';
+    for (const id of ['nome', 'cpf', 'email', 'telefone', 'cargo', 'senha', 'confirmacaoSenha', 'nivelAcesso']) {
+      document.getElementById(id).value = '';
+    }
+    document.getElementById('statusConta').value = '';
     await carregarAdmins();
   } catch (e) {
     mensagem.textContent = e.message;
@@ -120,19 +148,24 @@ async function carregarAdmins() {
     listaAdmins.innerHTML = '';
 
     if (!admins.length) {
-      listaAdmins.innerHTML = '<tr><td colspan="5">Nenhum administrador cadastrado.</td></tr>';
+      listaAdmins.innerHTML = '<tr><td colspan="10">Nenhum administrador cadastrado.</td></tr>';
       return;
     }
 
     for (const admin of admins) {
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${admin.nome}</td>
-        <td>${admin.empresaNome}</td>
-        <td>${admin.empresaArea}</td>
-        <td>${admin.cargo}</td>
-        <td><code>${admin.id}</code></td>
-      `;
+      const values = [admin.nome, admin.cpf, admin.email, admin.telefone, admin.empresaNome,
+        admin.empresaArea, admin.cargo, admin.statusConta, admin.nivelAcesso];
+      for (const value of values) {
+        const cell = document.createElement('td');
+        cell.textContent = value ?? '';
+        tr.appendChild(cell);
+      }
+      const idCell = document.createElement('td');
+      const code = document.createElement('code');
+      code.textContent = admin.id;
+      idCell.appendChild(code);
+      tr.appendChild(idCell);
       listaAdmins.appendChild(tr);
     }
   } catch (e) {
@@ -151,5 +184,6 @@ async function inicializarPagina() {
 
 inicializarPagina();
 </script>
+<script src="./auth.js"></script>
 </body>
 </html>

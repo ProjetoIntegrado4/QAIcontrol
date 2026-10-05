@@ -2,10 +2,12 @@ package br.edu.exemplo.ia.service;
 
 import br.edu.exemplo.ia.domain.entity.Admin;
 import br.edu.exemplo.ia.domain.entity.Empresa;
+import br.edu.exemplo.ia.domain.vo.AdminVO;
 import br.edu.exemplo.ia.dto.AdminRequest;
 import br.edu.exemplo.ia.dto.AdminResponse;
 import br.edu.exemplo.ia.repository.AdminRepository;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class AdminService implements AdminUseCase {
     private final AdminRepository adminRepository;
     private final EmpresaRepository empresaRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AdminService(AdminRepository adminRepository, EmpresaRepository empresaRepository) {
         this.adminRepository = adminRepository;
@@ -23,8 +26,20 @@ public class AdminService implements AdminUseCase {
 
     @Override
     public AdminResponse create(AdminRequest request) {
+        if (!request.senha().equals(request.confirmacaoSenha())) {
+            throw new IllegalArgumentException("Senha e confirmacao de senha nao conferem");
+        }
         Empresa empresa = loadEmpresa(request.empresaId());
-        Admin admin = adminRepository.save(new Admin(request.nome(), empresa, request.cargo()));
+        Admin admin = adminRepository.save(new Admin(new AdminVO(
+                request.nome(),
+                request.cpf(),
+                request.email(),
+            request.telefone(),
+                request.cargo(),
+                passwordEncoder.encode(request.senha()),
+                request.statusConta(),
+                request.nivelAcesso()
+        ), empresa));
         return toDto(admin);
     }
 
@@ -54,10 +69,15 @@ public class AdminService implements AdminUseCase {
         return new AdminResponse(
                 admin.getId(),
                 admin.getNome(),
+                admin.getCpf(),
+                admin.getEmail(),
+                admin.getTelefone(),
                 empresa.getId(),
                 empresa.getName().value(),
                 empresa.getArea(),
-                admin.getCargo()
+                admin.getCargo(),
+                admin.getStatusConta(),
+                admin.getNivelAcesso()
         );
     }
 }

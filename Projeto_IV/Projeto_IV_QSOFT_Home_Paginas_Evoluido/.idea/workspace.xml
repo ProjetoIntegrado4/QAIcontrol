@@ -36,6 +36,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.edu.exemplo.ia.domain.vo" />
       <recent name="br.edu.exemplo.ia.domain.entity" />
     </key>
   </component>
@@ -60,7 +61,9 @@
       <workItem from="1789993670465" duration="142000" />
       <workItem from="1790336996796" duration="1218000" />
       <workItem from="1790873908246" duration="662000" />
-      <workItem from="1790875247137" duration="7000" />
+      <workItem from="1790875247137" duration="1533000" />
+      <workItem from="1790937724312" duration="5883000" />
+      <workItem from="1791214066087" duration="437000" />
     </task>
     <servers />
   </component>

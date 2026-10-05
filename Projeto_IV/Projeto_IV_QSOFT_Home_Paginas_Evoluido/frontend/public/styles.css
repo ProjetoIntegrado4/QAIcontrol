@@ -39,7 +39,6 @@ body {
     backdrop-filter: blur(12px);
     box-shadow: var(--shadow);
     position: relative;
-    overflow: hidden;
 }
 
 body::before,
@@ -352,7 +351,105 @@ code {
     font-family: Consolas, "Courier New", monospace;
 }
 
+.login-page {
+    max-width: 480px;
+    margin: 7vh auto;
+    padding: 38px;
+    animation: login-enter 360ms ease-out both;
+}
+
+.login-brand {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.login-kicker {
+    margin: 0 0 10px;
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.login-page h1 {
+    font-size: 2.25rem;
+    letter-spacing: 0;
+}
+
+.login-intro {
+    margin-bottom: 26px;
+}
+
+.login-form label,
+.login-form input {
+    display: block;
+    width: 100%;
+}
+
+.login-form label {
+    margin: 0 0 7px;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.login-form input {
+    min-width: 0;
+    margin: 0 0 18px;
+}
+
+.login-form button {
+    width: 100%;
+    margin: 4px 0 0;
+}
+
+.login-form button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.login-message {
+    min-height: 24px;
+    margin: 12px 0 0;
+    color: #9b2c20;
+    font-size: 0.92rem;
+}
+
+.temporary-account {
+    display: grid;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+    background: rgba(255, 255, 255, 0.58);
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.temporary-account strong {
+    color: var(--text);
+}
+
+.logout-button {
+    margin: 0;
+    padding: 8px 12px;
+    box-shadow: none;
+}
+
+@keyframes login-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 720px) {
+    .login-page {
+        margin: 18px;
+        padding: 26px 20px;
+    }
+
     .home-grid,
     .metric-grid {
         grid-template-columns: 1fr;

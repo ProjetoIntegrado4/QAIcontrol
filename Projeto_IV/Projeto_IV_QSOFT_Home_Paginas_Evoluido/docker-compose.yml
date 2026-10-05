@@ -60,6 +60,9 @@ services:
       DB_USER: ia
       DB_PASSWORD: ia
       ALERT_SERVICE_URL: http://alert-service:3001
+      TEMP_LOGIN_USERNAME: ${TEMP_LOGIN_USERNAME:-admin@qsoft.com}
+      TEMP_LOGIN_PASSWORD: ${TEMP_LOGIN_PASSWORD:-Qsoft123!}
+      TEMP_LOGIN_NAME: ${TEMP_LOGIN_NAME:-Administrador QSOFT}
     ports:
       - "8080:8080"
     depends_on:

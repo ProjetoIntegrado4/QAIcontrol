@@ -2,6 +2,7 @@ package br.edu.exemplo.ia.service;
 
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.entity.Funcionario;
+import br.edu.exemplo.ia.domain.vo.FuncionarioVO;
 import br.edu.exemplo.ia.dto.FuncionarioRequest;
 import br.edu.exemplo.ia.dto.FuncionarioResponse;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
@@ -24,8 +25,21 @@ public class FuncionarioService implements FuncionarioUseCase {
     @Override
     public FuncionarioResponse create(FuncionarioRequest request) {
         Empresa empresa = loadEmpresa(request.empresaId());
+        Funcionario gestorResponsavel = request.gestorResponsavelId() == null
+            ? null
+            : loadGestor(request.gestorResponsavelId(), empresa);
         Funcionario funcionario = funcionarioRepository.save(
-                new Funcionario(request.nome(), empresa, request.cargo())
+            new Funcionario(FuncionarioVO.completo(
+                request.nome(),
+                request.cpf(),
+                request.emailCorporativo(),
+                request.telefone(),
+                request.cargo(),
+                request.setor(),
+                request.matricula(),
+                request.senha(),
+                request.statusConta()
+            ), empresa, gestorResponsavel)
         );
         return toDto(funcionario);
     }
@@ -51,15 +65,33 @@ public class FuncionarioService implements FuncionarioUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Empresa inexistente: " + empresaId));
     }
 
+    private Funcionario loadGestor(UUID gestorId, Empresa empresa) {
+        Funcionario gestor = funcionarioRepository.findById(gestorId)
+                .orElseThrow(() -> new IllegalArgumentException("Gestor responsavel inexistente: " + gestorId));
+        if (!gestor.getEmpresa().getId().equals(empresa.getId())) {
+            throw new IllegalArgumentException("Gestor responsavel deve pertencer a mesma empresa");
+        }
+        return gestor;
+    }
+
     private FuncionarioResponse toDto(Funcionario funcionario) {
         Empresa empresa = funcionario.getEmpresa();
+        Funcionario gestorResponsavel = funcionario.getGestorResponsavel();
         return new FuncionarioResponse(
                 funcionario.getId(),
                 funcionario.getNome(),
+                funcionario.getCpf(),
+                funcionario.getEmailCorporativo(),
+                funcionario.getTelefone(),
+                funcionario.getCargo(),
+                funcionario.getSetor(),
                 empresa.getId(),
                 empresa.getName().value(),
                 empresa.getArea(),
-                funcionario.getCargo(),
+                funcionario.getMatricula(),
+                funcionario.getStatusConta(),
+                gestorResponsavel == null ? null : gestorResponsavel.getId(),
+                gestorResponsavel == null ? null : gestorResponsavel.getNome(),
                 funcionario.isPodeGerenciarFuncionarios()
         );
     }

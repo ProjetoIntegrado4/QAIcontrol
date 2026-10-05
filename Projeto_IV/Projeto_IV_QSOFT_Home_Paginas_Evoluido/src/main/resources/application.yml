@@ -17,6 +17,19 @@ services:
   alert:
     base-url: ${ALERT_SERVICE_URL:http://localhost:3001}
 
+app:
+  auth:
+    username: ${TEMP_LOGIN_USERNAME:admin@qsoft.com}
+    password: ${TEMP_LOGIN_PASSWORD:Qsoft123!}
+    name: ${TEMP_LOGIN_NAME:Administrador QSOFT}
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
+
 management:
   endpoints:
     web:

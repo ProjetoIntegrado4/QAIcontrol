@@ -1,6 +1,7 @@
 package br.edu.exemplo.ia.service;
 
 import br.edu.exemplo.ia.domain.entity.AIUsage;
+import br.edu.exemplo.ia.domain.vo.AIUsageVO;
 import br.edu.exemplo.ia.dto.UsageRequest;
 import br.edu.exemplo.ia.dto.UsageResponse;
 import br.edu.exemplo.ia.dto.UsageSummaryResponse;
@@ -31,7 +32,7 @@ public class UsageService implements UsageUseCase {
         }
 
         AIUsage usage = usageRepo.save(
-                new AIUsage(request.empresaId(), request.tokens(), request.model())
+            new AIUsage(request.empresaId(), new AIUsageVO(request.tokens(), request.model()))
         );
 
         AlertResponse alert = alerts.evaluate(

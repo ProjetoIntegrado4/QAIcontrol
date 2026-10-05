@@ -50,6 +50,7 @@ docker compose up
 Acessos:
 
 - Front/BFF: http://localhost:3000
+- Login: http://localhost:3000/login.html
 - Spring Boot: http://localhost:8080
 - Swagger: http://localhost:8080/swagger-ui/index.html
 - Alert Service health: http://localhost:3001/health
@@ -64,6 +65,15 @@ pgAdmin:
 - database: `iadb`
 - usuário: `ia`
 - senha: `ia`
+
+## Login temporário
+
+Enquanto não houver integração com usuários persistidos no banco, o acesso de desenvolvimento é:
+
+- usuário: `admin@qsoft.com`
+- senha: `Qsoft123!`
+
+O backend valida a senha com BCrypt e mantém a autenticação em sessão HTTP. Antes de disponibilizar o sistema fora do ambiente local, configure `TEMP_LOGIN_USERNAME`, `TEMP_LOGIN_PASSWORD` e `TEMP_LOGIN_NAME` com valores próprios. O usuário temporário em memória não substitui a futura autenticação vinculada aos registros de admins e funcionários.
 
 ## Teste manual da API
 
