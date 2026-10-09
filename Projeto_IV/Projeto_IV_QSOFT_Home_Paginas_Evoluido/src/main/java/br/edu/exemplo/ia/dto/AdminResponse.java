@@ -5,7 +5,7 @@ import java.util.UUID;
 public record AdminResponse(
         UUID id,
         String nome,
-        Long cpf,
+        String cpf,
         String email,
         Long telefone,
         UUID empresaId,

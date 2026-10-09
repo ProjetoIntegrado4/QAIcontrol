@@ -3,6 +3,7 @@ package br.edu.exemplo.ia.service;
 import br.edu.exemplo.ia.domain.entity.Admin;
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.vo.AdminVO;
+import br.edu.exemplo.ia.domain.vo.Cpf;
 import br.edu.exemplo.ia.dto.AdminRequest;
 import br.edu.exemplo.ia.dto.AdminResponse;
 import br.edu.exemplo.ia.repository.AdminRepository;
@@ -32,7 +33,7 @@ public class AdminService implements AdminUseCase {
         Empresa empresa = loadEmpresa(request.empresaId());
         Admin admin = adminRepository.save(new Admin(new AdminVO(
                 request.nome(),
-                request.cpf(),
+                Cpf.normalizar(request.cpf(), "CPF do admin"),
                 request.email(),
             request.telefone(),
                 request.cargo(),

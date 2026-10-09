@@ -2,6 +2,7 @@ package br.edu.exemplo.ia.service;
 
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.entity.Funcionario;
+import br.edu.exemplo.ia.domain.vo.Cpf;
 import br.edu.exemplo.ia.domain.vo.FuncionarioVO;
 import br.edu.exemplo.ia.dto.FuncionarioRequest;
 import br.edu.exemplo.ia.dto.FuncionarioResponse;
@@ -31,7 +32,7 @@ public class FuncionarioService implements FuncionarioUseCase {
         Funcionario funcionario = funcionarioRepository.save(
             new Funcionario(FuncionarioVO.completo(
                 request.nome(),
-                request.cpf(),
+                Cpf.normalizar(request.cpf(), "CPF do funcionário"),
                 request.emailCorporativo(),
                 request.telefone(),
                 request.cargo(),

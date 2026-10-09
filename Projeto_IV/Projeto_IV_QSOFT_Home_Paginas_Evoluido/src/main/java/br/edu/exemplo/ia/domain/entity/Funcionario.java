@@ -22,7 +22,7 @@ public class Funcionario {
         @Embedded
         @AttributeOverrides({
             @AttributeOverride(name = "nome", column = @Column(name = "nome")),
-            @AttributeOverride(name = "cpf", column = @Column(name = "cpf")),
+            @AttributeOverride(name = "cpf", column = @Column(name = "cpf", length = 11)),
             @AttributeOverride(name = "emailCorporativo", column = @Column(name = "email_corporativo")),
             @AttributeOverride(name = "telefone", column = @Column(name = "telefone")),
             @AttributeOverride(name = "cargo", column = @Column(name = "cargo")),
@@ -50,7 +50,7 @@ public class Funcionario {
         this(new FuncionarioVO(nome, null, null, null, cargo, null, null, null, "ATIVO"), empresa, null);
     }
 
-    public Funcionario(String nome, Long cpf, String emailCorporativo, Long telefone, String cargo,
+    public Funcionario(String nome, String cpf, String emailCorporativo, Long telefone, String cargo,
                        String setor, Empresa empresa, String matricula, String senha, String statusConta,
                        Funcionario gestorResponsavel) {
         this(FuncionarioVO.completo(
@@ -77,7 +77,7 @@ public class Funcionario {
         return dados.nome();
     }
 
-    public Long getCpf() {
+    public String getCpf() {
         return dados.cpf();
     }
 

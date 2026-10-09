@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public record FuncionarioVO(
         String nome,
-        Long cpf,
+        String cpf,
         String emailCorporativo,
         Long telefone,
         String cargo,
@@ -17,7 +17,6 @@ public record FuncionarioVO(
     public FuncionarioVO {
         requireText(nome, "Nome do funcionário");
         requireText(cargo, "Cargo do funcionário");
-        validateOptional(cpf, "CPF do funcionário");
         validateOptional(emailCorporativo, "E-mail corporativo do funcionário");
         validateOptional(telefone, "Telefone do funcionário");
         validateOptional(setor, "Setor do funcionário");
@@ -30,10 +29,10 @@ public record FuncionarioVO(
         this(nome, null, null, null, "Não informado", null, null, null, "ATIVO");
     }
 
-    public static FuncionarioVO completo(String nome, Long cpf, String emailCorporativo, Long telefone,
+    public static FuncionarioVO completo(String nome, String cpf, String emailCorporativo, Long telefone,
                                          String cargo, String setor, String matricula, String senha,
                                          String statusConta) {
-        requirePositive(cpf, "CPF do funcionário");
+        requireText(cpf, "CPF do funcionário");
         requireText(emailCorporativo, "E-mail corporativo do funcionário");
         requirePositive(telefone, "Telefone do funcionário");
         requireText(setor, "Setor do funcionário");

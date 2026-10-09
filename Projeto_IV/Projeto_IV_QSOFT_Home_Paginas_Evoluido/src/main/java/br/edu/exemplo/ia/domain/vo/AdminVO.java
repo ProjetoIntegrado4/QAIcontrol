@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public record AdminVO(
         String nome,
-        Long cpf,
+        String cpf,
         String email,
         Long telefone,
         String cargo,
@@ -15,7 +15,6 @@ public record AdminVO(
 ) {
     public AdminVO {
         requireText(nome, "Nome do admin");
-        requirePositive(cpf, "CPF do admin");
         requireText(email, "E-mail do admin");
         requirePositive(telefone, "Telefone do admin");
         requireText(cargo, "Cargo do admin");

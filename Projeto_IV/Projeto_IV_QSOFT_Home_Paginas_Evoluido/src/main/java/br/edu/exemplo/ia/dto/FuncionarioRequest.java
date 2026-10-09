@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public record FuncionarioRequest(
         @NotBlank String nome,
-        @NotNull @Positive Long cpf,
+        @NotBlank String cpf,
         @NotBlank @Email String emailCorporativo,
         @NotNull @Positive Long telefone,
         @NotBlank String cargo,

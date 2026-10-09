@@ -22,7 +22,7 @@ public class Admin {
         @Embedded
         @AttributeOverrides({
             @AttributeOverride(name = "nome", column = @Column(name = "nome")),
-            @AttributeOverride(name = "cpf", column = @Column(name = "cpf")),
+            @AttributeOverride(name = "cpf", column = @Column(name = "cpf", length = 11)),
             @AttributeOverride(name = "email", column = @Column(name = "email")),
             @AttributeOverride(name = "telefone", column = @Column(name = "telefone")),
             @AttributeOverride(name = "cargo", column = @Column(name = "cargo")),
@@ -39,7 +39,7 @@ public class Admin {
     protected Admin() {
     }
 
-    public Admin(String nome, Long cpf, String email, Long telefone, Empresa empresa,
+    public Admin(String nome, String cpf, String email, Long telefone, Empresa empresa,
                  String cargo, String senhaHash, String statusConta, String nivelAcesso) {
         this(new AdminVO(nome, cpf, email, telefone, cargo, senhaHash, statusConta, nivelAcesso), empresa);
     }
@@ -64,7 +64,7 @@ public class Admin {
         return dados.nome();
     }
 
-    public Long getCpf() {
+    public String getCpf() {
         return dados.cpf();
     }
 

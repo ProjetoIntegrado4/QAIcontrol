@@ -11,11 +11,11 @@ class DomainValueObjectsTest {
     @Test
     void deveValidarDadosDeAdminEFuncionariosNosValueObjects() {
         assertThrows(IllegalArgumentException.class, () -> new AdminVO(
-                " ", 12345678901L, "ana@example.com", 11999990000L, "Gestora",
+                " ", "52998224725", "ana@example.com", 11999990000L, "Gestora",
                 "hash-secreto", "ATIVO", "ADMIN"
         ));
         assertThrows(IllegalArgumentException.class, () -> FuncionarioVO.completo(
-                "Ana", 12345678901L, null, 11999990000L, "Analista",
+                "Ana", "52998224725", null, 11999990000L, "Analista",
                 "Tecnologia", "Q001", "senha-secreta", "ATIVO"
         ));
         assertDoesNotThrow(() -> new FuncionarioVO("Ana"));
@@ -24,11 +24,11 @@ class DomainValueObjectsTest {
     @Test
     void naoDeveExporCredenciaisNoToStringDosValueObjects() {
         AdminVO admin = new AdminVO(
-                "Ana", 12345678901L, "ana@example.com", 11999990000L, "Gestora",
+                "Ana", "52998224725", "ana@example.com", 11999990000L, "Gestora",
                 "hash-secreto", "ATIVO", "ADMIN"
         );
         FuncionarioVO funcionario = new FuncionarioVO(
-                "Bia", 12345678901L, "bia@example.com", 11999990000L, "Analista",
+                "Bia", "52998224725", "bia@example.com", 11999990000L, "Analista",
                 "Tecnologia", "Q001", "senha-secreta", "ATIVO"
         );
 

@@ -23,7 +23,7 @@
     <h2>Novo administrador</h2>
     <div class="form-row">
       <input id="nome" placeholder="Nome completo" aria-label="Nome completo" autocomplete="name" required>
-      <input id="cpf" type="number" min="1" step="1" placeholder="CPF" aria-label="CPF" inputmode="numeric" required>
+      <input id="cpf" type="text" placeholder="CPF (000.000.000-00)" aria-label="CPF" inputmode="numeric" maxlength="14" autocomplete="off" required>
       <input id="email" type="email" placeholder="E-mail" aria-label="E-mail" autocomplete="email" required>
       <input id="telefone" type="number" min="1" step="1" placeholder="Telefone" aria-label="Telefone" inputmode="numeric" required>
       <select id="empresaId" aria-label="Empresa do administrador" required>
@@ -108,7 +108,7 @@ async function carregarEmpresas() {
 async function criarAdmin() {
   try {
     const nome = document.getElementById('nome').value.trim();
-    const cpf = Number(document.getElementById('cpf').value);
+    const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
     const email = document.getElementById('email').value.trim();
     const telefone = Number(document.getElementById('telefone').value);
     const empresaId = empresaSelect.value;
@@ -118,8 +118,11 @@ async function criarAdmin() {
     const statusConta = document.getElementById('statusConta').value;
     const nivelAcesso = document.getElementById('nivelAcesso').value.trim();
 
-    if (!nome || !Number.isSafeInteger(cpf) || cpf <= 0 || !email || !Number.isSafeInteger(telefone) || telefone <= 0 || !empresaId || !cargo || !senha || !confirmacaoSenha || !statusConta || !nivelAcesso) {
+    if (!nome || !cpf || !email || !Number.isSafeInteger(telefone) || telefone <= 0 || !empresaId || !cargo || !senha || !confirmacaoSenha || !statusConta || !nivelAcesso) {
       throw new Error('Preencha todos os campos obrigatórios do administrador.');
+    }
+    if (cpf.length !== 11) {
+      throw new Error('O CPF precisa ter 11 dígitos.');
     }
     if (senha !== confirmacaoSenha) {
       throw new Error('A senha e a confirmação precisam ser iguais.');

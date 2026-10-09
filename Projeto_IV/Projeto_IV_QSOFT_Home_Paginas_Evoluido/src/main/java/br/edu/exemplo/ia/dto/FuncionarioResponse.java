@@ -5,7 +5,7 @@ import java.util.UUID;
 public record FuncionarioResponse(
         UUID id,
         String nome,
-        Long cpf,
+        String cpf,
         String emailCorporativo,
         Long telefone,
         String cargo,
