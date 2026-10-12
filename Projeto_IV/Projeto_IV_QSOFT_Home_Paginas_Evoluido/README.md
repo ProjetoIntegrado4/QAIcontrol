@@ -103,3 +103,32 @@ O BFF possui dois papéis:
 2. **Agregação específica da tela** em `GET /bff/dashboard`, combinando empresas e consumos.
 
 Assim, o exemplo não é apenas um reverse proxy: há uma operação genuinamente orientada ao frontend.
+
+## Painel de Produtividade de IA
+
+Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em
+`GET /api/produtividade/resumo` e `GET /api/produtividade/empresas/{id}` (`ALL` para todas as empresas),
+que consultam no PostgreSQL as tabelas da base de uso de IA (`ai_usage_logs`, `employees`, `departments`,
+`ai_billing`, `ai_budgets`, `ai_licenses`, `approved_ai_tools`, `ai_tools`, `training_records`,
+`security_events`, `projects`, `pull_requests`, `builds`, `deployments`) no schema `public`.
+
+- Na primeira subida, se uma dessas tabelas não existir ou estiver vazia, o backend cria a tabela e importa
+  o CSV correspondente de `dados/csv` (variável `PRODUTIVIDADE_CSV_DIR`). Tabelas que já têm dados não são alteradas.
+- Cada carga da página consulta o banco: registros novos inseridos nessas tabelas aparecem ao clicar em "Atualizar dados".
+- `ai_billing.total_cost` é somado como valor em reais.
+
+## Testes automatizados e cobertura
+
+Os testes ficam em `src/test/java`, na mesma estrutura de pacotes do código:
+`controller`, `service`, `repository`, `integration/alert` e `domainTeste` (entidades e VOs).
+Eles não precisam de banco nem do alert-service: os repositórios são simulados com Mockito
+e o alert-service é substituído por um servidor HTTP local durante o teste.
+
+```bash
+mvn clean verify
+```
+
+O `verify` roda os testes e o JaCoCo. O relatório fica em `target/site/jacoco/index.html`
+e o build falha se a cobertura de linhas ficar abaixo de 70%. No Jenkins, o mesmo comando
+roda na etapa de testes; o relatório é arquivado e publicado pelo plugin Coverage ou JaCoCo
+quando um deles estiver instalado.

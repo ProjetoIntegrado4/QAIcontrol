@@ -1,6 +1,7 @@
 package br.edu.exemplo.ia.service;
 
 import br.edu.exemplo.ia.domain.entity.Empresa;
+import br.edu.exemplo.ia.domain.vo.Campos;
 import br.edu.exemplo.ia.domain.vo.EmpresaDadosVO;
 import br.edu.exemplo.ia.domain.vo.EmpresaVO;
 import br.edu.exemplo.ia.dto.*;
@@ -19,17 +20,17 @@ public class EmpresaService implements EmpresaUseCase {
 
     public EmpresaResponse create(EmpresaRequest r) {
         return toDto(repo.save(new Empresa(
-            new EmpresaVO(r.name()),
+            new EmpresaVO(Campos.texto(r.name(), "Nome da empresa")),
             new EmpresaDadosVO(
-                r.area(),
-            r.razaoSocial(),
-            r.cnpj(),
-            r.numeroFuncionarios(),
-            r.cep(),
-            r.endereco(),
-            r.cidade(),
-            r.estado(),
-            r.adminResponsavel()
+                Campos.texto(r.area(), "Área"),
+                Campos.texto(r.razaoSocial(), "Razão social"),
+                Campos.digitos(r.cnpj(), 14, "CNPJ"),
+                r.numeroFuncionarios(),
+                Campos.digitos(r.cep(), 8, "CEP"),
+                Campos.texto(r.endereco(), "Endereço"),
+                Campos.texto(r.cidade(), "Cidade"),
+                Campos.uf(r.estado(), "Estado"),
+                Campos.texto(r.adminResponsavel(), "Nome do admin responsável")
             )
         )));
     }
@@ -45,7 +46,7 @@ public class EmpresaService implements EmpresaUseCase {
     private EmpresaResponse toDto(Empresa p) {
         return new EmpresaResponse(
                 p.getId(),
-                p.getName().value(),
+                p.getNome(),
                 p.getRazaoSocial(),
                 p.getCnpj(),
                 p.getNumeroFuncionarios(),

@@ -1,10 +1,12 @@
 package br.edu.exemplo.ia.service;
 
+import br.edu.exemplo.ia.domain.entity.Admin;
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.entity.Funcionario;
 import br.edu.exemplo.ia.domain.vo.EmpresaVO;
 import br.edu.exemplo.ia.dto.FuncionarioRequest;
 import br.edu.exemplo.ia.dto.FuncionarioResponse;
+import br.edu.exemplo.ia.repository.AdminRepository;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
 import br.edu.exemplo.ia.repository.FuncionarioRepository;
 import org.junit.jupiter.api.Test;
@@ -26,12 +28,13 @@ class FuncionarioServiceTest {
     void deveCadastrarFuncionarioAssociadoAEmpresaComAcessoRestrito() {
         FuncionarioRepository funcionarioRepository = mock(FuncionarioRepository.class);
         EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
+        AdminRepository adminRepository = mock(AdminRepository.class);
 
         Empresa empresa = new Empresa(new EmpresaVO("QSoft"), "Tecnologia");
         when(empresaRepository.findById(empresa.getId())).thenReturn(Optional.of(empresa));
         when(funcionarioRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository);
+        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository, adminRepository);
         FuncionarioResponse response = service.create(new FuncionarioRequest(
             "Carlos Silva", "529.982.247-25", "carlos@qsoft.com", 11999990000L, "Analista",
             "Tecnologia", empresa.getId(), "Q001", "senha-segura", "ATIVO", null
@@ -55,11 +58,12 @@ class FuncionarioServiceTest {
     void deveFalharAoCadastrarFuncionarioSemEmpresaExistente() {
         FuncionarioRepository funcionarioRepository = mock(FuncionarioRepository.class);
         EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
+        AdminRepository adminRepository = mock(AdminRepository.class);
 
         UUID empresaId = UUID.randomUUID();
         when(empresaRepository.findById(empresaId)).thenReturn(Optional.empty());
 
-        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository);
+        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository, adminRepository);
 
         IllegalArgumentException ex = assertThrows(
                 IllegalArgumentException.class,
@@ -76,16 +80,17 @@ class FuncionarioServiceTest {
         void deveAssociarGestorDaMesmaEmpresa() {
         FuncionarioRepository funcionarioRepository = mock(FuncionarioRepository.class);
         EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
+        AdminRepository adminRepository = mock(AdminRepository.class);
         Empresa empresa = new Empresa(new EmpresaVO("QSoft"), "Tecnologia");
-        Funcionario gestor = new Funcionario(
-            "Ana Gestora", "52998224725", "ana@qsoft.com", 11999990001L, "Gerente",
-            "Tecnologia", empresa, "Q002", "senha-gestora", "ATIVO", null
+        Admin gestor = new Admin(
+            "Ana Gestora", "12345678901", "ana@qsoft.com", 11999990001L, empresa,
+            "Gerente", "hash-gestora", "ATIVO", "ADMIN"
         );
         when(empresaRepository.findById(empresa.getId())).thenReturn(Optional.of(empresa));
-        when(funcionarioRepository.findById(gestor.getId())).thenReturn(Optional.of(gestor));
+        when(adminRepository.findById(gestor.getId())).thenReturn(Optional.of(gestor));
         when(funcionarioRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository);
+        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository, adminRepository);
         FuncionarioResponse response = service.create(new FuncionarioRequest(
             "Carlos Silva", "52998224725", "carlos@qsoft.com", 11999990000L, "Analista",
             "Tecnologia", empresa.getId(), "Q001", "senha-segura", "ATIVO", gestor.getId()
@@ -99,16 +104,17 @@ class FuncionarioServiceTest {
         void deveRejeitarGestorDeOutraEmpresa() {
         FuncionarioRepository funcionarioRepository = mock(FuncionarioRepository.class);
         EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
+        AdminRepository adminRepository = mock(AdminRepository.class);
         Empresa empresa = new Empresa(new EmpresaVO("QSoft"), "Tecnologia");
         Empresa outraEmpresa = new Empresa(new EmpresaVO("Outra"), "Servicos");
-        Funcionario gestor = new Funcionario(
-            "Ana Gestora", "52998224725", "ana@outra.com", 11999990001L, "Gerente",
-            "Tecnologia", outraEmpresa, "Q002", "senha-gestora", "ATIVO", null
+        Admin gestor = new Admin(
+            "Ana Gestora", "12345678901", "ana@outra.com", 11999990001L, outraEmpresa,
+            "Gerente", "hash-gestora", "ATIVO", "ADMIN"
         );
         when(empresaRepository.findById(empresa.getId())).thenReturn(Optional.of(empresa));
-        when(funcionarioRepository.findById(gestor.getId())).thenReturn(Optional.of(gestor));
+        when(adminRepository.findById(gestor.getId())).thenReturn(Optional.of(gestor));
 
-        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository);
+        FuncionarioService service = new FuncionarioService(funcionarioRepository, empresaRepository, adminRepository);
         IllegalArgumentException exception = assertThrows(
             IllegalArgumentException.class,
             () -> service.create(new FuncionarioRequest(
@@ -117,6 +123,6 @@ class FuncionarioServiceTest {
             ))
         );
 
-        assertEquals("Gestor responsavel deve pertencer a mesma empresa", exception.getMessage());
+        assertEquals("Gestor responsavel deve ser um admin da mesma empresa", exception.getMessage());
         }
 }

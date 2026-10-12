@@ -14,7 +14,11 @@ public record FuncionarioVO(
         String senha,
         String statusConta
 ) {
-    public FuncionarioVO {
+    /**
+     * Valida os dados. Chamado ao criar a entidade, e não no construtor do record,
+     * porque o Hibernate usa o construtor ao carregar registros já gravados no banco.
+     */
+    public FuncionarioVO validar() {
         requireText(nome, "Nome do funcionário");
         requireText(cargo, "Cargo do funcionário");
         validateOptional(emailCorporativo, "E-mail corporativo do funcionário");
@@ -23,6 +27,7 @@ public record FuncionarioVO(
         validateOptional(matricula, "Matrícula do funcionário");
         validateOptional(senha, "Senha do funcionário");
         validateOptional(statusConta, "Status da conta do funcionário");
+        return this;
     }
 
     public FuncionarioVO(String nome) {
@@ -39,7 +44,8 @@ public record FuncionarioVO(
         requireText(matricula, "Matrícula do funcionário");
         requireText(senha, "Senha do funcionário");
         requireText(statusConta, "Status da conta do funcionário");
-        return new FuncionarioVO(nome, cpf, emailCorporativo, telefone, cargo, setor, matricula, senha, statusConta);
+        return new FuncionarioVO(nome, cpf, emailCorporativo, telefone, cargo, setor, matricula, senha, statusConta)
+                .validar();
     }
 
     private static void validateOptional(String value, String field) {

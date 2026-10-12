@@ -29,7 +29,7 @@ class EmpresaServiceTest {
         assertEquals("QSoft Tecnologia Ltda", response.razaoSocial());
         assertEquals("12345678000199", response.cnpj());
         assertEquals(25, response.numeroFuncionarios());
-        assertEquals("01310-100", response.cep());
+        assertEquals("01310100", response.cep());
         assertEquals("Avenida Paulista, 1000", response.endereco());
         assertEquals("São Paulo", response.cidade());
         assertEquals("SP", response.estado());

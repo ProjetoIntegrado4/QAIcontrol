@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Painel de Produtividade de IA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./produtividade.css">
+</head><body>
+
+<div class="wrap">
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <a class="active" href="./produtividade.html">Produtividade IA</a>
+</nav>
+  <header class="top">
+    <div class="title-row">
+      <div class="title-block">
+        <span class="eyebrow" id="periodo"></span>
+        <h1>Painel de Produtividade de IA</h1>
+      </div>
+      <span class="muted small" id="empresa-info"></span>
+    </div>
+    <div class="controls">
+      <div class="ctl"><label for="f-empresa">Empresa</label><select id="f-empresa"></select></div>
+      <div class="ctl"><label for="f-min">Minutos poupados por requisição</label><input id="f-min" type="number" min="0" max="30" step="0.5" value="1.5"></div>
+      <div class="ctl"><label for="f-hora">Custo da hora de trabalho (R$)</label><input id="f-hora" type="number" min="0" max="1000" step="5" value="55"></div>
+      <button type="button" class="btn" id="b-atualizar">Atualizar dados</button>
+      <p class="assume">As horas economizadas são uma estimativa: a base não mede tempo poupado. Ajuste as duas premissas e o painel recalcula.</p>
+    </div>
+  </header>
+
+  <p class="estado" id="estado" role="status">Carregando dados do banco…</p>
+  <div class="kpis" id="kpis"></div>
+
+  <section>
+    <div class="sec-head"><h2>Pontos de atenção</h2><span class="eyebrow">gerados a partir dos dados filtrados</span></div>
+    <ul class="alerts" id="alerts"></ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Evolução mensal</h2></div>
+    <div class="grid">
+      <div class="panel c6"><h3>Colaboradores usando IA por mês</h3><div class="chart" id="ch-ativos"></div></div>
+      <div class="panel c6"><h3>Requisições bem-sucedidas por mês</h3><div class="chart" id="ch-req"></div></div>
+      <div class="panel c12"><h3>Custo de IA x orçamento (R$)</h3>
+        <div class="legend"><span><i class="custo"></i>Custo faturado</span><span><i class="dash"></i>Orçamento</span></div>
+        <div class="chart" id="ch-custo"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Produtividade por área</h2><span class="muted small">Clique no cabeçalho para ordenar</span></div>
+    <div class="panel">
+      <div class="sec-head"><h3>Uso de IA por área</h3>
+        <div class="seg" role="group" aria-label="Medida do gráfico de radar">
+          <button type="button" data-m="req" aria-pressed="true">Requisições</button>
+          <button type="button" data-m="usuarios" aria-pressed="false">Usuários</button>
+          <button type="button" data-m="req_usuario" aria-pressed="false">Req. por usuário</button>
+        </div></div>
+      <div class="radar-wrap"><div class="chart" id="ch-radar"></div>
+        <div class="radar-side"><span class="eyebrow" id="radar-cap"></span><ol class="rank" id="radar-rank"></ol>
+        <p class="note" id="radar-note"></p></div></div>
+    </div>
+    <div class="panel"><div class="tbl-wrap"><table id="t-areas"></table></div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Ferramentas</h2></div>
+    <div class="grid">
+      <div class="panel c5"><h3>Requisições bem-sucedidas por ferramenta</h3><div class="hbars" id="hb-ferr"></div></div>
+      <div class="panel c7"><h3>Custo, licenças e conformidade</h3><div class="tbl-wrap"><table id="t-ferr"></table></div>
+        <p class="note">Licença ociosa: licença ativa cujo titular não usou a ferramenta nos últimos 90 dias da base.</p></div>
+    </div>
+  </section>
+
+  <section id="sec-eng">
+    <div class="sec-head"><h2>Entrega de software</h2><span class="muted small">Disponível para as empresas com projetos de software (C01 a C05)</span></div>
+    <div class="kpis" id="eng-kpis"></div>
+    <div class="grid">
+      <div class="panel c6"><h3>Pull requests mergeados por mês</h3><div class="chart" id="ch-pr"></div></div>
+      <div class="panel c6"><h3>Builds com sucesso por mês (%)</h3><div class="chart" id="ch-build"></div></div>
+      <div class="panel c12"><h3>Uso de IA x entrega por desenvolvedor</h3>
+        <div class="tbl-wrap"><table id="t-coorte"></table></div>
+        <p class="callout" id="eng-note"></p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Governança e capacitação</h2></div>
+    <div class="grid">
+      <div class="panel c6"><h3>Eventos de segurança por tipo</h3><div class="hbars" id="hb-sec"></div></div>
+      <div class="panel c6"><h3>Treinamentos em IA por situação</h3><div class="hbars" id="hb-trn"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Colaboradores mais ativos</h2><span class="muted small">Últimos 90 dias da base</span></div>
+    <div class="panel"><div class="tbl-wrap"><table id="t-top"></table></div></div>
+  </section>
+
+  <footer id="rodape"></footer>
+</div>
+
+<script>
+/* Dados lidos do backend (GET /api/produtividade/...), que consulta o PostgreSQL a cada carga. */
+const D = { dados: {}, empresas: [], periodo: [], qualidade: {} };
+async function api(caminho) {
+  const r = await fetch(caminho, { credentials: "same-origin", headers: { Accept: "application/json" } });
+  if (r.status === 401) { window.location.replace("./login.html"); throw new Error("Sessão expirada"); }
+  if (!r.ok) { let m = ""; try { m = (await r.json()).message || ""; } catch (e) {} throw new Error(m || `Erro ${r.status} ao consultar ${caminho}`); }
+  return r.json();
+}
+async function carregarEmpresa(id) {
+  if (!D.dados[id]) D.dados[id] = await api("/api/produtividade/empresas/" + encodeURIComponent(id));
+  return D.dados[id];
+}
+function estado(txt, erro) { const e = $("#estado"); e.hidden = !txt; e.textContent = txt || ""; e.classList.toggle("erro", !!erro); }
+const $ = s => document.querySelector(s);
+const nf = (v, d = 0) => v == null ? "–" : v.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const big = v => v >= 1e9 ? nf(v / 1e9, 1) + " bi" : v >= 1e6 ? nf(v / 1e6, 1) + " mi" : v >= 1e4 ? nf(v / 1e3, 0) + " mil" : nf(v);
+const brl = v => v == null ? "–" : "R$ " + big(v);
+const brlFull = v => v == null ? "–" : v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+const pct = (v, d = 1) => v == null ? "–" : nf(v, d) + "%";
+const MES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const mlab = m => MES[+m.slice(5) - 1] + "/" + m.slice(2, 4);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+let state = { emp: "ALL", min: 1.5, hora: 55 };
+try { const s = JSON.parse(localStorage.getItem("painel-ia") || "{}"); Object.assign(state, s); } catch (e) {}
+const save = () => { try { localStorage.setItem("painel-ia", JSON.stringify(state)); } catch (e) {} };
+const horas = req => req * state.min / 60;
+
+/* ---------- gráfico de linhas (SVG, um eixo) ---------- */
+function lineChart(el, labels, series, fmt, opt = {}) {
+  const W = Math.max(300, Math.round(el.clientWidth || 600)), H = opt.h || 210, L = 52, R = 12, T = 12, B = 26;
+  const all = series.flatMap(s => s.values).filter(v => v != null);
+  let lo = opt.min ?? 0, hi = Math.max(...all, 1);
+  if (opt.min == null && opt.fit) { lo = Math.min(...all); const pad = (hi - lo) * .2 || 1; lo = Math.max(0, lo - pad); hi = hi + pad; }
+  const step = nice((hi - lo) / 4); hi = Math.ceil(hi / step) * step; lo = Math.floor(lo / step) * step;
+  const x = i => L + (labels.length < 2 ? 0 : i * (W - L - R) / (labels.length - 1));
+  const y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+  let g = "";
+  for (let v = lo; v <= hi + 1e-9; v += step) g += `<line class="grid-l" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${fmt(v, true)}</text>`;
+  const every = labels.length > 8 ? 2 : 1;
+  labels.forEach((l, i) => { if (i % every === 0) g += `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${mlab(l)}</text>`; });
+  series.forEach(s => {
+    let d = "", pen = false;
+    s.values.forEach((v, i) => { if (v == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i) + " " + y(v); pen = true; });
+    if (s.area) { const pts = s.values.map((v, i) => v == null ? null : [x(i), y(v)]).filter(Boolean);
+      if (pts.length) g += `<path d="M${pts[0][0]} ${y(lo)} ${pts.map(p => "L" + p[0] + " " + p[1]).join(" ")} L${pts.at(-1)[0]} ${y(lo)}Z" fill="${s.color}" opacity=".12"/>`; }
+    g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ${s.dash ? 'stroke-dasharray="5 4"' : ""}/>`;
+    const li = s.values.map((v, i) => v == null ? -1 : i).filter(i => i >= 0).at(-1);
+    if (li != null && !s.dash) g += `<circle cx="${x(li)}" cy="${y(s.values[li])}" r="4" fill="${s.color}" stroke="${css("--surface")}" stroke-width="2"/>`;
+  });
+  g += `<line id="xh" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="${css("--ink-3")}" stroke-width="1" opacity="0"/>`;
+  g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" class="hit"/>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || "")}">${g}</svg><div class="tip" hidden></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), xh = svg.querySelector("#xh");
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(labels.length - 1, Math.round((px - L) / ((W - L - R) / Math.max(1, labels.length - 1)))));
+    xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("opacity", ".5");
+    tip.innerHTML = `<div>${mlab(labels[i])}</div>` + series.map(s => `<div>${esc(s.name)}: <b>${fmt(s.values[i])}</b></div>`).join("");
+    tip.hidden = false; tip.style.left = (x(i) * r.width / W) + "px"; tip.style.top = (T * r.height / H + 4) + "px";
+  };
+  svg.addEventListener("pointermove", move);
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; xh.setAttribute("opacity", "0"); });
+}
+/* ---------- radar (teia), uma série ---------- */
+function radar(el, rows, fmt, name) {
+  const W = Math.max(300, Math.min(560, Math.round(el.clientWidth || 520))), H = Math.round(W * .82), cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) / 2 - (W < 420 ? 52 : 70), n = rows.length, mx = Math.max(...rows.map(r => r.v), 1), top = nice(mx / 4) * 4;
+  const ang = i => -Math.PI / 2 + i * 2 * Math.PI / n, pt = (i, f) => [cx + Math.cos(ang(i)) * R * f, cy + Math.sin(ang(i)) * R * f];
+  let g = "";
+  [.25, .5, .75, 1].forEach(f => {
+    g += `<polygon class="radar-ring" points="${rows.map((_, i) => pt(i, f).join(",")).join(" ")}"/>`;
+    const a = -Math.PI / 2 - Math.PI / n; g += `<text x="${cx + Math.cos(a) * R * f}" y="${cy + Math.sin(a) * R * f + 4}" text-anchor="middle" class="radar-tick">${fmt(top * f, true)}</text>`;
+  });
+  rows.forEach((r, i) => {
+    const [x, y] = pt(i, 1), [lx, ly] = pt(i, 1.1), c = Math.cos(ang(i));
+    const lim = W < 420 ? 13 : 22, lab = r.k.length > lim ? r.k.slice(0, lim - 1) + "…" : r.k;
+    g += `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`;
+    g += `<text class="radar-lab" x="${lx}" y="${ly + 4}" text-anchor="${Math.abs(c) < .2 ? "middle" : c > 0 ? "start" : "end"}">${esc(lab)}</text>`;
+  });
+  const pts = rows.map((r, i) => pt(i, r.v / top));
+  g += `<polygon points="${pts.map(p => p.join(",")).join(" ")}" fill="${css("--s1")}" fill-opacity=".16" stroke="${css("--s1")}" stroke-width="2" stroke-linejoin="round"/>`;
+  pts.forEach((p, i) => g += `<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="${css("--s1")}" stroke="${css("--surface")}" stroke-width="2"/><circle data-i="${i}" cx="${p[0]}" cy="${p[1]}" r="14" fill="transparent" class="radar-hit"/>`);
+  el.innerHTML = `<svg class="radar" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Gráfico de radar: ${esc(name)} por área">${g}</svg><div class="tip" hidden></div>`;
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip");
+  svg.querySelectorAll("circle[data-i]").forEach(c => {
+    const show = () => { const i = +c.dataset.i, r = svg.getBoundingClientRect(), er = el.getBoundingClientRect(), s = r.width / W;
+      tip.innerHTML = `<div>${esc(rows[i].k)}</div><div>${esc(name)}: <b>${fmt(rows[i].v)}</b></div>`; tip.hidden = false;
+      tip.style.left = (r.left - er.left + pts[i][0] * s) + "px"; tip.style.top = (r.top - er.top + pts[i][1] * s) + "px"; };
+    c.addEventListener("pointerenter", show); c.addEventListener("focus", show);
+    c.addEventListener("pointerleave", () => tip.hidden = true);
+  });
+}
+let radarMetric = "req";
+const RADAR = { req: ["Requisições bem-sucedidas", v => big(v)], usuarios: ["Usuários de IA", v => nf(v)], req_usuario: ["Requisições por usuário", v => big(v)] };
+function renderRadar(X) {
+  const [name, fmt] = RADAR[radarMetric], MAXA = 12;
+  const all = X.areas.map(a => ({ k: a.area, v: a[radarMetric] || 0 })).sort((a, b) => b.v - a.v);
+  const shown = all.slice(0, MAXA), order = X.areas.map(a => a.area).filter(a => shown.some(s => s.k === a));
+  radar($("#ch-radar"), order.map(a => shown.find(s => s.k === a)), fmt, name);
+  $("#radar-cap").textContent = name + " · ranking";
+  $("#radar-rank").innerHTML = shown.slice(0, 6).map(r => `<li><span>${esc(r.k)}</span><span class="v">${fmt(r.v)}</span></li>`).join("");
+  $("#radar-note").textContent = all.length > MAXA ? `O radar mostra as ${MAXA} áreas com maior valor de ${all.length}; todas estão na tabela abaixo.` : `Cada eixo é uma área; quanto mais longe do centro, maior o uso.`;
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.m === radarMetric)));
+}
+
+function nice(r) { const p = Math.pow(10, Math.floor(Math.log10(r || 1))), f = r / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; }
+
+/* ---------- barras horizontais ---------- */
+function hbars(el, rows, fmt, color = "var(--s1)") {
+  const mx = Math.max(...rows.map(r => r.v), 1);
+  el.innerHTML = rows.length ? rows.map(r => `<div class="hb" title="${esc(r.k)}: ${esc(fmt(r.v))}"><span class="lab">${esc(r.k)}</span>
+    <span class="row"><span class="fill" style="width:${(r.v / mx * 78).toFixed(1)}%;background:${r.c || color}"></span><span class="val">${fmt(r.v)}</span></span></div>`).join("")
+    : `<p class="muted small vazio">Sem registros para esta empresa.</p>`;
+}
+
+/* ---------- tabela ordenável ---------- */
+function table(el, cols, rows, sortKey, dir = -1) {
+  const st = el._sort || (el._sort = { k: sortKey, d: dir });
+  const sorted = [...rows].sort((a, b) => { const x = a[st.k], y = b[st.k]; return (typeof x === "string" ? x.localeCompare(y) : (x ?? -1e18) - (y ?? -1e18)) * st.d; });
+  el.innerHTML = `<thead><tr>${cols.map(c => `<th class="${c.n ? "n" : ""}" data-k="${c.k}" aria-sort="${st.k === c.k ? (st.d < 0 ? "descending" : "ascending") : "none"}" tabindex="0">${c.t}</th>`).join("")}</tr></thead>
+    <tbody>${sorted.map(r => `<tr>${cols.map(c => `<td class="${c.n ? "n" : ""}">${c.f ? c.f(r[c.k], r) : esc(r[c.k])}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  el.querySelectorAll("th").forEach(th => {
+    const go = () => { const k = th.dataset.k; st.d = st.k === k ? -st.d : -1; st.k = k; table(el, cols, rows); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+}
+const barCell = (v, max, txt, color = "var(--s1)") => `<div class="bar"><span class="track"><span class="fill" style="display:block;width:${Math.min(100, (v || 0) / (max || 1) * 100).toFixed(1)}%;background:${color}"></span></span><span class="mono small">${txt}</span></div>`;
+
+/* ---------- render ---------- */
+function render() {
+  if (!D.dados[state.emp]) return;
+  const X = D.dados[state.emp], k = X.kpis, emp = D.empresas.find(e => e.id === state.emp);
+  $("#empresa-info").textContent = emp.id === "ALL" ? emp.setor + " na base" : `${emp.setor} · porte ${emp.porte}`;
+  const h = horas(k.requisicoes), valor = h * state.hora, roi = k.custo ? valor / k.custo : null;
+  const usoOrc = k.orcamento ? 100 * k.custo / k.orcamento : null, ocio = k.lic_ativas ? 100 * k.lic_ociosas / k.lic_ativas : null;
+  const tone = (v, good, bad, inv) => v == null ? "" : (inv ? v <= good : v >= good) ? "good" : (inv ? v >= bad : v <= bad) ? "crit" : "warn";
+  const tiles = [
+    ["Adoção", pct(k.adocao, 0), `${nf(k.usuarios)} de ${nf(k.funcionarios)} colaboradores ativos usaram IA`, tone(k.adocao, 70, 40), k.adocao >= 70 ? "alta" : k.adocao <= 40 ? "baixa" : "moderada"],
+    ["Requisições bem-sucedidas", big(k.requisicoes), `taxa de sucesso ${pct(k.sucesso)} · latência mediana ${nf(k.latencia)} ms`],
+    ["Horas economizadas (est.)", big(Math.round(h)) + " h", `≈ ${nf(h / Math.max(k.usuarios, 1) / D.dados[state.emp].mensal.filter(m => m.ativos).length, 1)} h por usuário por mês`],
+    ["Retorno estimado", roi == null ? "–" : nf(roi, 1) + "×", `${brl(valor)} em tempo poupado para ${brl(k.custo)} de custo`, roi == null ? "" : tone(roi, 2, 1), roi >= 2 ? "positivo" : roi < 1 ? "abaixo do custo" : "marginal"],
+    ["Custo x orçamento", pct(usoOrc, 0), `${brl(k.custo)} de ${brl(k.orcamento)} orçados`, tone(usoOrc, 90, 100, true), usoOrc > 100 ? "acima" : usoOrc > 90 ? "no limite" : "dentro"],
+    ["Licenças ociosas", nf(k.lic_ociosas), `${pct(ocio, 0)} das ${nf(k.lic_ativas)} licenças ativas sem uso em 90 dias`, tone(ocio, 15, 35, true), ocio > 35 ? "revisar" : ocio > 15 ? "atenção" : "ok"],
+  ];
+  $("#kpis").innerHTML = tiles.map(([t, v, d, c, p]) => `<div class="kpi"><span class="eyebrow">${t}</span><span class="v">${v}</span><span class="d">${d}</span>${c ? `<span class="pill ${c}">${p}</span>` : ""}</div>`).join("");
+
+  // pontos de atenção
+  const al = [], A = X.areas.filter(a => a.funcionarios >= 5);
+  if (A.length) { const lo = [...A].sort((a, b) => a.adocao - b.adocao)[0], hi = [...A].sort((a, b) => b.adocao - a.adocao)[0];
+    al.push(["warn", `<b>${esc(lo.area)}</b> tem a menor adoção (${pct(lo.adocao, 0)}), contra ${pct(hi.adocao, 0)} em ${esc(hi.area)}.`]); }
+  if (ocio != null && k.lic_ociosas) al.push([ocio > 35 ? "crit" : "warn", `<b>${nf(k.lic_ociosas)} licenças</b> ativas não tiveram uso nos últimos 90 dias. Candidatas a remanejamento ou cancelamento.`]);
+  if (k.fora_politica > 0.5) al.push([k.fora_politica > 5 ? "crit" : "warn", `<b>${pct(k.fora_politica)}</b> das requisições usaram ferramenta não aprovada para a empresa ou para a área do usuário.`]);
+  if (k.eventos) al.push([k.eventos_graves ? "crit" : "warn", `<b>${nf(k.eventos)} ${k.eventos === 1 ? "evento" : "eventos"} de segurança</b> com IA, ${nf(k.eventos_graves)} de severidade alta ou crítica.`]);
+  if (k.trein_concl != null) al.push([k.trein_concl < 60 ? "warn" : "good", `<b>${pct(k.trein_concl, 0)}</b> das matrículas em treinamentos de IA foram concluídas (${nf(k.trein_pessoas)} pessoas formadas).`]);
+  const ms = X.mensal, a3 = ms.slice(-3).reduce((s, m) => s + m.req, 0), b3 = ms.slice(-6, -3).reduce((s, m) => s + m.req, 0);
+  if (b3) { const g = 100 * (a3 / b3 - 1); al.push([g >= 0 ? "good" : "warn", `Requisições dos últimos 3 meses ${g >= 0 ? "cresceram" : "caíram"} <b>${pct(Math.abs(g), 0)}</b> frente aos 3 meses anteriores.`]); }
+  $("#alerts").innerHTML = al.map(([c, t]) => `<li class="${c}">${t}</li>`).join("");
+
+  // séries mensais
+  const labs = ms.map(m => m.mes);
+  lineChart($("#ch-ativos"), labs, [{ name: "Colaboradores", color: css("--s1"), values: ms.map(m => m.ativos), area: 1 }], v => nf(v), { aria: "Colaboradores ativos por mês" });
+  lineChart($("#ch-req"), labs, [{ name: "Requisições", color: css("--s1"), values: ms.map(m => m.req), area: 1 }], v => big(v), { aria: "Requisições por mês" });
+  lineChart($("#ch-custo"), labs, [{ name: "Custo faturado", color: css("--s1"), values: ms.map(m => m.custo), area: 1 }, { name: "Orçamento", color: css("--ref"), values: ms.map(m => m.orcamento || null), dash: 1 }], (v, ax) => ax ? brl(v) : brlFull(v), { h: 230, aria: "Custo mensal comparado ao orçamento" });
+
+  // áreas
+  renderRadar(X);
+  const ar = X.areas.map(a => ({ ...a, horas: horas(a.req), cph: a.req ? a.custo / horas(a.req) : null }));
+  const mxA = Math.max(...ar.map(a => a.req_usuario), 1);
+  table($("#t-areas"), [
+    { k: "area", t: "Área" },
+    { k: "adocao", t: "Adoção", f: v => barCell(v, 100, pct(v, 0)) },
+    { k: "usuarios", t: "Usuários", n: 1, f: (v, r) => `${nf(v)}<span class="muted"> / ${nf(r.funcionarios)}</span>` },
+    { k: "req_usuario", t: "Req. por usuário", f: v => barCell(v, mxA, big(v), "var(--s3)") },
+    { k: "horas", t: "Horas poupadas (est.)", n: 1, f: v => nf(Math.round(v)) },
+    { k: "custo", t: "Custo", n: 1, f: v => brl(v) },
+    { k: "cph", t: "Custo por hora poupada", n: 1, f: v => v == null ? "–" : brlFull(v) },
+    { k: "trein", t: "Treinam. concluídos", n: 1, f: v => pct(v, 0) },
+  ], ar, "adocao");
+
+  // ferramentas
+  hbars($("#hb-ferr"), X.ferramentas.map(f => ({ k: f.nome, v: f.req })), big);
+  table($("#t-ferr"), [
+    { k: "nome", t: "Ferramenta", f: (v, r) => `${esc(v)}<div class="muted small">${esc(r.categoria)}</div>` },
+    { k: "usuarios", t: "Usuários", n: 1, f: v => nf(v) },
+    { k: "custo", t: "Custo", n: 1, f: v => brl(v) },
+    { k: "cpm", t: "R$ / mil req.", n: 1, f: v => v == null ? "–" : nf(v, 2) },
+    { k: "ociosas", t: "Licenças ociosas", n: 1, f: (v, r) => r.lic_ativas ? `${nf(r.lic_ociosas)}<span class="muted"> / ${nf(r.lic_ativas)}</span>` : "–" },
+    { k: "fora", t: "Fora da política", n: 1, f: v => v > 0 ? `<span class="pill ${v > 5 ? "crit" : "warn"}">${pct(v)}</span>` : `<span class="muted">0%</span>` },
+  ], X.ferramentas.map(f => ({ ...f, cpm: f.req ? f.custo / f.req * 1000 : null, ociosas: f.lic_ociosas })), "custo");
+
+  // engenharia
+  const E = X.eng; $("#sec-eng").hidden = !E;
+  if (E) {
+    const t = E.totais;
+    $("#eng-kpis").innerHTML = [["Pull requests", nf(t.prs), `${nf(t.merged)} mergeados · ${nf(t.devs)} desenvolvedores`], ["Tempo até o merge", nf(t.lead) + " h", "mediana, PRs mergeados"],
+      ["Builds com sucesso", pct(t.build_ok), "todas as execuções"], ["Deploys com falha ou revertidos", pct(t.deploy_falha), "dev, staging e produção"]]
+      .map(([a, b, c]) => `<div class="kpi"><span class="eyebrow">${a}</span><span class="v">${b}</span><span class="d">${c}</span></div>`).join("");
+    const em = E.mensal;
+    lineChart($("#ch-pr"), em.map(m => m.mes), [{ name: "PRs mergeados", color: css("--s1"), values: em.map(m => m.merged), area: 1 }], v => nf(v), { aria: "PRs mergeados por mês" });
+    lineChart($("#ch-build"), em.map(m => m.mes), [{ name: "Builds com sucesso", color: css("--s3"), values: em.map(m => m.build_ok) }], (v, ax) => pct(v, ax ? 0 : 1), { fit: 1, aria: "Taxa de sucesso de builds por mês" });
+    table($("#t-coorte"), [
+      { k: "faixa", t: "Faixa de uso de IA" }, { k: "devs", t: "Desenvolvedores", n: 1, f: v => nf(v) },
+      { k: "ai_mediana", t: "Requisições de IA (mediana)", n: 1, f: v => nf(v) }, { k: "prs", t: "PRs por dev", n: 1, f: v => nf(v, 1) },
+      { k: "merged", t: "Mergeados por dev", n: 1, f: v => nf(v, 1) }, { k: "lead", t: "Horas até merge (mediana)", n: 1, f: v => nf(v) },
+    ], E.coortes, "ai_mediana", 1);
+    const c = E.corr, forte = Math.abs(c) >= 0.3;
+    $("#eng-note").innerHTML = forte
+      ? `A correlação entre uso de IA e PRs mergeados é <b>${nf(c, 2)}</b>: há relação ${c > 0 ? "positiva" : "negativa"} relevante entre uso de IA e volume de entrega.`
+      : `A correlação entre uso de IA e PRs mergeados por desenvolvedor é <b>${nf(c, 2)}</b>, praticamente nula. Nesta base, quem usa mais IA não entrega mais PRs nem mais rápido. Vale medir outros resultados (qualidade, retrabalho, escopo) antes de atribuir ganhos de entrega à IA.`;
+  }
+
+  // governança
+  const pal = { Critica: "var(--crit)", Alta: "var(--serious)", Media: "var(--warn)", Baixa: "var(--ref)" };
+  hbars($("#hb-sec"), Object.entries(X.gov.eventos_tipo).map(([k, v]) => ({ k, v })), v => nf(v), "var(--s2)");
+  const ts = X.gov.trein_status, tc = { Concluido: "var(--good)", "Em Andamento": "var(--s1)", "Nao Iniciado": "var(--ref)", Abandonado: "var(--crit)" };
+  const tn = { Concluido: "Concluído", "Em Andamento": "Em andamento", "Nao Iniciado": "Não iniciado", Abandonado: "Abandonado" };
+  hbars($("#hb-trn"), ["Concluido", "Em Andamento", "Nao Iniciado", "Abandonado"].filter(s => ts[s]).map(s => ({ k: tn[s], v: ts[s], c: tc[s] })), v => nf(v));
+
+  // top
+  table($("#t-top"), [
+    { k: "id", t: "Colaborador", f: v => `<span class="mono">${esc(v)}</span>` }, { k: "cargo", t: "Cargo", f: (v, r) => `${esc(v)}<div class="muted small">${esc(r.senioridade)}</div>` },
+    { k: "area", t: "Área" }, { k: "req", t: "Requisições", n: 1, f: v => nf(v) }, { k: "dias", t: "Dias com uso", n: 1, f: v => nf(v) }, { k: "ferramentas", t: "Ferramentas", n: 1, f: v => nf(v) },
+  ], X.top, "req");
+}
+
+function cabecalho() {
+  const p = D.periodo; $("#periodo").textContent = p.length ? `Base de uso de IA · ${mlab(p[0])} a ${mlab(p[1])} · consultado em ${D.atualizado_em}` : "Base de uso de IA";
+  const sel = $("#f-empresa"), atual = state.emp;
+  sel.innerHTML = D.empresas.map(e => `<option value="${e.id}">${e.id === "ALL" ? "" : e.id + " · "}${esc(e.nome)}</option>`).join("");
+  if (!D.empresas.some(e => e.id === atual)) state.emp = "ALL";
+  sel.value = state.emp;
+  const q = D.qualidade;
+  $("#rodape").innerHTML = `<h3>Como os números foram calculados</h3><ul>
+    <li>Os dados vêm do banco PostgreSQL do projeto (tabelas <span class="mono">ai_usage_logs</span>, <span class="mono">employees</span>, <span class="mono">ai_billing</span> e demais da base de uso de IA). Cada carga consulta o banco, então registros novos aparecem ao clicar em "Atualizar dados".</li>
+    <li><b>Adoção</b>: colaboradores ativos com ao menos uma requisição bem-sucedida no período, sobre o total de colaboradores ativos do cadastro.</li>
+    <li><b>Horas economizadas</b> e <b>retorno</b> são estimativas: requisições bem-sucedidas × minutos poupados por requisição × custo da hora. A base não mede tempo poupado.</li>
+    <li><b>Custo</b> é a soma de <span class="mono">total_cost</span> da tabela <span class="mono">ai_billing</span>, em reais.</li>
+    <li><b>Fora da política</b>: uso de ferramenta sem status "Aprovado" para a empresa, ou por área que não está entre as autorizadas.</li>
+    <li>Qualidade dos dados: ${nf(q.lead_negativo)} pull requests têm data de merge anterior à de criação e foram excluídos do tempo até o merge; ${nf(q.review_imputado)} têm contagem de revisões fracionária (provável preenchimento pela média); ${nf(q.uso_sem_cc)} de ${nf(q.linhas_uso)} registros de uso não têm centro de custo.</li>
+    </ul>`;
+}
+
+async function mostrarEmpresa() {
+  const id = state.emp;
+  if (!D.dados[id]) estado("Carregando dados do banco…");
+  try {
+    await carregarEmpresa(id);
+    if (id !== state.emp) return;
+    estado("");
+    render();
+  } catch (e) {
+    estado("Não foi possível carregar os dados: " + e.message, true);
+  }
+}
+
+async function recarregar() {
+  const b = $("#b-atualizar"); b.disabled = true;
+  estado("Carregando dados do banco…");
+  try {
+    Object.assign(D, await api("/api/produtividade/resumo"), { dados: {} });
+    cabecalho();
+    await mostrarEmpresa();
+  } catch (e) {
+    estado("Não foi possível carregar os dados: " + e.message, true);
+  } finally { b.disabled = false; }
+}
+
+function init() {
+  const sel = $("#f-empresa");
+  $("#f-min").value = state.min; $("#f-hora").value = state.hora;
+  sel.onchange = () => { state.emp = sel.value; ["#t-areas", "#t-ferr", "#t-top", "#t-coorte"].forEach(s => delete $(s)._sort); save(); mostrarEmpresa(); };
+  const num = (id, key) => $(id).addEventListener("input", e => { const v = parseFloat(e.target.value); if (v >= 0) { state[key] = v; save(); render(); } });
+  num("#f-min", "min"); num("#f-hora", "hora");
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { radarMetric = b.dataset.m; if (D.dados[state.emp]) renderRadar(D.dados[state.emp]); });
+  $("#b-atualizar").onclick = recarregar;
+  recarregar();
+}
+let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(render, 150); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+init();
+</script>
+<script src="./auth.js"></script>
+
+</body></html>

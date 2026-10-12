@@ -3,6 +3,7 @@ package br.edu.exemplo.ia.service;
 import br.edu.exemplo.ia.domain.entity.Admin;
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.vo.AdminVO;
+import br.edu.exemplo.ia.domain.vo.Campos;
 import br.edu.exemplo.ia.domain.vo.Cpf;
 import br.edu.exemplo.ia.dto.AdminRequest;
 import br.edu.exemplo.ia.dto.AdminResponse;
@@ -32,14 +33,14 @@ public class AdminService implements AdminUseCase {
         }
         Empresa empresa = loadEmpresa(request.empresaId());
         Admin admin = adminRepository.save(new Admin(new AdminVO(
-                request.nome(),
+                Campos.texto(request.nome(), "Nome do admin"),
                 Cpf.normalizar(request.cpf(), "CPF do admin"),
-                request.email(),
-            request.telefone(),
-                request.cargo(),
-                passwordEncoder.encode(request.senha()),
-                request.statusConta(),
-                request.nivelAcesso()
+                Campos.email(request.email(), "E-mail do admin"),
+                Campos.telefone(request.telefone(), "Telefone do admin"),
+                Campos.texto(request.cargo(), "Cargo do admin"),
+                passwordEncoder.encode(Campos.senha(request.senha(), "Senha do admin")),
+                Campos.statusConta(request.statusConta(), "Status da conta do admin"),
+                Campos.texto(request.nivelAcesso(), "Nível de acesso do admin")
         ), empresa));
         return toDto(admin);
     }
@@ -74,7 +75,7 @@ public class AdminService implements AdminUseCase {
                 admin.getEmail(),
                 admin.getTelefone(),
                 empresa.getId(),
-                empresa.getName().value(),
+                empresa.getNome(),
                 empresa.getArea(),
                 admin.getCargo(),
                 admin.getStatusConta(),

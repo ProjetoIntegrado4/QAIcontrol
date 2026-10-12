@@ -1,11 +1,14 @@
 package br.edu.exemplo.ia.service;
 
+import br.edu.exemplo.ia.domain.entity.Admin;
 import br.edu.exemplo.ia.domain.entity.Empresa;
 import br.edu.exemplo.ia.domain.entity.Funcionario;
+import br.edu.exemplo.ia.domain.vo.Campos;
 import br.edu.exemplo.ia.domain.vo.Cpf;
 import br.edu.exemplo.ia.domain.vo.FuncionarioVO;
 import br.edu.exemplo.ia.dto.FuncionarioRequest;
 import br.edu.exemplo.ia.dto.FuncionarioResponse;
+import br.edu.exemplo.ia.repository.AdminRepository;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
 import br.edu.exemplo.ia.repository.FuncionarioRepository;
 import org.springframework.stereotype.Service;
@@ -17,29 +20,32 @@ import java.util.UUID;
 public class FuncionarioService implements FuncionarioUseCase {
     private final FuncionarioRepository funcionarioRepository;
     private final EmpresaRepository empresaRepository;
+    private final AdminRepository adminRepository;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, EmpresaRepository empresaRepository) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, EmpresaRepository empresaRepository,
+                              AdminRepository adminRepository) {
         this.funcionarioRepository = funcionarioRepository;
         this.empresaRepository = empresaRepository;
+        this.adminRepository = adminRepository;
     }
 
     @Override
     public FuncionarioResponse create(FuncionarioRequest request) {
         Empresa empresa = loadEmpresa(request.empresaId());
-        Funcionario gestorResponsavel = request.gestorResponsavelId() == null
+        Admin gestorResponsavel = request.gestorResponsavelId() == null
             ? null
             : loadGestor(request.gestorResponsavelId(), empresa);
         Funcionario funcionario = funcionarioRepository.save(
             new Funcionario(FuncionarioVO.completo(
-                request.nome(),
+                Campos.texto(request.nome(), "Nome do funcionário"),
                 Cpf.normalizar(request.cpf(), "CPF do funcionário"),
-                request.emailCorporativo(),
-                request.telefone(),
-                request.cargo(),
-                request.setor(),
-                request.matricula(),
-                request.senha(),
-                request.statusConta()
+                Campos.email(request.emailCorporativo(), "E-mail corporativo do funcionário"),
+                Campos.telefone(request.telefone(), "Telefone do funcionário"),
+                Campos.texto(request.cargo(), "Cargo do funcionário"),
+                Campos.texto(request.setor(), "Setor do funcionário"),
+                Campos.texto(request.matricula(), "Matrícula do funcionário"),
+                Campos.senha(request.senha(), "Senha do funcionário"),
+                Campos.statusConta(request.statusConta(), "Status da conta do funcionário")
             ), empresa, gestorResponsavel)
         );
         return toDto(funcionario);
@@ -66,18 +72,18 @@ public class FuncionarioService implements FuncionarioUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Empresa inexistente: " + empresaId));
     }
 
-    private Funcionario loadGestor(UUID gestorId, Empresa empresa) {
-        Funcionario gestor = funcionarioRepository.findById(gestorId)
+    private Admin loadGestor(UUID gestorId, Empresa empresa) {
+        Admin gestor = adminRepository.findById(gestorId)
                 .orElseThrow(() -> new IllegalArgumentException("Gestor responsavel inexistente: " + gestorId));
         if (!gestor.getEmpresa().getId().equals(empresa.getId())) {
-            throw new IllegalArgumentException("Gestor responsavel deve pertencer a mesma empresa");
+            throw new IllegalArgumentException("Gestor responsavel deve ser um admin da mesma empresa");
         }
         return gestor;
     }
 
     private FuncionarioResponse toDto(Funcionario funcionario) {
         Empresa empresa = funcionario.getEmpresa();
-        Funcionario gestorResponsavel = funcionario.getGestorResponsavel();
+        Admin gestorResponsavel = funcionario.getGestorResponsavel();
         return new FuncionarioResponse(
                 funcionario.getId(),
                 funcionario.getNome(),
@@ -87,7 +93,7 @@ public class FuncionarioService implements FuncionarioUseCase {
                 funcionario.getCargo(),
                 funcionario.getSetor(),
                 empresa.getId(),
-                empresa.getName().value(),
+                empresa.getNome(),
                 empresa.getArea(),
                 funcionario.getMatricula(),
                 funcionario.getStatusConta(),

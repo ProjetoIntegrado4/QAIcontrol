@@ -1,10 +1,35 @@
+// Roda comandos no shell do agente (sh no Linux/macOS, bat no Windows).
+def run(String cmd) {
+  if (isUnix()) { sh cmd } else { bat cmd }
+}
+
 pipeline {
   agent any
   stages {
     stage('Checkout') { steps { checkout scm } }
-    stage('Build + Unit/Integration Tests') { steps { sh 'mvn -B clean verify' } }
-    stage('Package') { steps { sh 'mvn -B -DskipTests package' } }
-    stage('Docker Image') { steps { sh 'docker build -t ia-app:${BUILD_NUMBER} .' } }
+    // Testes + cobertura JaCoCo: o build falha se a cobertura de linhas ficar abaixo de 70% (pom.xml).
+    stage('Build + Unit/Integration Tests') { steps { run 'mvn -B clean verify' } }
+    stage('Package') { steps { run 'mvn -B -DskipTests package' } }
+    stage('Docker Image') { steps { run "docker build -t ia-app:${env.BUILD_NUMBER} ." } }
   }
-  post { always { junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml' } }
+  post {
+    always {
+      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+      archiveArtifacts allowEmptyArchive: true, artifacts: 'target/site/jacoco/**'
+      script {
+        // Publica a cobertura com o plugin que estiver instalado no Jenkins (Coverage ou JaCoCo).
+        try {
+          recordCoverage tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']],
+                         qualityGates: [[threshold: 70.0, metric: 'LINE', baseline: 'PROJECT', criticality: 'FAILURE']]
+        } catch (NoSuchMethodError ignored) {
+          try {
+            jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes',
+                   sourcePattern: '**/src/main/java', minimumLineCoverage: '70', changeBuildStatus: true
+          } catch (NoSuchMethodError ignored2) {
+            echo 'Nenhum plugin de cobertura instalado; relatório HTML arquivado em target/site/jacoco/index.html'
+          }
+        }
+      }
+    }
+  }
 }

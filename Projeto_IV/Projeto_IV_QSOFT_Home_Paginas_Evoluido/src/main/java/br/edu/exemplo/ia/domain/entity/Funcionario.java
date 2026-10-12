@@ -39,9 +39,10 @@ public class Funcionario {
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
+    // O gestor responsavel e um admin da mesma empresa do funcionario.
     @ManyToOne
-    @JoinColumn(name = "gestor_responsavel_id")
-    private Funcionario gestorResponsavel;
+    @JoinColumn(name = "gestor_admin_id")
+    private Admin gestorResponsavel;
 
     protected Funcionario() {
     }
@@ -52,18 +53,21 @@ public class Funcionario {
 
     public Funcionario(String nome, String cpf, String emailCorporativo, Long telefone, String cargo,
                        String setor, Empresa empresa, String matricula, String senha, String statusConta,
-                       Funcionario gestorResponsavel) {
+                       Admin gestorResponsavel) {
         this(FuncionarioVO.completo(
                 nome, cpf, emailCorporativo, telefone, cargo, setor, matricula, senha, statusConta
         ), empresa, gestorResponsavel);
     }
 
-    public Funcionario(FuncionarioVO dados, Empresa empresa, Funcionario gestorResponsavel) {
+    public Funcionario(FuncionarioVO dados, Empresa empresa, Admin gestorResponsavel) {
         if (dados == null || empresa == null) {
             throw new IllegalArgumentException("Dados do funcionário e empresa são obrigatórios");
         }
+        if (gestorResponsavel != null && !gestorResponsavel.getEmpresa().getId().equals(empresa.getId())) {
+            throw new IllegalArgumentException("Gestor responsavel deve ser um admin da mesma empresa");
+        }
         this.id = UUID.randomUUID();
-        this.dados = dados;
+        this.dados = dados.validar();
         this.empresa = empresa;
         this.gestorResponsavel = gestorResponsavel;
         this.podeGerenciarFuncionarios = false;
@@ -74,39 +78,39 @@ public class Funcionario {
     }
 
     public String getNome() {
-        return dados.nome();
+        return dados == null ? null : dados.nome();
     }
 
     public String getCpf() {
-        return dados.cpf();
+        return dados == null ? null : dados.cpf();
     }
 
     public String getEmailCorporativo() {
-        return dados.emailCorporativo();
+        return dados == null ? null : dados.emailCorporativo();
     }
 
     public Long getTelefone() {
-        return dados.telefone();
+        return dados == null ? null : dados.telefone();
     }
 
     public String getCargo() {
-        return dados.cargo();
+        return dados == null ? null : dados.cargo();
     }
 
     public String getSetor() {
-        return dados.setor();
+        return dados == null ? null : dados.setor();
     }
 
     public String getMatricula() {
-        return dados.matricula();
+        return dados == null ? null : dados.matricula();
     }
 
     public String getSenha() {
-        return dados.senha();
+        return dados == null ? null : dados.senha();
     }
 
     public String getStatusConta() {
-        return dados.statusConta() == null ? "ATIVO" : dados.statusConta();
+        return dados == null || dados.statusConta() == null ? "ATIVO" : dados.statusConta();
     }
 
     public boolean isPodeGerenciarFuncionarios() {
@@ -117,7 +121,7 @@ public class Funcionario {
         return empresa;
     }
 
-    public Funcionario getGestorResponsavel() {
+    public Admin getGestorResponsavel() {
         return gestorResponsavel;
     }
 }

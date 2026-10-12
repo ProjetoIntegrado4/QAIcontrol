@@ -1,5 +1,6 @@
-package br.edu.exemplo.ia.domain.vo;
+package br.edu.exemplo.ia.domainTeste.vo;
 
+import br.edu.exemplo.ia.domain.vo.Cpf;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

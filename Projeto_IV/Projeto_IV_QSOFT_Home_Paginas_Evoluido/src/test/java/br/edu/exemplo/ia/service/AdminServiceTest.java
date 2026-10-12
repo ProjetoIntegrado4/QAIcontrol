@@ -102,6 +102,24 @@ class AdminServiceTest {
         verify(adminRepository, org.mockito.Mockito.never()).save(any(Admin.class));
     }
 
+    @Test
+    void deveRejeitarEmailInvalido() {
+        AdminRepository adminRepository = mock(AdminRepository.class);
+        EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
+        Empresa empresa = new Empresa(new EmpresaVO("QSoft"), "Tecnologia");
+        when(empresaRepository.findById(empresa.getId())).thenReturn(Optional.of(empresa));
+        AdminService service = new AdminService(adminRepository, empresaRepository);
+
+        AdminRequest request = new AdminRequest(
+                "Ana", "529.982.247-25", "ana.qsoft.com", 11999990000L, "Gestora",
+                empresa.getId(), "senha-segura", "senha-segura", "ATIVO", "ADMIN"
+        );
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> service.create(request));
+        assertEquals("E-mail do admin inválido", ex.getMessage());
+        verify(adminRepository, org.mockito.Mockito.never()).save(any(Admin.class));
+    }
+
     private AdminRequest request(UUID empresaId) {
         return new AdminRequest(
                 "Ana", "529.982.247-25", "ana@qsoft.com", 11999990000L, "Gestora",

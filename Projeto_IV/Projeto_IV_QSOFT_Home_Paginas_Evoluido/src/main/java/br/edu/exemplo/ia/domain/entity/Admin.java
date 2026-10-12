@@ -52,7 +52,7 @@ public class Admin {
             throw new IllegalArgumentException("Empresa do admin obrigatória");
         }
         this.id = UUID.randomUUID();
-        this.dados = dados;
+        this.dados = dados.validar();
         this.empresa = empresa;
     }
 
@@ -61,19 +61,19 @@ public class Admin {
     }
 
     public String getNome() {
-        return dados.nome();
+        return dados == null ? null : dados.nome();
     }
 
     public String getCpf() {
-        return dados.cpf();
+        return dados == null ? null : dados.cpf();
     }
 
     public String getEmail() {
-        return dados.email();
+        return dados == null ? null : dados.email();
     }
 
     public Long getTelefone() {
-        return dados.telefone();
+        return dados == null ? null : dados.telefone();
     }
 
     public Empresa getEmpresa() {
@@ -81,18 +81,18 @@ public class Admin {
     }
 
     public String getCargo() {
-        return dados.cargo();
+        return dados == null ? null : dados.cargo();
     }
 
     public String getSenhaHash() {
-        return dados.senhaHash();
+        return dados == null ? null : dados.senhaHash();
     }
 
     public String getStatusConta() {
-        return dados.statusConta();
+        return dados == null ? null : dados.statusConta();
     }
 
     public String getNivelAcesso() {
-        return dados.nivelAcesso();
+        return dados == null ? null : dados.nivelAcesso();
     }
 }

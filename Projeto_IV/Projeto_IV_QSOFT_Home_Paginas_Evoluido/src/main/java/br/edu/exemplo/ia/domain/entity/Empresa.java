@@ -54,8 +54,8 @@ public class Empresa {
             throw new IllegalArgumentException("Nome e dados da empresa obrigatórios");
         }
         this.id = UUID.randomUUID();
-        this.name = name;
-        this.dados = dados;
+        this.name = name.validar();
+        this.dados = dados.validar();
     }
 
     public UUID getId() {
@@ -66,39 +66,43 @@ public class Empresa {
         return name;
     }
 
+    public String getNome() {
+        return name == null ? null : name.value();
+    }
+
     public String getArea() {
-        return dados.area();
+        return dados == null ? null : dados.area();
     }
 
     public String getRazaoSocial() {
-        return dados.razaoSocial();
+        return dados == null ? null : dados.razaoSocial();
     }
 
     public String getCnpj() {
-        return dados.cnpj();
+        return dados == null ? null : dados.cnpj();
     }
 
     public int getNumeroFuncionarios() {
-        return dados.numeroFuncionarios() == null ? 0 : dados.numeroFuncionarios();
+        return dados == null || dados.numeroFuncionarios() == null ? 0 : dados.numeroFuncionarios();
     }
 
     public String getCep() {
-        return dados.cep();
+        return dados == null ? null : dados.cep();
     }
 
     public String getEndereco() {
-        return dados.endereco();
+        return dados == null ? null : dados.endereco();
     }
 
     public String getCidade() {
-        return dados.cidade();
+        return dados == null ? null : dados.cidade();
     }
 
     public String getEstado() {
-        return dados.estado();
+        return dados == null ? null : dados.estado();
     }
 
     public String getAdminResponsavel() {
-        return dados.adminResponsavel();
+        return dados == null ? null : dados.adminResponsavel();
     }
 }

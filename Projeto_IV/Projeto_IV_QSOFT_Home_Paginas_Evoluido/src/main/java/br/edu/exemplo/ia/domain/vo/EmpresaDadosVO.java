@@ -14,7 +14,11 @@ public record EmpresaDadosVO(
         String estado,
         String adminResponsavel
 ) {
-    public EmpresaDadosVO {
+    /**
+     * Valida os dados. Chamado ao criar a entidade, e não no construtor do record,
+     * porque o Hibernate usa o construtor ao carregar registros já gravados no banco.
+     */
+    public EmpresaDadosVO validar() {
         requireText(area, "Área");
         boolean hasCompanyDetails = razaoSocial != null || cnpj != null || numeroFuncionarios != null
                 || cep != null || endereco != null || cidade != null || estado != null || adminResponsavel != null;
@@ -30,6 +34,7 @@ public record EmpresaDadosVO(
                 throw new IllegalArgumentException("Número de funcionários inválido");
             }
         }
+        return this;
     }
 
     public EmpresaDadosVO(String area) {

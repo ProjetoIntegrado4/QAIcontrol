@@ -13,7 +13,11 @@ public record AdminVO(
         String statusConta,
         String nivelAcesso
 ) {
-    public AdminVO {
+    /**
+     * Valida os dados. Chamado ao criar a entidade, e não no construtor do record,
+     * porque o Hibernate usa o construtor ao carregar registros já gravados no banco.
+     */
+    public AdminVO validar() {
         requireText(nome, "Nome do admin");
         requireText(email, "E-mail do admin");
         requirePositive(telefone, "Telefone do admin");
@@ -21,6 +25,7 @@ public record AdminVO(
         requireText(senhaHash, "Senha do admin");
         requireText(statusConta, "Status da conta do admin");
         requireText(nivelAcesso, "Nível de acesso do admin");
+        return this;
     }
 
     private static void requireText(String value, String field) {

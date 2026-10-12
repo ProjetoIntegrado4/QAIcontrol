@@ -63,8 +63,11 @@ services:
       TEMP_LOGIN_USERNAME: ${TEMP_LOGIN_USERNAME:-admin@qsoft.com}
       TEMP_LOGIN_PASSWORD: ${TEMP_LOGIN_PASSWORD:-Qsoft123!}
       TEMP_LOGIN_NAME: ${TEMP_LOGIN_NAME:-Administrador QSOFT}
+      PRODUTIVIDADE_CSV_DIR: /app/dados/csv
     ports:
       - "8080:8080"
+    volumes:
+      - ./dados/csv:/app/dados/csv:ro
     depends_on:
       - postgres
       - alert-service
@@ -82,6 +85,8 @@ services:
       API_BASE_URL: http://backend:8080
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend/public:/app/public:ro
     depends_on:
       - backend
     networks:

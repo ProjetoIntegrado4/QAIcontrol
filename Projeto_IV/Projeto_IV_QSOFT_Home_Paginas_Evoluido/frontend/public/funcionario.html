@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>QSOFT - Funcionarios</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="./produtividade.css">
 </head>
 <body>
 <nav class="top-nav" aria-label="Navegação principal">
@@ -14,6 +16,7 @@
     <a class="active" href="./funcionario.html">Funcionarios</a>
     <a href="./consumo.html">Consumo de IA</a>
     <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
 </nav>
 
 <h1>Cadastro de Funcionarios</h1>
@@ -26,7 +29,7 @@
         <input id="nome" placeholder="Nome completo" aria-label="Nome completo" autocomplete="name" required>
         <input id="cpf" type="text" placeholder="CPF (000.000.000-00)" aria-label="CPF" inputmode="numeric" maxlength="14" autocomplete="off" required>
         <input id="emailCorporativo" type="email" placeholder="E-mail corporativo" aria-label="E-mail corporativo" autocomplete="email" required>
-        <input id="telefone" type="number" min="1" step="1" placeholder="Telefone" aria-label="Telefone" inputmode="numeric" required>
+        <input id="telefone" type="tel" placeholder="Telefone com DDD ((11) 99999-0000)" aria-label="Telefone com DDD" inputmode="numeric" maxlength="15" autocomplete="tel" required>
         <select id="empresaId" aria-label="Empresa do funcionario" required>
             <option value="">Selecione uma empresa</option>
         </select>
@@ -122,11 +125,12 @@
         gestorSelect.disabled = !empresaSelect.value;
         if (!empresaSelect.value) return;
 
-        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaSelect.value)}`));
-        for (const funcionario of funcionarios) {
+        // O gestor responsável é escolhido entre os admins da empresa selecionada.
+        const admins = await lerResposta(await fetch(`/api/admin?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        for (const admin of admins) {
             const option = document.createElement('option');
-            option.value = funcionario.id;
-            option.textContent = funcionario.nome;
+            option.value = admin.id;
+            option.textContent = admin.cargo ? `${admin.nome} (${admin.cargo})` : admin.nome;
             gestorSelect.appendChild(option);
         }
     }
@@ -136,7 +140,7 @@
             const nome = document.getElementById('nome').value.trim();
             const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
             const emailCorporativo = document.getElementById('emailCorporativo').value.trim();
-            const telefone = Number(document.getElementById('telefone').value);
+            const telefone = Number(document.getElementById('telefone').value.replace(/\D/g, ''));
             const empresaId = empresaSelect.value;
             const cargo = document.getElementById('cargo').value.trim();
             const setor = document.getElementById('setor').value.trim();
@@ -150,6 +154,9 @@
 
             if (cpf.length !== 11) {
                 throw new Error('O CPF precisa ter 11 dígitos.');
+            }
+            if (String(telefone).length < 10 || String(telefone).length > 11) {
+                throw new Error('O telefone precisa ter DDD e 10 ou 11 dígitos.');
             }
 
             const funcionario = await lerResposta(await fetch('/api/funcionario', {

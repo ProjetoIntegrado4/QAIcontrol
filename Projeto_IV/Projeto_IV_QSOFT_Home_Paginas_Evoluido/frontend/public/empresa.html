@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>QSOFT - Empresas</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="./produtividade.css">
 </head>
 <body>
 <nav class="top-nav" aria-label="Navegação principal">
@@ -14,6 +16,7 @@
     <a href="./funcionario.html">Funcionarios</a>
     <a href="./consumo.html">Consumo de IA</a>
     <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
 </nav>
 
 <h1>Cadastro de Empresas</h1>
@@ -24,12 +27,12 @@
     <div class="form-row">
         <input id="nome" placeholder="Nome fantasia" aria-label="Nome fantasia" autocomplete="organization" required>
         <input id="razaoSocial" placeholder="Razão social" aria-label="Razão social" required>
-        <input id="cnpj" placeholder="CNPJ" aria-label="CNPJ" inputmode="numeric" required>
+        <input id="cnpj" placeholder="CNPJ (00.000.000/0000-00)" aria-label="CNPJ" inputmode="numeric" maxlength="18" required>
         <input id="numeroFuncionarios" type="number" min="0" step="1" placeholder="Número de funcionários" aria-label="Número de funcionários" required>
-        <input id="cep" placeholder="CEP" aria-label="CEP" autocomplete="postal-code" required>
+        <input id="cep" placeholder="CEP (00000-000)" aria-label="CEP" inputmode="numeric" maxlength="9" autocomplete="postal-code" required>
         <input id="endereco" placeholder="Endereço" aria-label="Endereço" autocomplete="street-address" required>
         <input id="cidade" placeholder="Cidade" aria-label="Cidade" autocomplete="address-level2" required>
-        <input id="estado" placeholder="Estado" aria-label="Estado" autocomplete="address-level1" required>
+        <input id="estado" placeholder="UF (ex.: SP)" aria-label="Estado (UF)" maxlength="2" autocomplete="address-level1" required>
         <input id="adminResponsavel" placeholder="Nome do admin responsável" aria-label="Nome do admin responsável" autocomplete="name" required>
         <input id="area" placeholder="Área de atuação" aria-label="Área de atuação" required>
         <button type="button" onclick="criarEmpresa()">Cadastrar empresa</button>

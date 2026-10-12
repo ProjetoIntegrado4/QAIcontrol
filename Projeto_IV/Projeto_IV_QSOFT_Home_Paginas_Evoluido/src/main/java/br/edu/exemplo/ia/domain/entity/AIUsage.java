@@ -42,13 +42,13 @@ public class AIUsage {
         }
         this.id = UUID.randomUUID();
         this.empresaId = empresaId;
-        this.dados = dados;
+        this.dados = dados.validar();
         this.occurredAt = Instant.now();
     }
 
     public UUID getId() { return id; }
     public UUID getEmpresaId() { return empresaId; }
-    public long getTokens() { return dados.tokens(); }
-    public String getModel() { return dados.model(); }
+    public long getTokens() { return dados == null ? null : dados.tokens(); }
+    public String getModel() { return dados == null ? null : dados.model(); }
     public Instant getOccurredAt() { return occurredAt; }
 }
