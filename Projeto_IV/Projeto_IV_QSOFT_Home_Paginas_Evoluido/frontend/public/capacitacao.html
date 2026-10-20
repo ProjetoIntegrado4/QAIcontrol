@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Capacitações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="Estilo.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a class="active" href="./capacitacao.html">Capacitações</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
+</nav>
+
+<h1>Capacitações em IA</h1>
+<p>Registre os cursos e certificações em IA concluídos pelo colaborador. Cada registro soma pontos de AI Literacy
+    no perfil dele.</p>
+
+<section>
+    <h2>Colaborador</h2>
+    <div class="form-row">
+        <select id="empresaId" aria-label="Empresa do colaborador" required>
+            <option value="">Selecione uma empresa</option>
+        </select>
+        <select id="funcionarioId" aria-label="Colaborador" disabled required>
+            <option value="">Selecione o colaborador</option>
+        </select>
+    </div>
+</section>
+
+<section aria-label="Resumo de AI Literacy do colaborador">
+    <div class="metric-grid">
+        <div class="metric-card"><span>Pontos de AI Literacy</span><strong id="resumoPontos">-</strong></div>
+        <div class="metric-card"><span>Registros</span><strong id="resumoTotal">-</strong></div>
+        <div class="metric-card"><span>Cursos</span><strong id="resumoCursos">-</strong></div>
+        <div class="metric-card"><span>Certificações</span><strong id="resumoCertificacoes">-</strong></div>
+    </div>
+</section>
+
+<section>
+    <h2>Nova capacitação</h2>
+    <div class="form-row">
+        <div class="ctl">
+            <label for="nome">Curso ou certificação</label>
+            <input id="nome" placeholder="Ex.: Fundamentos de IA Generativa" maxlength="150" required>
+        </div>
+        <div class="ctl">
+            <label for="instituicao">Instituição</label>
+            <input id="instituicao" placeholder="Ex.: Alura, AWS, Google" maxlength="150" required>
+        </div>
+        <div class="ctl">
+            <label for="dataConclusao">Data de conclusão</label>
+            <input id="dataConclusao" type="date" required>
+        </div>
+        <div class="ctl">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" required>
+                <option value="CURSO">Curso</option>
+                <option value="CERTIFICACAO">Certificação</option>
+            </select>
+        </div>
+        <button type="button" id="salvar" onclick="salvarCapacitacao()">Salvar</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+</section>
+
+<section>
+    <div class="section-heading">
+        <h2>Histórico de capacitações</h2>
+        <button type="button" class="secondary-button" onclick="carregarHistorico()">Atualizar lista</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Curso/certificação</th>
+                <th>Tipo</th>
+                <th>Instituição</th>
+                <th>Data de conclusão</th>
+                <th>Pontos</th>
+                <th>Registrado em</th>
+            </tr>
+            </thead>
+            <tbody id="listaCapacitacoes">
+            <tr><td colspan="6">Selecione um colaborador para ver o histórico.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    const mensagem = document.getElementById('mensagem');
+    const empresaSelect = document.getElementById('empresaId');
+    const funcionarioSelect = document.getElementById('funcionarioId');
+    const lista = document.getElementById('listaCapacitacoes');
+    const dataInput = document.getElementById('dataConclusao');
+
+    // Não deixa escolher data futura no calendário (o backend também valida).
+    dataInput.max = new Date().toLocaleDateString('en-CA');
+
+    function mostrarMensagem(texto, tipo) {
+        mensagem.textContent = texto;
+        mensagem.classList.remove('erro', 'sucesso');
+        if (tipo) mensagem.classList.add(tipo);
+    }
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    function formatarData(valor) {
+        if (!valor) return '';
+        const [ano, mes, dia] = valor.substring(0, 10).split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    async function carregarEmpresas() {
+        const empresas = await lerResposta(await fetch('/api/empresa'));
+        empresaSelect.innerHTML = '<option value="">Selecione uma empresa</option>';
+        for (const empresa of empresas) {
+            const option = document.createElement('option');
+            option.value = empresa.id;
+            option.textContent = `${empresa.name} (${empresa.area})`;
+            empresaSelect.appendChild(option);
+        }
+    }
+
+    async function carregarFuncionarios() {
+        funcionarioSelect.innerHTML = '<option value="">Selecione o colaborador</option>';
+        funcionarioSelect.disabled = !empresaSelect.value;
+        limparPerfil();
+        if (!empresaSelect.value) return;
+
+        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        for (const funcionario of funcionarios) {
+            const option = document.createElement('option');
+            option.value = funcionario.id;
+            option.textContent = funcionario.cargo ? `${funcionario.nome} (${funcionario.cargo})` : funcionario.nome;
+            funcionarioSelect.appendChild(option);
+        }
+    }
+
+    function limparPerfil() {
+        for (const id of ['resumoPontos', 'resumoTotal', 'resumoCursos', 'resumoCertificacoes']) {
+            document.getElementById(id).textContent = '-';
+        }
+        lista.innerHTML = '<tr><td colspan="6">Selecione um colaborador para ver o histórico.</td></tr>';
+    }
+
+    async function carregarResumo() {
+        const resumo = await lerResposta(await fetch(`/api/certificacao/resumo?funcionarioId=${encodeURIComponent(funcionarioSelect.value)}`));
+        document.getElementById('resumoPontos').textContent = resumo.pontosAiLiteracy;
+        document.getElementById('resumoTotal').textContent = resumo.totalRegistros;
+        document.getElementById('resumoCursos').textContent = resumo.totalCursos;
+        document.getElementById('resumoCertificacoes').textContent = resumo.totalCertificacoes;
+    }
+
+    async function carregarHistorico() {
+        try {
+            if (!funcionarioSelect.value) {
+                limparPerfil();
+                return;
+            }
+            const certificacoes = await lerResposta(await fetch(`/api/certificacao?funcionarioId=${encodeURIComponent(funcionarioSelect.value)}`));
+            lista.innerHTML = '';
+
+            if (!certificacoes.length) {
+                lista.innerHTML = '<tr><td colspan="6">Nenhuma capacitação registrada para este colaborador.</td></tr>';
+            }
+
+            for (const certificacao of certificacoes) {
+                const tr = document.createElement('tr');
+                const values = [
+                    certificacao.nome,
+                    certificacao.tipo === 'CERTIFICACAO' ? 'Certificação' : 'Curso',
+                    certificacao.instituicao,
+                    formatarData(certificacao.dataConclusao),
+                    certificacao.pontos,
+                    new Date(certificacao.dataCriacao).toLocaleDateString('pt-BR')
+                ];
+                for (const value of values) {
+                    const cell = document.createElement('td');
+                    cell.textContent = value ?? '';
+                    tr.appendChild(cell);
+                }
+                lista.appendChild(tr);
+            }
+            await carregarResumo();
+        } catch (e) {
+            mostrarMensagem(e.message, 'erro');
+        }
+    }
+
+    async function salvarCapacitacao() {
+        try {
+            const funcionarioId = funcionarioSelect.value;
+            const nome = document.getElementById('nome').value.trim();
+            const instituicao = document.getElementById('instituicao').value.trim();
+            const dataConclusao = dataInput.value;
+            const tipo = document.getElementById('tipo').value;
+
+            if (!funcionarioId) throw new Error('Selecione o colaborador');
+            if (!nome) throw new Error('Nome do curso/certificação obrigatório');
+            if (!instituicao) throw new Error('Instituição obrigatória');
+            if (!dataConclusao) throw new Error('Data de conclusão obrigatória');
+
+            const certificacao = await lerResposta(await fetch('/api/certificacao', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    funcionarioId, empresaId: empresaSelect.value, nome, instituicao, dataConclusao, tipo
+                })
+            }));
+
+            mostrarMensagem(`"${certificacao.nome}" registrado com sucesso (+${certificacao.pontos} pontos de AI Literacy).`, 'sucesso');
+            for (const id of ['nome', 'instituicao', 'dataConclusao']) {
+                document.getElementById(id).value = '';
+            }
+            await carregarHistorico();
+        } catch (e) {
+            mostrarMensagem(e.message, 'erro');
+        }
+    }
+
+    empresaSelect.addEventListener('change', () => {
+        mostrarMensagem('');
+        carregarFuncionarios().catch(e => mostrarMensagem(e.message, 'erro'));
+    });
+    funcionarioSelect.addEventListener('change', () => {
+        mostrarMensagem('');
+        carregarHistorico();
+    });
+
+    carregarEmpresas().catch(e => mostrarMensagem(e.message, 'erro'));
+</script>
+<script src="./auth.js"></script>
+</body>
+</html>
