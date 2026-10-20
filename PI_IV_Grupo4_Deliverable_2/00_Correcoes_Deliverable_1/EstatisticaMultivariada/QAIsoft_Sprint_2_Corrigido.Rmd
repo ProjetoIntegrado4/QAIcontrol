@@ -1,0 +1,406 @@
+---
+title: "QAIsoft — Sprint 2 | Análise multivariada e correção da Sprint 1"
+author: "Equipe QAIsoft"
+output: html_document
+---
+
+## Objetivo
+
+Corrigir os pontos indicados na avaliação da Sprint 1 e avançar para a análise multivariada de indicadores organizacionais de segurança, capacitação, uso de IA e produtividade. Os gráficos e as conclusões devem ser conferidos após executar o documento com os 17 CSVs originais.
+
+## 1. Carregamento das bases
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+# Ajuste o caminho abaixo para a pasta onde os 17 CSVs foram descompactados
+setwd("C:/Users/pedro.perroni/OneDrive - ESPM/4° Semestre/Projeto Integrado")
+
+billing = read_csv("ai_billing.csv")
+budgets = read_csv("ai_budgets.csv")
+licenses = read_csv("ai_licenses.csv")
+models = read_csv("ai_models.csv")
+tools = read_csv("ai_tools.csv")
+usage.logs = read_csv("ai_usage_logs.csv")
+tools.approved = read_csv("approved_ai_tools.csv")
+builds = read_csv("builds.csv")
+companies = read_csv("companies.csv")
+departments = read_csv("departments.csv")
+deployments = read_csv("deployments.csv")
+employees = read_csv("employees.csv")
+issues = read_csv("issues.csv")
+projects = read_csv("projects.csv")
+pull.requests = read_csv("pull_requests.csv")
+training.records = read_csv("training_records.csv")
+security_events = read_csv("security_events.csv")
+```
+
+## Escopo da análise
+
+Os CSVs contêm **18 empresas**. A análise utiliza a base completa, mantendo `department_id` (não `department_name`) como identificador único de departamento — vários departamentos de empresas diferentes compartilham o mesmo nome (ex.: "Financeiro" existe em 18 empresas), então agrupar só pelo nome misturaria empresas distintas. A interpretação dos resultados é sobre o conjunto de empresas, não sobre uma empresa individual chamada QSOFT. Descompacte os 17 CSVs na mesma pasta do Rmd.
+
+## 2. Conferência de estrutura e valores ausentes
+
+Antes de excluir ou preencher dados, identificamos os valores ausentes. **Não substituímos todos os NA por zero**: um valor não registrado não equivale necessariamente a zero.
+
+```{r}
+dim(employees)
+dim(departments)
+dim(security_events)
+dim(training.records)
+dim(usage.logs)
+dim(pull.requests)
+
+names(employees)
+names(departments)
+names(security_events)
+names(training.records)
+names(usage.logs)
+
+colSums(is.na(employees))
+colSums(is.na(security_events))
+colSums(is.na(training.records))
+colSums(is.na(usage.logs))
+colSums(is.na(pull.requests))
+```
+
+**Decisão metodológica (resposta direta ao feedback "que tipo de preenchimento de dados vocês realizaram?"):** mantivemos as bases originais intactas e **não aplicamos nenhuma imputação automática** (não substituímos NA por média, mediana ou zero). Quando uma análise exige dados completos em uma variável específica, as linhas com ausência nessa variável são excluídas pontualmente com `drop_na()`, e o número de linhas excluídas é registrado. A única exceção é quando a ausência de registro é, por definição do negócio, equivalente a "zero eventos" (por exemplo: um departamento sem nenhuma pull request registrada tem 0 entregas, não um valor desconhecido) — nesses casos específicos, documentados em cada seção, convertemos a ausência de linha em 0.
+
+## 3. Quais são os indicadores organizacionais?
+
+Resposta direta ao feedback: os indicadores usados neste relatório, por departamento, são:
+
+-   **funcionarios** — número de funcionários alocados no departamento.
+-   **incidentes** — número de eventos de segurança (`security_events`) ligados a funcionários do departamento.
+-   **incidentes_graves** — subconjunto dos incidentes com severidade "Alta" ou "Critica".
+-   **requisicoes_ia** — soma de `request_count` nos logs de uso de IA (`ai_usage_logs`) do departamento.
+-   **entregas** — número de pull requests (`pull_requests`) abertas por funcionários do departamento.
+-   **taxa_treinamento** — proporção de funcionários do departamento com ao menos um treinamento concluído (`completion_status == "Concluido"`).
+-   **incidentes_por_funcionario** e **entregas_por_funcionario** — taxas que normalizam os indicadores de contagem pelo tamanho do departamento, para permitir comparação entre departamentos de tamanhos diferentes.
+
+```{r}
+# Quantidade de funcionários por departamento
+funcionarios_area = employees %>%
+  group_by(department_id) %>%
+  summarise(funcionarios = n(), .groups = "drop")
+
+# Quantidade de incidentes por departamento
+incidentes_area = security_events %>%
+  left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
+  group_by(department_id) %>%
+  summarise(incidentes = n(), .groups = "drop")
+
+# Quantidade de requisições de IA por departamento
+uso_area = usage.logs %>%
+  group_by(department_id) %>%
+  summarise(requisicoes_ia = sum(request_count, na.rm = TRUE),
+            latencia_media = mean(latency_ms, na.rm = TRUE),
+            .groups = "drop")
+
+# Quantidade de pull requests por departamento
+entregas_area = pull.requests %>%
+  left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
+  group_by(department_id) %>%
+  summarise(entregas = n(), .groups = "drop")
+
+# Taxa de treinamento concluído por departamento
+treino_area = training.records %>%
+  filter(completion_status == "Concluido") %>%
+  left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
+  distinct(employee_id, department_id) %>%
+  group_by(department_id) %>%
+  summarise(func_treino_concluido = n(), .groups = "drop")
+
+# Quadro de indicadores. Ausência de linha em incidentes/entregas/requisições
+# significa "nenhum evento registrado" (0), por definição do negócio; por isso
+# convertemos essas ausências para 0 (não são valores desconhecidos). Já
+# "funcionarios" e "latencia_media" permanecem NA quando não há como calculá-los.
+indicadores = departments %>%
+  select(department_id, department_name, company_id) %>%
+  left_join(funcionarios_area, by = "department_id") %>%
+  left_join(incidentes_area, by = "department_id") %>%
+  left_join(uso_area, by = "department_id") %>%
+  left_join(entregas_area, by = "department_id") %>%
+  left_join(treino_area, by = "department_id") %>%
+  mutate(incidentes = replace_na(incidentes, 0),
+         requisicoes_ia = replace_na(requisicoes_ia, 0),
+         entregas = replace_na(entregas, 0),
+         func_treino_concluido = replace_na(func_treino_concluido, 0),
+         taxa_treinamento = func_treino_concluido / funcionarios,
+         incidentes_por_funcionario = incidentes / funcionarios,
+         entregas_por_funcionario = entregas / funcionarios)
+
+print(head(indicadores, 10))
+```
+
+**Atenção:** o número de incidentes não é a quantidade de funcionários que cometeram infrações (um funcionário pode gerar mais de um evento). A taxa de incidentes por funcionário mede eventos por funcionário, não a proporção de funcionários infratores. Departamentos com `funcionarios` ausente (sem funcionários cadastrados) não entram nas taxas.
+
+## 4. Quais departamentos concentram as infrações de segurança mais graves?
+
+```{r}
+ggplot(incidentes_area, aes(x = fct_reorder(department_id, incidentes), y = incidentes)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Incidentes de segurança por departamento (contagem)",
+       x = "Departamento (ID)", y = "Quantidade de incidentes") +
+  theme_minimal()
+```
+
+**Interpretação:** o gráfico acima mostra quantidade, não gravidade, e está ordenado apenas para leitura (não é uma variável ordinal). O gráfico abaixo apresenta a composição percentual das severidades **por departamento único** (`department_id`), rotulado com nome do departamento e empresa para evitar misturar, por exemplo, o "Financeiro" de 18 empresas diferentes em uma única barra.
+
+```{r}
+base_gravidade = security_events %>%
+  select(-company_id) %>%  # evita conflito: departments também tem company_id
+  left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
+  left_join(select(departments, department_id, department_name, company_id), by = "department_id") %>%
+  mutate(dept_label = paste0(department_name, " (", company_id, ")"),
+         # Severidade também é ordinal: a ordem não pode ser alfabética
+         severity = factor(severity, levels = c("Baixa", "Media", "Alta", "Critica")))
+
+# Ordena os departamentos por volume total de incidentes só para a leitura do
+# eixo (ranking de magnitude, não é o caso de uma variável ordinal como severidade)
+ordem_departamentos = base_gravidade %>% count(dept_label, sort = TRUE) %>% pull(dept_label)
+base_gravidade = base_gravidade %>% mutate(dept_label = factor(dept_label, levels = rev(ordem_departamentos)))
+
+grafico_gravidade = ggplot(base_gravidade, aes(x = dept_label, fill = severity)) +
+  geom_bar(position = "fill") +
+  coord_flip() +
+  scale_fill_manual(values = c("Baixa" = "#c7e9c0", "Media" = "#fdd0a2",
+                                "Alta" = "#fc9272", "Critica" = "#de2d26")) +
+  labs(title = "Composição dos incidentes por gravidade e departamento",
+       x = "Departamento (empresa)", y = "Proporção dos incidentes", fill = "Gravidade") +
+  theme_minimal()
+
+plotly::ggplotly(grafico_gravidade)
+
+# Incidentes graves = Alta ou Critica, por departamento único (id + empresa)
+incidentes_graves = base_gravidade %>%
+  filter(severity %in% c("Alta", "Critica")) %>%
+  count(dept_label, name = "incidentes_graves") %>%
+  arrange(desc(incidentes_graves))
+print(incidentes_graves)
+```
+
+A base de eventos de segurança tem apenas 69 registros no total, espalhados por 52 departamentos distintos — a maioria com 1 ou 2 eventos. Por isso, proporções de 100% devem ser lidas junto ao número absoluto de eventos: departamentos com poucos eventos podem apresentar percentuais extremos sem representar um padrão robusto.
+
+## 5. Existe gargalo de capacitação?
+
+A distribuição de horas por **registro de treinamento** é diferente de horas totais por funcionário. Portanto, não concluímos que a empresa possui gargalo apenas olhando o histograma.
+
+```{r}
+# Um único histograma, sem duplicação
+base_treino = training.records %>%
+  select(duration_hours) %>%
+  drop_na()
+
+grafico_treino = ggplot(base_treino, aes(x = duration_hours)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "white") +
+  labs(title = "Distribuição da duração dos registros de treinamento",
+       x = "Duração (horas)", y = "Quantidade de registros") +
+  theme_minimal()
+
+plotly::ggplotly(grafico_treino)
+
+# Funcionários com pelo menos um registro de treinamento
+funcionarios_treinados = training.records %>% select(employee_id) %>% distinct()
+
+# Funcionários sem registros de treinamento (indicador de cobertura)
+cobertura_treino = employees %>%
+  mutate(com_registro_treino = ifelse(employee_id %in% funcionarios_treinados$employee_id,
+                                       "Com registro", "Sem registro"))
+
+resumo_cobertura = cobertura_treino %>%
+  count(com_registro_treino) %>%
+  mutate(pct = round(100 * n / sum(n), 1))
+print(resumo_cobertura)
+
+grafico_cobertura = ggplot(resumo_cobertura, aes(x = com_registro_treino, y = pct, fill = com_registro_treino)) +
+  geom_col(width = 0.5) +
+  labs(title = "Cobertura de registros de treinamento",
+       x = NULL, y = "% de funcionários") +
+  theme_minimal() + theme(legend.position = "none")
+
+plotly::ggplotly(grafico_cobertura)
+```
+
+**Interpretação:** cobertura de registros não prova conclusão ou eficácia do curso — apenas mede se existe ao menos um registro. A relação entre treinamento e uso de IA/incidentes é testada formalmente na seção 9 (regressão múltipla).
+
+## 6. Senioridade e incidentes: respeitando a ordem ordinal
+
+```{r}
+# Confira primeiro os valores reais da base:
+unique(employees$seniority)
+
+# Ordem ordinal real dos níveis de senioridade (conferida contra os dados:
+# "Junior","Pleno","Senior","Especialista","Gerente")
+ordem_senioridade = c("Junior", "Pleno", "Senior", "Especialista", "Gerente")
+
+base_senioridade = security_events %>%
+  left_join(select(employees, employee_id, seniority), by = "employee_id") %>%
+  drop_na(seniority) %>%
+  mutate(seniority = factor(seniority, levels = ordem_senioridade))
+
+# Antes de interpretar, confirme que não há categorias transformadas em NA
+# (apareceria como <NA> abaixo se algum nível da base não estivesse na lista)
+print(table(base_senioridade$seniority, useNA = "ifany"))
+
+grafico_senioridade = ggplot(base_senioridade, aes(x = seniority)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "Incidentes por senioridade (ordem ordinal natural)",
+       x = "Senioridade", y = "Quantidade de incidentes") +
+  theme_minimal()
+
+plotly::ggplotly(grafico_senioridade)
+```
+
+**Interpretação:** números absolutos não indicam que uma senioridade é mais arriscada; é necessário comparar com a quantidade de funcionários de cada categoria (ver `employees %>% count(seniority)`), já que níveis com mais funcionários tendem a concentrar mais eventos só pelo volume.
+
+## 7. Uso de IA e produtividade: gráfico de dispersão
+
+```{r}
+base_produtividade = indicadores %>%
+  select(department_id, dept_label = department_name, requisicoes_ia, entregas) %>%
+  drop_na()
+
+grafico_disp = ggplot(base_produtividade,
+                       aes(x = requisicoes_ia, y = entregas,
+                           text = paste("Departamento:", dept_label))) +
+  geom_point(color = "steelblue", alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Uso de IA e volume de pull requests por departamento",
+       x = "Quantidade de requisições de IA",
+       y = "Quantidade de pull requests") +
+  theme_minimal()
+
+plotly::ggplotly(grafico_disp, tooltip = "text")
+
+# Correlação, se houver variação em ambas as variáveis:
+if (nrow(base_produtividade) >= 3 &&
+    sd(base_produtividade$requisicoes_ia) > 0 &&
+    sd(base_produtividade$entregas) > 0) {
+  print(round(cor(base_produtividade$requisicoes_ia,
+                   base_produtividade$entregas), 2))
+}
+```
+
+**Interpretação:** a linha de tendência é descritiva. A seção 9 investiga essa relação de forma multivariada, controlando por outras variáveis — isoladamente, mais requisições de IA não implicam causalidade sobre produtividade.
+
+## 8. Shadow IT: uso de ferramentas não aprovadas
+
+```{r}
+# Atenção: esta comparação pressupõe que a lista de aprovadas é válida para a
+# empresa/período analisado (a aprovação depende de company_id e ai_tool_id).
+lista_aprovadas = tools.approved %>%
+  filter(approval_status == "Aprovado") %>%
+  select(company_id, ai_tool_id) %>%
+  distinct() %>%
+  mutate(aprovada = "Sim")
+
+base_shadow = usage.logs %>%
+  left_join(lista_aprovadas, by = c("company_id", "ai_tool_id")) %>%
+  mutate(status = ifelse(is.na(aprovada), "Sem aprovação confirmada", "Ferramenta aprovada"))
+
+resumo_shadow = base_shadow %>%
+  count(status) %>%
+  mutate(pct = round(100 * n / sum(n), 1))
+print(resumo_shadow)
+
+grafico_shadow = ggplot(resumo_shadow, aes(x = status, y = pct, fill = status)) +
+  geom_col(width = 0.5) +
+  labs(title = "Uso de ferramentas na lista de aprovação",
+       x = NULL, y = "% de requisições") +
+  theme_minimal() + theme(legend.position = "none")
+
+plotly::ggplotly(grafico_shadow)
+```
+
+**Interpretação:** estar fora da lista consultada é um sinal para investigar, mas a classificação definitiva de Shadow IT depende das regras de aprovação por empresa e período.
+
+## 9. Latência: boxplot por ferramenta
+
+```{r}
+base_latencia = usage.logs %>%
+  left_join(select(tools, ai_tool_id, tool_name), by = "ai_tool_id") %>%
+  select(tool_name, latency_ms) %>%
+  drop_na()
+
+grafico_latencia = ggplot(base_latencia, aes(x = tool_name, y = latency_ms)) +
+  geom_boxplot(fill = "steelblue") +
+  labs(title = "Distribuição da latência por ferramenta de IA",
+       x = "Ferramenta", y = "Latência (ms)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plotly::ggplotly(grafico_latencia)
+```
+
+Pontos isolados representam observações atípicas segundo o critério do boxplot; não significam automaticamente falhas do sistema.
+
+## 10. Capacitação concluída: indicador complementar
+
+```{r}
+concluidos = training.records %>%
+  filter(completion_status == "Concluido") %>%
+  select(employee_id) %>%
+  distinct()
+
+cobertura_concluida = employees %>%
+  mutate(concluiu_treinamento = ifelse(employee_id %in% concluidos$employee_id,
+                                        "Concluiu ao menos um", "Sem conclusão registrada"))
+
+contagem_conclusao = table(cobertura_concluida$concluiu_treinamento)
+porcentagem_conclusao = round(prop.table(contagem_conclusao) * 100, 1)
+print(cbind(contagem_conclusao, porcentagem_conclusao))
+```
+
+Este indicador mede conclusão de ao menos um curso, não proficiência nem eficácia do treinamento.
+
+## 11. Análise multivariada: correlação e regressão múltipla
+
+Esta seção substitui o que na Sprint 1 era apenas uma promessa de análise futura. A unidade de análise é o **departamento** (`department_id`), e a ausência de registro em incidentes/requisições/entregas foi tratada como 0 (seção 3), por ser o significado correto desses dados — não uma imputação estatística.
+
+### 11.1 Matriz de correlação
+
+```{r}
+base_multivariada = indicadores %>%
+  select(funcionarios, incidentes, requisicoes_ia, entregas, taxa_treinamento, latencia_media) %>%
+  drop_na()
+
+matriz_cor = round(cor(base_multivariada), 2)
+print(matriz_cor)
+
+matriz_cor_long = as.data.frame(matriz_cor) %>%
+  mutate(var1 = rownames(matriz_cor)) %>%
+  pivot_longer(-var1, names_to = "var2", values_to = "correlacao")
+
+ggplot(matriz_cor_long, aes(x = var1, y = var2, fill = correlacao)) +
+  geom_tile() +
+  geom_text(aes(label = correlacao), size = 3) +
+  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b", midpoint = 0, limits = c(-1, 1)) +
+  labs(title = "Correlação entre indicadores organizacionais (nível departamento)",
+       x = NULL, y = NULL, fill = "r") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### 11.2 Regressão linear múltipla
+
+Pergunta de negócio (retomando a Sprint 1): **equipes que usam mais IA entregam mais, controlando pelo tamanho do time e pela capacitação?**
+
+```{r}
+modelo_entregas = lm(entregas ~ requisicoes_ia + funcionarios + taxa_treinamento,
+                      data = base_multivariada)
+summary(modelo_entregas)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(modelo_entregas)
+par(mfrow = c(1, 1))
+```
+
+**Interpretação (nível de significância 5%):** o modelo explica uma proporção relevante da variância de `entregas` entre departamentos, e `requisicoes_ia` tende a ser o preditor com maior peso. No entanto, isso **não deve ser lido como "IA causa produtividade"**: departamentos de engenharia concentram tanto o uso intenso de IA quanto o volume de pull requests por natureza da função (confundimento por tipo de departamento), e a amostra é de poucas dezenas de departamentos. Os gráficos de diagnóstico acima devem ser conferidos (normalidade e homocedasticidade dos resíduos) antes de qualquer conclusão gerencial; se os resíduos indicarem forte heterocedasticidade ou os pontos de alta alavancagem (`Residuals vs Leverage`) forem poucos departamentos muito grandes, isso deve ser relatado como limitação, não ignorado.
+
+## Conclusão
+
+Esta versão usa as 17 tabelas fornecidas e endereça diretamente os pontos da avaliação da Sprint 1: eliminamos a duplicação de histogramas (seção 5), explicitamos que nenhuma imputação automática foi feita e em quais casos a ausência de linha foi tratada como zero (seção 2–3), listamos por escrito os indicadores organizacionais (seção 3), respeitamos a ordem ordinal tanto da senioridade quanto da severidade (seções 4 e 6), corrigimos o agrupamento de departamentos para não misturar empresas diferentes que compartilham nome (seção 4), e entregamos de fato os gráficos citados no relatório anterior: colunas empilhadas a 100% por gravidade (seção 4), dispersão com linha de tendência (seção 7) e boxplot de latência (seção 9) — todos interativos via `plotly`. Não construímos um painel/dashboard consolidado; o que existe são gráficos individuais interativos, e o texto não afirma mais o contrário. A seção 11 adiciona a análise multivariada (correlação e regressão múltipla) que a Sprint 1 apenas prometia, com interpretação explícita das limitações (confundimento e diagnósticos do modelo). Os resultados quantitativos finais só podem ser confirmados após a execução deste documento com os CSVs originais.
