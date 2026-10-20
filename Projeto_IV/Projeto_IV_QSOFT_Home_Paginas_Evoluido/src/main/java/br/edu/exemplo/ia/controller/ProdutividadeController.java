@@ -1,6 +1,6 @@
 package br.edu.exemplo.ia.controller;
 
-import br.edu.exemplo.ia.service.ProdutividadeUseCase;
+import br.edu.exemplo.ia.service.produtividade.ProdutividadeUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;

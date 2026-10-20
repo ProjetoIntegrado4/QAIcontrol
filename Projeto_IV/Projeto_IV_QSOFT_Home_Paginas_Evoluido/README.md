@@ -107,15 +107,34 @@ Assim, o exemplo não é apenas um reverse proxy: há uma operação genuinament
 ## Painel de Produtividade de IA
 
 Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em
-`GET /api/produtividade/resumo` e `GET /api/produtividade/empresas/{id}` (`ALL` para todas as empresas),
-que consultam no PostgreSQL as tabelas da base de uso de IA (`ai_usage_logs`, `employees`, `departments`,
-`ai_billing`, `ai_budgets`, `ai_licenses`, `approved_ai_tools`, `ai_tools`, `training_records`,
-`security_events`, `projects`, `pull_requests`, `builds`, `deployments`) no schema `public`.
+`GET /api/produtividade/resumo` e `GET /api/produtividade/empresas/{id}` (`ALL` para todas as empresas).
 
-- Na primeira subida, se uma dessas tabelas não existir ou estiver vazia, o backend cria a tabela e importa
-  o CSV correspondente de `dados/csv` (variável `PRODUTIVIDADE_CSV_DIR`). Tabelas que já têm dados não são alteradas.
-- Cada carga da página consulta o banco: registros novos inseridos nessas tabelas aparecem ao clicar em "Atualizar dados".
-- `ai_billing.total_cost` é somado como valor em reais.
+**Mapeamento do banco (`src/main/resources/produtividade.yml`).** As consultas usam nomes lógicos
+(`${uso}`, `${uso.funcionario}`); o arquivo diz qual tabela e coluna física corresponde a cada um, quais
+valores de status contam (ex.: `uso-sucesso: [success]`), o schema, a janela "recente" em dias e o tamanho
+do ranking. Se o banco mudar de nomes ou de valores, ajuste só esse arquivo.
+
+**Seções independentes.** Cada bloco do painel é uma classe em `service/produtividade/secao` que implementa
+`SecaoPainel` e declara as tabelas/colunas de que precisa. Antes de calcular, o backend confere no
+`information_schema` se elas existem: o que faltar vem nulo no JSON, com o motivo em `indisponiveis`, e a
+página esconde o bloco e cita o motivo no rodapé. As seções rodam em paralelo.
+
+Para acrescentar uma análise:
+1. mapeie as tabelas novas em `produtividade.yml`;
+2. crie as consultas em `repository/produtividade/<Nome>Consultas.java` usando `ConsultaPainel`;
+3. crie `service/produtividade/secao/<Nome>Secao.java` (`@Component`, `@Order`) implementando `SecaoPainel`;
+4. no frontend, crie `frontend/public/js/produtividade/secoes/<nome>.js`, registre em `SECOES` (`main.js`)
+   e marque o HTML com `data-secao="<chave>"`.
+
+**Importação de CSV.** Na subida, cada `*.csv` de `dados/csv` (variável `PRODUTIVIDADE_CSV_DIR`) vira a
+tabela de mesmo nome, se ela não existir ou estiver vazia. Os tipos das colunas são deduzidos dos valores, a
+primeira coluna `_id` com valores únicos vira chave primária e as demais `_id` ganham índice. Tabelas que já
+têm dados não são alteradas. Cada carga da página consulta o banco: registros novos aparecem ao clicar em
+"Atualizar dados".
+
+**Frontend.** O HTML só tem a estrutura; o JavaScript fica em `frontend/public/js/produtividade`
+(`main.js`, `api.js`, `formato.js`, `componentes/` com gráficos e tabelas, `secoes/` com um módulo por bloco)
+e o estilo em `frontend/public/Estilo.css`.
 
 ## Testes automatizados e cobertura
 

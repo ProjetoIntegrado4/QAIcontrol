@@ -1,6 +1,6 @@
 package br.edu.exemplo.ia.controller;
 
-import br.edu.exemplo.ia.service.ProdutividadeUseCase;
+import br.edu.exemplo.ia.service.produtividade.ProdutividadeUseCase;
 import br.edu.exemplo.ia.service.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -25,6 +25,7 @@
   --good-ink: #4cc94c; --crit-ink: #ef7b7b; --warn-ink: #f2c25a; color-scheme: dark }
 
 * { box-sizing: border-box }
+[hidden] { display: none !important }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body); padding-inline: 16px; padding-block: 0 48px }
 .wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 28px }
 h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -0.01em }

@@ -1,6 +1,8 @@
 spring:
   application:
     name: qsoft-ia-backend
+  config:
+    import: classpath:produtividade.yml
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/iadb}
     username: ${DB_USER:ia}

@@ -1,0 +1,81 @@
+# Mapeamento do painel de Produtividade de IA para o banco de dados.
+#
+# As consultas do painel não citam nomes de tabelas nem de colunas: usam os nomes lógicos abaixo
+# (ex.: uso.funcionario). Se o banco mudar (tabela renomeada, coluna com outro nome, outro schema,
+# outro valor de status), basta ajustar este arquivo. Seções cujas tabelas ou colunas não existirem
+# no banco ficam fora do painel, com o motivo informado na resposta da API, e o restante continua funcionando.
+produtividade:
+  schema: public
+  # Pasta dos CSVs importados na subida quando a tabela não existe ou está vazia.
+  csv-dir: ${PRODUTIVIDADE_CSV_DIR:dados/csv}
+  # Janela, em dias, usada em "licenças ociosas" e "colaboradores mais ativos".
+  janela-recente-dias: 90
+  # Quantos colaboradores aparecem no ranking.
+  limite-ranking: 12
+  # Prefixo do centro de custo do faturamento que antecede o id do departamento (ex.: CC-D01 -> D01).
+  centro-custo-prefixo: "CC-"
+
+  tabelas:
+    empresas:
+      nome: companies
+      colunas: { id: company_id, nome: company_name, setor: industry, porte: company_size }
+    departamentos:
+      nome: departments
+      colunas: { id: department_id, empresa: company_id, nome: department_name }
+    funcionarios:
+      nome: employees
+      colunas: { id: employee_id, empresa: company_id, departamento: department_id, cargo: job_role,
+                 senioridade: seniority, centro_custo: cost_center, ativo: active }
+    ferramentas:
+      nome: ai_tools
+      colunas: { id: ai_tool_id, nome: tool_name, categoria: tool_category }
+    ferramentas_aprovadas:
+      nome: approved_ai_tools
+      colunas: { empresa: company_id, ferramenta: ai_tool_id, status: approval_status, areas: allowed_departments }
+    licencas:
+      nome: ai_licenses
+      colunas: { empresa: company_id, funcionario: employee_id, ferramenta: ai_tool_id, status: license_status }
+    faturamento:
+      nome: ai_billing
+      colunas: { empresa: company_id, mes: billing_month, ferramenta: ai_tool_id, centro_custo: cost_center,
+                 custo: total_cost }
+    orcamentos:
+      nome: ai_budgets
+      colunas: { empresa: company_id, ano: year, mes: month, valor: budget_amount }
+    uso:
+      nome: ai_usage_logs
+      colunas: { data: timestamp, funcionario: employee_id, empresa: company_id, departamento: department_id,
+                 ferramenta: ai_tool_id, requisicoes: request_count, tokens_entrada: input_tokens,
+                 tokens_saida: output_tokens, latencia: latency_ms, status: request_status, centro_custo: cost_center }
+    treinamentos:
+      nome: training_records
+      colunas: { funcionario: employee_id, empresa: company_id, status: completion_status }
+    eventos_seguranca:
+      nome: security_events
+      colunas: { empresa: company_id, tipo: event_type, severidade: severity }
+    projetos:
+      nome: projects
+      colunas: { id: project_id, empresa: company_id }
+    pull_requests:
+      nome: pull_requests
+      colunas: { id: pull_request_id, projeto: project_id, funcionario: employee_id, criado_em: created_at,
+                 mergeado_em: merged_at, status: status, revisoes: review_count }
+    builds:
+      nome: builds
+      colunas: { projeto: project_id, data: timestamp, status: status }
+    deploys:
+      nome: deployments
+      colunas: { projeto: project_id, data: timestamp, status: status }
+
+  # Valores das colunas de status que o painel interpreta. Cada item aceita uma lista.
+  valores:
+    uso-sucesso: [success]
+    funcionario-ativo: ["true", "t", "1"]
+    aprovacao-aprovada: [Aprovado]
+    aprovacao-todas-areas: ["Todos os departamentos"]
+    licenca-ativa: [Ativa]
+    treinamento-concluido: [Concluido]
+    seguranca-grave: [Alta, Critica]
+    pr-mergeado: [Merged]
+    build-sucesso: [Sucesso]
+    deploy-sucesso: [Sucesso]
