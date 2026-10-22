@@ -1,0 +1,634 @@
+# PS-338 / PS-62 - Evidencia TDD (fase vermelha): testes de custos escritos ANTES do codigo
+# Branch: feature/custos-ia | Data: 2026-10-22 09:02:42 | Comando: mvn -B test
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< br.edu.exemplo:qsoft-ia-backend >-------------------
+[INFO] Building QSOFT IA Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.13:prepare-agent (prepare-agent) @ qsoft-ia-backend ---
+[INFO] argLine set to "-javaagent:C:\\Users\\Gustavo Carvalho\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.13\\org.jacoco.agent-0.8.13-runtime.jar=destfile=C:\\Users\\Gustavo Carvalho\\Desktop\\PI\\QAIcontrol\\Projeto_IV\\Projeto_IV_QSOFT_Home_Paginas_Evoluido\\target\\jacoco.exec"
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ qsoft-ia-backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ qsoft-ia-backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 88 source files with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ qsoft-ia-backend ---
+[INFO] skip non existing resourceDirectory C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ qsoft-ia-backend ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 42 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\test\java\br\edu\exemplo\ia\repository\produtividade\ConsultasTest.java uses unchecked or unsafe operations.
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[3,29] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[4,29] cannot find symbol
+  symbol:   class CustoOpcoesResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[5,29] cannot find symbol
+  symbol:   class CustoRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[6,29] cannot find symbol
+  symbol:   class CustoResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[7,29] cannot find symbol
+  symbol:   class OpcaoCustoResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[9,40] cannot find symbol
+  symbol:   class CustosUseCase
+  location: package br.edu.exemplo.ia.service.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[40,13] cannot find symbol
+  symbol:   class CustosUseCase
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[42,20] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[37,26] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[41,13] cannot find symbol
+  symbol:   class CustosConsultas
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[3,32] cannot find symbol
+  symbol:   class CustosProperties
+  location: package br.edu.exemplo.ia.config
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[4,29] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[5,29] cannot find symbol
+  symbol:   class CustoOpcoesResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[6,29] cannot find symbol
+  symbol:   class CustoRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[7,29] cannot find symbol
+  symbol:   class CustoResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[8,43] cannot find symbol
+  symbol:   class Agrupamento
+  location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[9,43] cannot find symbol
+  symbol:   class CustosConsultas
+  location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[10,43] cannot find symbol
+  symbol:   class FiltroCusto
+  location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[48,13] cannot find symbol
+  symbol:   class CustosConsultas
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[50,13] cannot find symbol
+  symbol:   class CustosService
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[89,23] cannot find symbol
+  symbol:   class Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[93,20] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[101,13] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[3,32] cannot find symbol
+  symbol:   class CustosProperties
+  location: package br.edu.exemplo.ia.config
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[20,12] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.service.custos.RegraCustoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[25,19] cannot find symbol
+  symbol:   class RegraCusto
+  location: class br.edu.exemplo.ia.service.custos.RegraCustoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[32,13] cannot find symbol
+  symbol: class CustosController
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[22,9] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[22,61] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[46,9] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[46,34] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[49,13] cannot find symbol
+  symbol:   class CustosConfig
+  location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[43,9] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[43,37] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[44,20] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[60,9] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[60,35] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[90,52] cannot find symbol
+  symbol:   class CustoOpcoesResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[91,29] cannot find symbol
+  symbol:   class OpcaoCustoResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[103,51] cannot find symbol
+  symbol:   class CustoOpcoesResponse
+  location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[37,51] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[49,25] cannot find symbol
+  symbol:   class CustosConsultas
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[60,30] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[60,14] cannot find symbol
+  symbol:   class Agrupamento
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[65,22] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[86,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[87,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[88,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[93,9] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[93,33] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[95,30] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[54,21] cannot find symbol
+  symbol:   class CustosConsultas
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[59,23] cannot find symbol
+  symbol:   class CustosService
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[59,61] cannot find symbol
+  symbol:   class RegraCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[75,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[76,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[78,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[80,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[90,27] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[94,20] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[102,24] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[102,70] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[103,47] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[110,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[125,9] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[136,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[137,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[138,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[139,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[141,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[141,48] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[155,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[167,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[169,9] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[188,9] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[198,9] cannot find symbol
+  symbol:   class FiltroCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[206,9] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[206,38] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[210,13] cannot find symbol
+  symbol:   class CustosService
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[210,51] cannot find symbol
+  symbol:   class RegraCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[217,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[220,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[231,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[233,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[241,14] cannot find symbol
+  symbol:   variable Agrupamento
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[243,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[245,9] cannot find symbol
+  symbol:   class CustoItemResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[254,9] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[254,38] cannot find symbol
+  symbol:   class CustosProperties
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,31] cannot find symbol
+  symbol:   class CustosService
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,69] cannot find symbol
+  symbol:   class RegraCusto
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[267,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[275,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[282,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[284,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[286,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[316,44] cannot find symbol
+  symbol:   class CustoRequest
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[324,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[340,9] cannot find symbol
+  symbol:   class CustoResponse
+  location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[INFO] 100 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.374 s
+[INFO] Finished at: 2026-10-22T09:02:54-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.0:testCompile (default-testCompile) on project qsoft-ia-backend: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[3,29] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[4,29] cannot find symbol
+[ERROR]   symbol:   class CustoOpcoesResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[5,29] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[6,29] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[7,29] cannot find symbol
+[ERROR]   symbol:   class OpcaoCustoResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[9,40] cannot find symbol
+[ERROR]   symbol:   class CustosUseCase
+[ERROR]   location: package br.edu.exemplo.ia.service.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[40,13] cannot find symbol
+[ERROR]   symbol:   class CustosUseCase
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[42,20] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[37,26] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[41,13] cannot find symbol
+[ERROR]   symbol:   class CustosConsultas
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[3,32] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: package br.edu.exemplo.ia.config
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[4,29] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[5,29] cannot find symbol
+[ERROR]   symbol:   class CustoOpcoesResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[6,29] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[7,29] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[8,43] cannot find symbol
+[ERROR]   symbol:   class Agrupamento
+[ERROR]   location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[9,43] cannot find symbol
+[ERROR]   symbol:   class CustosConsultas
+[ERROR]   location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[10,43] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: package br.edu.exemplo.ia.repository.custos
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[48,13] cannot find symbol
+[ERROR]   symbol:   class CustosConsultas
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[50,13] cannot find symbol
+[ERROR]   symbol:   class CustosService
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[89,23] cannot find symbol
+[ERROR]   symbol:   class Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[93,20] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[101,13] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[3,32] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: package br.edu.exemplo.ia.config
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[20,12] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.RegraCustoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/RegraCustoTest.java:[25,19] cannot find symbol
+[ERROR]   symbol:   class RegraCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.RegraCustoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[32,13] cannot find symbol
+[ERROR]   symbol: class CustosController
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[22,9] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[22,61] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[46,9] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[46,34] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/config/CustosConfigTest.java:[49,13] cannot find symbol
+[ERROR]   symbol:   class CustosConfig
+[ERROR]   location: class br.edu.exemplo.ia.config.CustosConfigTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[43,9] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[43,37] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[44,20] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[60,9] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[60,35] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[90,52] cannot find symbol
+[ERROR]   symbol:   class CustoOpcoesResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[91,29] cannot find symbol
+[ERROR]   symbol:   class OpcaoCustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/CustosControllerTest.java:[103,51] cannot find symbol
+[ERROR]   symbol:   class CustoOpcoesResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.CustosControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[37,51] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[49,25] cannot find symbol
+[ERROR]   symbol:   class CustosConsultas
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[60,30] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[60,14] cannot find symbol
+[ERROR]   symbol:   class Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[65,22] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[86,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[87,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[88,54] package Agrupamento does not exist
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[93,9] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[93,33] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/custos/CustosConsultasTest.java:[95,30] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[54,21] cannot find symbol
+[ERROR]   symbol:   class CustosConsultas
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[59,23] cannot find symbol
+[ERROR]   symbol:   class CustosService
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[59,61] cannot find symbol
+[ERROR]   symbol:   class RegraCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[75,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[76,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[78,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[80,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[90,27] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[94,20] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[102,24] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[102,70] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[103,47] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[110,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[125,9] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[136,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[137,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[138,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[139,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[141,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[141,48] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[155,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[167,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[169,9] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[188,9] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[198,9] cannot find symbol
+[ERROR]   symbol:   class FiltroCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[206,9] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[206,38] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[210,13] cannot find symbol
+[ERROR]   symbol:   class CustosService
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[210,51] cannot find symbol
+[ERROR]   symbol:   class RegraCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[217,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[220,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[231,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[233,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[241,14] cannot find symbol
+[ERROR]   symbol:   variable Agrupamento
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[243,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[245,9] cannot find symbol
+[ERROR]   symbol:   class CustoItemResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[254,9] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[254,38] cannot find symbol
+[ERROR]   symbol:   class CustosProperties
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,31] cannot find symbol
+[ERROR]   symbol:   class CustosService
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[258,69] cannot find symbol
+[ERROR]   symbol:   class RegraCusto
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[267,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[275,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[282,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[284,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[286,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[316,44] cannot find symbol
+[ERROR]   symbol:   class CustoRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[324,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/custos/CustosServiceTest.java:[340,9] cannot find symbol
+[ERROR]   symbol:   class CustoResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.custos.CustosServiceTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
