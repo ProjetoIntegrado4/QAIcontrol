@@ -24,6 +24,11 @@ app:
     username: ${TEMP_LOGIN_USERNAME:admin@qsoft.com}
     password: ${TEMP_LOGIN_PASSWORD:Qsoft123!}
     name: ${TEMP_LOGIN_NAME:Administrador QSOFT}
+  # Pontos de AI Literacy por capacitação registrada (US PP-19). Usados em service/PontuacaoAiLiteracy.
+  # PRELIMINAR – validar com o PO: o documento do projeto ainda não define esses pesos (RF10/RF11).
+  ai-literacy:
+    pontos-curso: 10
+    pontos-certificacao: 20
 
 server:
   servlet:

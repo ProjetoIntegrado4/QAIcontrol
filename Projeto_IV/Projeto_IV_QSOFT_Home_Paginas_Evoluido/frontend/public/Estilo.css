@@ -197,3 +197,8 @@ body.login-page { min-height: 100vh; place-content: center; padding-block: 24px 
 .login-message { min-height: 1.4em; font-size: .9rem; color: var(--crit-ink) }
 .temporary-account { display: grid; gap: 4px; background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; font-size: .86rem; color: var(--ink-2); margin-top: 8px }
 .temporary-account strong { color: var(--ink) }
+
+/* Tela de Capacitações: campos com rótulo visível dentro do .form-row e cor da mensagem conforme o resultado */
+.form-row > .ctl > input, .form-row > .ctl > select { width: 100%; min-width: 0 }
+.message.erro { color: var(--crit-ink) }
+.message.sucesso { color: var(--good-ink) }

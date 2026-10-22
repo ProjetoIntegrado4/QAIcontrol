@@ -104,6 +104,23 @@ O BFF possui dois papéis:
 
 Assim, o exemplo não é apenas um reverse proxy: há uma operação genuinamente orientada ao frontend.
 
+## Capacitações e certificações em IA (US PP-19)
+
+Página `frontend/public/capacitacao.html` (menu "Capacitações"). O colaborador é escolhido pela empresa e pelo
+nome, porque ainda não existe login de funcionário (o acesso atual é o admin temporário).
+
+- `POST /api/certificacao`: registra um curso ou certificação (`funcionarioId`, `empresaId`, `nome`, `instituicao`,
+  `dataConclusao` no formato `AAAA-MM-DD`, `tipo` = `CURSO` ou `CERTIFICACAO`);
+- `GET /api/certificacao?funcionarioId=...`: histórico do colaborador, do mais recente para o mais antigo;
+- `GET /api/certificacao/resumo?funcionarioId=...`: total de registros e pontos de AI Literacy.
+
+Regras: nome, instituição e data de conclusão são obrigatórios (nome e instituição com até 150 caracteres), a data
+não pode ser futura e o colaborador precisa existir e ser da empresa informada. A tabela `certificacao` é criada pelo Hibernate (`ddl-auto: update`).
+
+Os pontos de AI Literacy por registro ficam em `app.ai-literacy` no `application.yml` e são aplicados só em
+`service/PontuacaoAiLiteracy`. Os valores atuais (curso = 10, certificação = 20) são **preliminares** e precisam ser
+validados com o PO.
+
 ## Painel de Produtividade de IA
 
 Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em
