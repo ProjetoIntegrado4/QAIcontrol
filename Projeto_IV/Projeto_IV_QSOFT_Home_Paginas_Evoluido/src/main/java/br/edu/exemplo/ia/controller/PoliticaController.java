@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Políticas de uso responsável de IA e aceite dos colaboradores (US PP-21).
- * POST e PUT de política só para o perfil Administrador (RN04), regra aplicada no SecurityConfig.
+ * Políticas de uso responsável de IA e aceite dos colaboradores (US PP-21, tela frontend/public/governanca.html).
+ * POST e PUT de política só para o perfil Administrador (RN04); a regra fica no SecurityConfig.
  */
 @RestController
 @RequestMapping("/api/politicas")
@@ -36,32 +36,32 @@ public class PoliticaController {
     }
 
     @PutMapping("/{codigo}")
-    public PoliticaResponse novaVersao(@PathVariable UUID codigo, @RequestBody PoliticaRequest request) {
-        return useCase.novaVersao(codigo, request);
+    public PoliticaResponse publicarNovaVersao(@PathVariable UUID codigo, @RequestBody PoliticaRequest request) {
+        return useCase.publicarNovaVersao(codigo, request);
     }
 
     @GetMapping
-    public List<PoliticaResponse> vigentes(@RequestParam UUID empresaId) {
-        return useCase.vigentes(empresaId);
+    public List<PoliticaResponse> listarVigentes(@RequestParam UUID empresaId) {
+        return useCase.listarVigentes(empresaId);
     }
 
     @GetMapping("/{codigo}/versoes")
-    public List<PoliticaResponse> versoes(@PathVariable UUID codigo) {
-        return useCase.versoes(codigo);
+    public List<PoliticaResponse> listarVersoes(@PathVariable UUID codigo) {
+        return useCase.listarVersoes(codigo);
     }
 
     @GetMapping("/pendentes")
-    public List<PoliticaResponse> pendentes(@RequestParam UUID empresaId, @RequestParam UUID funcionarioId) {
-        return useCase.pendentes(empresaId, funcionarioId);
+    public List<PoliticaResponse> listarPendentes(@RequestParam UUID empresaId, @RequestParam UUID funcionarioId) {
+        return useCase.listarPendentes(empresaId, funcionarioId);
     }
 
     @PostMapping("/aceites")
-    public AceiteResponse aceitar(@RequestBody AceiteRequest request) {
-        return useCase.aceitar(request);
+    public AceiteResponse registrarAceite(@RequestBody AceiteRequest request) {
+        return useCase.registrarAceite(request);
     }
 
     @GetMapping("/aceites")
-    public List<AceiteResponse> aceites(@RequestParam UUID funcionarioId) {
-        return useCase.aceites(funcionarioId);
+    public List<AceiteResponse> listarAceites(@RequestParam UUID funcionarioId) {
+        return useCase.listarAceites(funcionarioId);
     }
 }

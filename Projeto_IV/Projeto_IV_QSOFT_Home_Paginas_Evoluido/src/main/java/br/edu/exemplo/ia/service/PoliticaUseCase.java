@@ -9,17 +9,20 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PoliticaUseCase {
+    /** Publica a versão 1 de uma política da empresa (só administrador). */
     PoliticaResponse publicar(PoliticaRequest request);
 
-    PoliticaResponse novaVersao(UUID codigo, PoliticaRequest request);
+    /** Publica a próxima versão da política; a anterior deixa de ser vigente, mas continua guardada (RN14). */
+    PoliticaResponse publicarNovaVersao(UUID codigo, PoliticaRequest request);
 
-    List<PoliticaResponse> vigentes(UUID empresaId);
+    List<PoliticaResponse> listarVigentes(UUID empresaId);
 
-    List<PoliticaResponse> versoes(UUID codigo);
+    List<PoliticaResponse> listarVersoes(UUID codigo);
 
-    List<PoliticaResponse> pendentes(UUID empresaId, UUID funcionarioId);
+    /** Políticas vigentes e obrigatórias que o colaborador ainda não aceitou. */
+    List<PoliticaResponse> listarPendentes(UUID empresaId, UUID funcionarioId);
 
-    AceiteResponse aceitar(AceiteRequest request);
+    AceiteResponse registrarAceite(AceiteRequest request);
 
-    List<AceiteResponse> aceites(UUID funcionarioId);
+    List<AceiteResponse> listarAceites(UUID funcionarioId);
 }

@@ -23,7 +23,10 @@ public class UsageService implements UsageUseCase {
     private final AlertClient alerts;
     private final PoliticaUseCase politicas;
 
-    /** Construtor anterior à US PP-21, sem verificação de políticas: só registra uso sem colaborador. */
+    /**
+     * Construtor de antes da US PP-21, mantido para não alterar os testes existentes (UsageServiceTest).
+     * Sem PoliticaUseCase, só registra uso sem colaborador; com colaborador, recusa em vez de pular a verificação.
+     */
     public UsageService(UsageRepository usageRepo, EmpresaUseCase empresas, AlertClient alerts) {
         this(usageRepo, empresas, alerts, null);
     }
@@ -73,7 +76,7 @@ public class UsageService implements UsageUseCase {
         if (politicas == null) {
             throw new IllegalStateException("Verificação de políticas de uso de IA não configurada");
         }
-        List<PoliticaResponse> pendentes = politicas.pendentes(request.empresaId(), request.funcionarioId());
+        List<PoliticaResponse> pendentes = politicas.listarPendentes(request.empresaId(), request.funcionarioId());
         if (!pendentes.isEmpty()) {
             throw new AceitePendenteException(pendentes);
         }

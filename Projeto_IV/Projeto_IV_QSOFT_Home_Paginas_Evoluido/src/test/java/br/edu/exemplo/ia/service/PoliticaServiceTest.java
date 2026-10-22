@@ -62,18 +62,28 @@ class PoliticaServiceTest {
         when(aceiteRepository.findByFuncionarioIdAndPoliticaId(any(), any())).thenReturn(Optional.empty());
     }
 
-    private PoliticaRequest request(String titulo, String conteudo, boolean obrigatoria) {
+    private PoliticaRequest pedido(String titulo, String conteudo, boolean obrigatoria) {
         return new PoliticaRequest(empresa.getId(), titulo, conteudo, obrigatoria);
     }
 
-    // BDD 1 + CA-14.2: o admin publica e a política fica visível para a empresa
+    private PoliticaUso politicaCadastrada(String titulo, boolean obrigatoria) {
+        PoliticaUso politica = new PoliticaUso(empresa, titulo, "Texto", obrigatoria);
+        when(politicaRepository.findById(politica.getId())).thenReturn(Optional.of(politica));
+        return politica;
+    }
+
+    // Cenário BDD 1 + CA-14.2: o admin publica e a política fica visível para os colaboradores da empresa
     @Test
     void devePublicarPoliticaEDeixarVisivelParaOsColaboradoresDaEmpresa() {
-        PoliticaResponse publicada = service.publicar(request("Uso responsável de IA",
+        PoliticaResponse publicada = service.publicar(pedido("Uso responsável de IA",
                 "Não insira dados pessoais de clientes em ferramentas de IA.", true));
-
         ArgumentCaptor<PoliticaUso> salva = ArgumentCaptor.forClass(PoliticaUso.class);
         verify(politicaRepository).save(salva.capture());
+        when(politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresa.getId()))
+                .thenReturn(List.of(salva.getValue()));
+
+        List<PoliticaResponse> visiveis = service.listarVigentes(empresa.getId());
+
         assertNotNull(publicada.id());
         assertNotNull(publicada.codigo());
         assertEquals(empresa.getId(), publicada.empresaId());
@@ -83,17 +93,12 @@ class PoliticaServiceTest {
         assertTrue(publicada.obrigatoria());
         assertTrue(publicada.vigente());
         assertNotNull(publicada.publicadaEm());
-
-        when(politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresa.getId()))
-                .thenReturn(List.of(salva.getValue()));
-        List<PoliticaResponse> visiveis = service.vigentes(empresa.getId());
-
         assertEquals(1, visiveis.size());
         assertEquals(publicada.id(), visiveis.get(0).id());
     }
 
     @Test
-    void naoPublicaEmEmpresaInexistente() {
+    void deveRejeitarPublicacaoEmEmpresaInexistente() {
         UUID inexistente = UUID.randomUUID();
         when(empresaRepository.findById(inexistente)).thenReturn(Optional.empty());
 
@@ -105,7 +110,7 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void publicacaoExigeEmpresa() {
+    void deveExigirEmpresaNaPublicacao() {
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
                 () -> service.publicar(new PoliticaRequest(null, "Uso de IA", "Texto", true)));
 
@@ -113,23 +118,29 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void publicacaoExigeTituloEConteudo() {
-        IllegalArgumentException semTitulo = assertThrows(IllegalArgumentException.class,
-                () -> service.publicar(request("   ", "Texto", true)));
-        IllegalArgumentException semConteudo = assertThrows(IllegalArgumentException.class,
-                () -> service.publicar(request("Uso de IA", "", true)));
+    void deveExigirTituloNaPublicacao() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> service.publicar(pedido("   ", "Texto", true)));
 
-        assertEquals("Título da política obrigatório", semTitulo.getMessage());
-        assertEquals("Conteúdo da política obrigatório", semConteudo.getMessage());
+        assertEquals("Título da política obrigatório", erro.getMessage());
         verify(politicaRepository, never()).save(any());
     }
 
     @Test
-    void listarVigentesDeEmpresaInexistenteDeveFalhar() {
+    void deveExigirConteudoNaPublicacao() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> service.publicar(pedido("Uso de IA", "", true)));
+
+        assertEquals("Conteúdo da política obrigatório", erro.getMessage());
+        verify(politicaRepository, never()).save(any());
+    }
+
+    @Test
+    void deveRejeitarListagemDeEmpresaInexistente() {
         UUID inexistente = UUID.randomUUID();
         when(empresaRepository.findById(inexistente)).thenReturn(Optional.empty());
 
-        assertThrows(NaoEncontradoException.class, () -> service.vigentes(inexistente));
+        assertThrows(NaoEncontradoException.class, () -> service.listarVigentes(inexistente));
     }
 
     // CA-14.3 / RN14: alteração gera nova versão sem excluir a anterior; só a nova fica vigente
@@ -138,7 +149,7 @@ class PoliticaServiceTest {
         PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", false);
         when(politicaRepository.findByCodigoOrderByVersaoDesc(v1.getCodigo())).thenReturn(List.of(v1));
 
-        PoliticaResponse v2 = service.novaVersao(v1.getCodigo(), request("Uso de IA", "Texto 2", true));
+        PoliticaResponse v2 = service.publicarNovaVersao(v1.getCodigo(), pedido("Uso de IA", "Texto 2", true));
 
         assertEquals(v1.getCodigo(), v2.codigo());
         assertEquals(2, v2.versao());
@@ -158,18 +169,20 @@ class PoliticaServiceTest {
         PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", true);
         when(politicaRepository.findByCodigoOrderByVersaoDesc(v1.getCodigo())).thenReturn(List.of(v1));
 
-        PoliticaResponse v2 = service.novaVersao(v1.getCodigo(), new PoliticaRequest(null, "Uso de IA", "Texto 2", true));
+        PoliticaResponse v2 = service.publicarNovaVersao(v1.getCodigo(),
+                new PoliticaRequest(null, "Uso de IA", "Texto 2", true));
 
         assertEquals(empresa.getId(), v2.empresaId());
     }
 
     @Test
-    void novaVersaoNaoTrocaAEmpresaDaPolitica() {
+    void novaVersaoNaoDeveTrocarAEmpresaDaPolitica() {
         PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", true);
         when(politicaRepository.findByCodigoOrderByVersaoDesc(v1.getCodigo())).thenReturn(List.of(v1));
+        PoliticaRequest outraEmpresa = new PoliticaRequest(UUID.randomUUID(), "Uso de IA", "Texto 2", true);
 
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> service.novaVersao(v1.getCodigo(), new PoliticaRequest(UUID.randomUUID(), "Uso de IA", "Texto 2", true)));
+                () -> service.publicarNovaVersao(v1.getCodigo(), outraEmpresa));
 
         assertEquals("A empresa de uma política não pode ser alterada", erro.getMessage());
         assertTrue(v1.isVigente());
@@ -177,12 +190,12 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void novaVersaoDePoliticaInexistenteDeveFalhar() {
+    void deveRejeitarNovaVersaoDePoliticaInexistente() {
         UUID codigo = UUID.randomUUID();
         when(politicaRepository.findByCodigoOrderByVersaoDesc(codigo)).thenReturn(List.of());
 
         NaoEncontradoException erro = assertThrows(NaoEncontradoException.class,
-                () -> service.novaVersao(codigo, request("Uso de IA", "Texto", true)));
+                () -> service.publicarNovaVersao(codigo, pedido("Uso de IA", "Texto", true)));
 
         assertEquals("Política inexistente: " + codigo, erro.getMessage());
     }
@@ -193,7 +206,7 @@ class PoliticaServiceTest {
         PoliticaUso v2 = v1.novaVersao("Uso de IA", "Texto 2", true);
         when(politicaRepository.findByCodigoOrderByVersaoDesc(v1.getCodigo())).thenReturn(List.of(v2, v1));
 
-        List<PoliticaResponse> versoes = service.versoes(v1.getCodigo());
+        List<PoliticaResponse> versoes = service.listarVersoes(v1.getCodigo());
 
         assertEquals(2, versoes.size());
         assertEquals(2, versoes.get(0).versao());
@@ -203,11 +216,11 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void historicoDePoliticaInexistenteDeveFalhar() {
+    void deveRejeitarHistoricoDePoliticaInexistente() {
         UUID codigo = UUID.randomUUID();
         when(politicaRepository.findByCodigoOrderByVersaoDesc(codigo)).thenReturn(List.of());
 
-        assertThrows(NaoEncontradoException.class, () -> service.versoes(codigo));
+        assertThrows(NaoEncontradoException.class, () -> service.listarVersoes(codigo));
     }
 
     // CA-15.1: o colaborador vê a política vigente pendente; política não obrigatória e já aceita não aparecem
@@ -221,7 +234,7 @@ class PoliticaServiceTest {
         when(aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionario.getId()))
                 .thenReturn(List.of(new AceitePolitica(funcionario, jaAceita)));
 
-        List<PoliticaResponse> pendentes = service.pendentes(empresa.getId(), funcionario.getId());
+        List<PoliticaResponse> pendentes = service.listarPendentes(empresa.getId(), funcionario.getId());
 
         assertEquals(1, pendentes.size());
         assertEquals(obrigatoria.getId(), pendentes.get(0).id());
@@ -229,31 +242,35 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void pendentesDeFuncionarioDeOutraEmpresaDevemFalhar() {
+    void deveRejeitarPendentesDeFuncionarioDeOutraEmpresa() {
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> service.pendentes(UUID.randomUUID(), funcionario.getId()));
+                () -> service.listarPendentes(UUID.randomUUID(), funcionario.getId()));
 
         assertEquals("Funcionário não pertence à empresa informada", erro.getMessage());
     }
 
     @Test
-    void pendentesExigemEmpresaEFuncionario() {
-        IllegalArgumentException semEmpresa = assertThrows(IllegalArgumentException.class,
-                () -> service.pendentes(null, funcionario.getId()));
-        IllegalArgumentException semFuncionario = assertThrows(IllegalArgumentException.class,
-                () -> service.pendentes(empresa.getId(), null));
+    void deveExigirEmpresaNasPendentes() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> service.listarPendentes(null, funcionario.getId()));
 
-        assertEquals("Empresa obrigatória", semEmpresa.getMessage());
-        assertEquals("Funcionário obrigatório", semFuncionario.getMessage());
+        assertEquals("Empresa obrigatória", erro.getMessage());
+    }
+
+    @Test
+    void deveExigirFuncionarioNasPendentes() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> service.listarPendentes(empresa.getId(), null));
+
+        assertEquals("Funcionário obrigatório", erro.getMessage());
     }
 
     // CA-15.2 e CA-15.3 / RN15: o aceite registra usuário, versão e data
     @Test
     void deveRegistrarAceiteComFuncionarioVersaoEData() {
-        PoliticaUso politica = new PoliticaUso(empresa, "Uso de IA", "Texto", true);
-        when(politicaRepository.findById(politica.getId())).thenReturn(Optional.of(politica));
+        PoliticaUso politica = politicaCadastrada("Uso de IA", true);
 
-        AceiteResponse aceite = service.aceitar(new AceiteRequest(funcionario.getId(), politica.getId()));
+        AceiteResponse aceite = service.registrarAceite(new AceiteRequest(funcionario.getId(), politica.getId()));
 
         assertNotNull(aceite.id());
         assertEquals(funcionario.getId(), aceite.funcionarioId());
@@ -269,13 +286,12 @@ class PoliticaServiceTest {
     // Decisão documentada: aceitar de novo a mesma versão devolve o aceite existente (não duplica nem muda a data)
     @Test
     void aceiteDuplicadoDaMesmaVersaoDevolveOAceiteExistente() {
-        PoliticaUso politica = new PoliticaUso(empresa, "Uso de IA", "Texto", true);
+        PoliticaUso politica = politicaCadastrada("Uso de IA", true);
         AceitePolitica existente = new AceitePolitica(funcionario, politica);
-        when(politicaRepository.findById(politica.getId())).thenReturn(Optional.of(politica));
         when(aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId()))
                 .thenReturn(Optional.of(existente));
 
-        AceiteResponse aceite = service.aceitar(new AceiteRequest(funcionario.getId(), politica.getId()));
+        AceiteResponse aceite = service.registrarAceite(new AceiteRequest(funcionario.getId(), politica.getId()));
 
         assertEquals(existente.getId(), aceite.id());
         assertEquals(existente.getDataAceite(), aceite.dataAceite());
@@ -284,76 +300,96 @@ class PoliticaServiceTest {
 
     @Test
     void aceiteSimultaneoBarradoPeloBancoDevolveOAceiteGravado() {
-        PoliticaUso politica = new PoliticaUso(empresa, "Uso de IA", "Texto", true);
+        PoliticaUso politica = politicaCadastrada("Uso de IA", true);
         AceitePolitica gravadoPorOutraRequisicao = new AceitePolitica(funcionario, politica);
-        when(politicaRepository.findById(politica.getId())).thenReturn(Optional.of(politica));
         when(aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId()))
                 .thenReturn(Optional.empty(), Optional.of(gravadoPorOutraRequisicao));
         when(aceiteRepository.save(any())).thenThrow(new DataIntegrityViolationException("uk_aceite_funcionario_politica"));
 
-        AceiteResponse aceite = service.aceitar(new AceiteRequest(funcionario.getId(), politica.getId()));
+        AceiteResponse aceite = service.registrarAceite(new AceiteRequest(funcionario.getId(), politica.getId()));
 
         assertEquals(gravadoPorOutraRequisicao.getId(), aceite.id());
     }
 
     @Test
-    void funcionarioDeOutraEmpresaNaoPodeAceitar() {
+    void deveRejeitarAceiteDeFuncionarioDeOutraEmpresa() {
         Empresa outra = new Empresa(new EmpresaVO("Outra"), "Saude");
         PoliticaUso politicaDeOutraEmpresa = new PoliticaUso(outra, "Uso de IA", "Texto", true);
         when(politicaRepository.findById(politicaDeOutraEmpresa.getId())).thenReturn(Optional.of(politicaDeOutraEmpresa));
 
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> service.aceitar(new AceiteRequest(funcionario.getId(), politicaDeOutraEmpresa.getId())));
+                () -> service.registrarAceite(new AceiteRequest(funcionario.getId(), politicaDeOutraEmpresa.getId())));
 
         assertEquals("Funcionário não pertence à empresa da política", erro.getMessage());
         verify(aceiteRepository, never()).save(any());
     }
 
     @Test
-    void naoAceitaVersaoQueNaoEstaMaisVigente() {
-        PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", true);
+    void deveRejeitarAceiteDeVersaoQueNaoEstaMaisVigente() {
+        PoliticaUso v1 = politicaCadastrada("Uso de IA", true);
         v1.novaVersao("Uso de IA", "Texto 2", true);
-        when(politicaRepository.findById(v1.getId())).thenReturn(Optional.of(v1));
 
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> service.aceitar(new AceiteRequest(funcionario.getId(), v1.getId())));
+                () -> service.registrarAceite(new AceiteRequest(funcionario.getId(), v1.getId())));
 
         assertEquals("Só é possível aceitar a versão vigente da política", erro.getMessage());
     }
 
     @Test
-    void aceiteDePoliticaOuFuncionarioInexistenteDeveFalhar() {
-        UUID politicaInexistente = UUID.randomUUID();
-        UUID funcionarioInexistente = UUID.randomUUID();
-        when(politicaRepository.findById(politicaInexistente)).thenReturn(Optional.empty());
-        when(funcionarioRepository.findById(funcionarioInexistente)).thenReturn(Optional.empty());
+    void deveRejeitarAceiteDePoliticaInexistente() {
+        UUID inexistente = UUID.randomUUID();
+        when(politicaRepository.findById(inexistente)).thenReturn(Optional.empty());
 
-        NaoEncontradoException semPolitica = assertThrows(NaoEncontradoException.class,
-                () -> service.aceitar(new AceiteRequest(funcionario.getId(), politicaInexistente)));
-        NaoEncontradoException semFuncionario = assertThrows(NaoEncontradoException.class,
-                () -> service.aceitar(new AceiteRequest(funcionarioInexistente, politicaInexistente)));
-        IllegalArgumentException politicaNula = assertThrows(IllegalArgumentException.class,
-                () -> service.aceitar(new AceiteRequest(funcionario.getId(), null)));
+        NaoEncontradoException erro = assertThrows(NaoEncontradoException.class,
+                () -> service.registrarAceite(new AceiteRequest(funcionario.getId(), inexistente)));
 
-        assertEquals("Política inexistente: " + politicaInexistente, semPolitica.getMessage());
-        assertEquals("Funcionário inexistente: " + funcionarioInexistente, semFuncionario.getMessage());
-        assertEquals("Política obrigatória", politicaNula.getMessage());
+        assertEquals("Política inexistente: " + inexistente, erro.getMessage());
     }
 
-    // CA-15.4 + nova versão exige novo aceite: o aceite da v1 continua no histórico e a v2 fica pendente
     @Test
-    void novaVersaoExigeNovoAceiteEOHistoricoDeAceitesContinuaDisponivel() {
+    void deveRejeitarAceiteDeFuncionarioInexistente() {
+        UUID inexistente = UUID.randomUUID();
+        when(funcionarioRepository.findById(inexistente)).thenReturn(Optional.empty());
+
+        NaoEncontradoException erro = assertThrows(NaoEncontradoException.class,
+                () -> service.registrarAceite(new AceiteRequest(inexistente, UUID.randomUUID())));
+
+        assertEquals("Funcionário inexistente: " + inexistente, erro.getMessage());
+    }
+
+    @Test
+    void deveExigirPoliticaNoAceite() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> service.registrarAceite(new AceiteRequest(funcionario.getId(), null)));
+
+        assertEquals("Política obrigatória", erro.getMessage());
+    }
+
+    // Nova versão exige novo aceite: o aceite da v1 não vale para a v2
+    @Test
+    void novaVersaoDeveFicarPendenteMesmoComAceiteDaAnterior() {
         PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", true);
         AceitePolitica aceiteV1 = new AceitePolitica(funcionario, v1);
         PoliticaUso v2 = v1.novaVersao("Uso de IA", "Texto 2", true);
         when(politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresa.getId())).thenReturn(List.of(v2));
         when(aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionario.getId())).thenReturn(List.of(aceiteV1));
 
-        List<PoliticaResponse> pendentes = service.pendentes(empresa.getId(), funcionario.getId());
-        List<AceiteResponse> historico = service.aceites(funcionario.getId());
+        List<PoliticaResponse> pendentes = service.listarPendentes(empresa.getId(), funcionario.getId());
 
         assertEquals(1, pendentes.size());
         assertEquals(2, pendentes.get(0).versao());
+    }
+
+    // CA-15.4: o histórico de aceites continua disponível depois de uma nova versão
+    @Test
+    void historicoDeAceitesDeveManterAVersaoAnteriorDepoisDeNovaVersao() {
+        PoliticaUso v1 = new PoliticaUso(empresa, "Uso de IA", "Texto 1", true);
+        AceitePolitica aceiteV1 = new AceitePolitica(funcionario, v1);
+        v1.novaVersao("Uso de IA", "Texto 2", true);
+        when(aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionario.getId())).thenReturn(List.of(aceiteV1));
+
+        List<AceiteResponse> historico = service.listarAceites(funcionario.getId());
+
         assertEquals(1, historico.size());
         assertEquals(1, historico.get(0).versao());
         assertEquals(v1.getId(), historico.get(0).politicaId());
@@ -361,10 +397,10 @@ class PoliticaServiceTest {
     }
 
     @Test
-    void historicoDeAceitesDeFuncionarioInexistenteDeveFalhar() {
+    void deveRejeitarHistoricoDeAceitesDeFuncionarioInexistente() {
         UUID inexistente = UUID.randomUUID();
         when(funcionarioRepository.findById(inexistente)).thenReturn(Optional.empty());
 
-        assertThrows(NaoEncontradoException.class, () -> service.aceites(inexistente));
+        assertThrows(NaoEncontradoException.class, () -> service.listarAceites(inexistente));
     }
 }

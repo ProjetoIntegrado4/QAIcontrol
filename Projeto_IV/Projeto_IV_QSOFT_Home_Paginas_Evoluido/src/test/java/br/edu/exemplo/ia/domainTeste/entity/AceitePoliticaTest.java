@@ -25,18 +25,23 @@ class AceitePoliticaTest {
     }
 
     @Test
-    void deveExigirFuncionarioEPolitica() {
-        IllegalArgumentException semFuncionario = assertThrows(IllegalArgumentException.class,
+    void deveExigirFuncionario() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
                 () -> new AceitePolitica(null, politica));
-        IllegalArgumentException semPolitica = assertThrows(IllegalArgumentException.class,
-                () -> new AceitePolitica(funcionario, null));
 
-        assertEquals("Funcionário obrigatório", semFuncionario.getMessage());
-        assertEquals("Política obrigatória", semPolitica.getMessage());
+        assertEquals("Funcionário obrigatório", erro.getMessage());
     }
 
     @Test
-    void funcionarioDeOutraEmpresaNaoAceita() {
+    void deveExigirPolitica() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> new AceitePolitica(funcionario, null));
+
+        assertEquals("Política obrigatória", erro.getMessage());
+    }
+
+    @Test
+    void deveRejeitarFuncionarioDeOutraEmpresa() {
         Funcionario deOutraEmpresa = new Funcionario("Bruno", new Empresa(new EmpresaVO("Outra"), "Saude"), "Dev");
 
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
@@ -46,7 +51,7 @@ class AceitePoliticaTest {
     }
 
     @Test
-    void soAVersaoVigentePodeSerAceita() {
+    void deveRejeitarAceiteDeVersaoSubstituida() {
         politica.novaVersao("Uso de IA", "Texto 2", true);
 
         IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,

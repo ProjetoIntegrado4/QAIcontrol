@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -51,21 +52,20 @@ public class PoliticaService implements PoliticaUseCase {
         return toDto(politica);
     }
 
+    // Transação: encerrar a vigência da versão atual e gravar a nova acontecem juntas ou não acontecem.
     @Override
     @Transactional
-    public PoliticaResponse novaVersao(UUID codigo, PoliticaRequest request) {
-        PoliticaUso atual = loadVersoes(codigo).get(0);
-        if (request.empresaId() != null && !request.empresaId().equals(atual.getEmpresa().getId())) {
-            throw new IllegalArgumentException("A empresa de uma política não pode ser alterada");
-        }
+    public PoliticaResponse publicarNovaVersao(UUID codigo, PoliticaRequest request) {
+        PoliticaUso versaoAtual = loadVersaoVigente(codigo);
+        validarMesmaEmpresa(versaoAtual, request.empresaId());
 
-        PoliticaUso proxima = atual.novaVersao(request.titulo(), request.conteudo(), request.obrigatoria());
-        politicaRepository.save(atual);
-        return toDto(politicaRepository.save(proxima));
+        PoliticaUso novaVersao = versaoAtual.novaVersao(request.titulo(), request.conteudo(), request.obrigatoria());
+        politicaRepository.save(versaoAtual);
+        return toDto(politicaRepository.save(novaVersao));
     }
 
     @Override
-    public List<PoliticaResponse> vigentes(UUID empresaId) {
+    public List<PoliticaResponse> listarVigentes(UUID empresaId) {
         loadEmpresa(empresaId);
         return politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresaId).stream()
                 .map(this::toDto)
@@ -73,77 +73,67 @@ public class PoliticaService implements PoliticaUseCase {
     }
 
     @Override
-    public List<PoliticaResponse> versoes(UUID codigo) {
+    public List<PoliticaResponse> listarVersoes(UUID codigo) {
         return loadVersoes(codigo).stream()
                 .map(this::toDto)
                 .toList();
     }
 
-    /** Versões vigentes e obrigatórias da empresa que o colaborador ainda não aceitou (CA-15.1, BDD 2). */
     @Override
-    public List<PoliticaResponse> pendentes(UUID empresaId, UUID funcionarioId) {
-        if (empresaId == null) {
-            throw new IllegalArgumentException("Empresa obrigatória");
-        }
-        Funcionario funcionario = loadFuncionario(funcionarioId);
-        // Enquanto não existe login de funcionário, a empresa vem da tela e precisa ser a mesma do funcionário.
-        if (!funcionario.getEmpresa().getId().equals(empresaId)) {
-            throw new IllegalArgumentException("Funcionário não pertence à empresa informada");
-        }
-
-        Set<UUID> aceitas = aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionarioId).stream()
-                .map(aceite -> aceite.getPolitica().getId())
-                .collect(Collectors.toSet());
+    public List<PoliticaResponse> listarPendentes(UUID empresaId, UUID funcionarioId) {
+        loadFuncionarioDaEmpresa(empresaId, funcionarioId);
+        Set<UUID> versoesAceitas = idsDasVersoesAceitas(funcionarioId);
         return politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresaId).stream()
                 .filter(PoliticaUso::isObrigatoria)
-                .filter(politica -> !aceitas.contains(politica.getId()))
+                .filter(politica -> !versoesAceitas.contains(politica.getId()))
                 .map(this::toDto)
                 .toList();
     }
 
-    /**
-     * Registra o aceite da versão informada (CA-15.2/CA-15.3).
-     * Aceitar de novo a mesma versão devolve o aceite já existente, sem duplicar nem mudar a data.
-     */
     @Override
-    public AceiteResponse aceitar(AceiteRequest request) {
+    public AceiteResponse registrarAceite(AceiteRequest request) {
         Funcionario funcionario = loadFuncionario(request.funcionarioId());
-        if (request.politicaId() == null) {
-            throw new IllegalArgumentException("Política obrigatória");
-        }
-        PoliticaUso politica = politicaRepository.findById(request.politicaId())
-                .orElseThrow(() -> new NaoEncontradoException("Política inexistente: " + request.politicaId()));
+        PoliticaUso politica = loadPolitica(request.politicaId());
 
-        return aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId())
-                .map(this::toDto)
-                .orElseGet(() -> toDto(registrarAceite(funcionario, politica)));
+        // Aceite repetido da mesma versão devolve o que já existe, sem duplicar nem mudar a data (RN15).
+        Optional<AceitePolitica> aceiteExistente =
+                aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId());
+        if (aceiteExistente.isPresent()) {
+            return toDto(aceiteExistente.get());
+        }
+        return toDto(salvarAceite(new AceitePolitica(funcionario, politica)));
     }
 
     @Override
-    public List<AceiteResponse> aceites(UUID funcionarioId) {
+    public List<AceiteResponse> listarAceites(UUID funcionarioId) {
         loadFuncionario(funcionarioId);
         return aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionarioId).stream()
                 .map(this::toDto)
                 .toList();
     }
 
-    private AceitePolitica registrarAceite(Funcionario funcionario, PoliticaUso politica) {
-        AceitePolitica aceite = new AceitePolitica(funcionario, politica);
+    private AceitePolitica salvarAceite(AceitePolitica aceite) {
         try {
             return aceiteRepository.save(aceite);
         } catch (DataIntegrityViolationException e) {
-            // Dois cliques simultâneos: a restrição única do banco barrou o segundo; devolve o que foi gravado.
-            return aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId())
-                    .orElseThrow(() -> e);
+            // Dois cliques ao mesmo tempo: a restrição única do banco barrou o segundo; devolve o que foi gravado.
+            return aceiteRepository.findByFuncionarioIdAndPoliticaId(
+                    aceite.getFuncionario().getId(), aceite.getPolitica().getId()
+            ).orElseThrow(() -> e);
         }
     }
 
-    private List<PoliticaUso> loadVersoes(UUID codigo) {
-        List<PoliticaUso> versoes = politicaRepository.findByCodigoOrderByVersaoDesc(codigo);
-        if (versoes.isEmpty()) {
-            throw new NaoEncontradoException("Política inexistente: " + codigo);
+    private Set<UUID> idsDasVersoesAceitas(UUID funcionarioId) {
+        return aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionarioId).stream()
+                .map(aceite -> aceite.getPolitica().getId())
+                .collect(Collectors.toSet());
+    }
+
+    private void validarMesmaEmpresa(PoliticaUso politica, UUID empresaId) {
+        // Na nova versão a empresa pode ser omitida, mas não trocada.
+        if (empresaId != null && !empresaId.equals(politica.getEmpresa().getId())) {
+            throw new IllegalArgumentException("A empresa de uma política não pode ser alterada");
         }
-        return versoes;
     }
 
     private Empresa loadEmpresa(UUID empresaId) {
@@ -160,6 +150,39 @@ public class PoliticaService implements PoliticaUseCase {
         }
         return funcionarioRepository.findById(funcionarioId)
                 .orElseThrow(() -> new NaoEncontradoException("Funcionário inexistente: " + funcionarioId));
+    }
+
+    private Funcionario loadFuncionarioDaEmpresa(UUID empresaId, UUID funcionarioId) {
+        if (empresaId == null) {
+            throw new IllegalArgumentException("Empresa obrigatória");
+        }
+        Funcionario funcionario = loadFuncionario(funcionarioId);
+        // Enquanto não existe login de funcionário, a empresa vem da tela e precisa ser a mesma do funcionário.
+        if (!funcionario.getEmpresa().getId().equals(empresaId)) {
+            throw new IllegalArgumentException("Funcionário não pertence à empresa informada");
+        }
+        return funcionario;
+    }
+
+    private PoliticaUso loadPolitica(UUID politicaId) {
+        if (politicaId == null) {
+            throw new IllegalArgumentException("Política obrigatória");
+        }
+        return politicaRepository.findById(politicaId)
+                .orElseThrow(() -> new NaoEncontradoException("Política inexistente: " + politicaId));
+    }
+
+    private List<PoliticaUso> loadVersoes(UUID codigo) {
+        List<PoliticaUso> versoes = politicaRepository.findByCodigoOrderByVersaoDesc(codigo);
+        if (versoes.isEmpty()) {
+            throw new NaoEncontradoException("Política inexistente: " + codigo);
+        }
+        return versoes;
+    }
+
+    // As versões vêm da mais recente para a mais antiga, e só a mais recente é vigente.
+    private PoliticaUso loadVersaoVigente(UUID codigo) {
+        return loadVersoes(codigo).get(0);
     }
 
     private PoliticaResponse toDto(PoliticaUso politica) {

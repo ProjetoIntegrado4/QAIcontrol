@@ -15,6 +15,7 @@ class PoliticaUsoTest {
     @Test
     void devePublicarVersao1VigenteComCodigoEData() {
         Empresa empresa = empresa();
+
         PoliticaUso p = new PoliticaUso(empresa, "  Uso responsável de IA ", " Não insira dados pessoais. ", true);
 
         assertNotNull(p.getId());
@@ -29,35 +30,58 @@ class PoliticaUsoTest {
     }
 
     @Test
-    void deveRejeitarCamposObrigatorios() {
-        IllegalArgumentException semEmpresa = assertThrows(IllegalArgumentException.class,
+    void deveExigirEmpresa() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(null, "Título", "Conteúdo", true));
-        IllegalArgumentException semTitulo = assertThrows(IllegalArgumentException.class,
+
+        assertEquals("Empresa obrigatória", erro.getMessage());
+    }
+
+    @Test
+    void deveExigirTitulo() {
+        IllegalArgumentException tituloEmBranco = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(empresa(), "  ", "Conteúdo", true));
         IllegalArgumentException tituloNulo = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(empresa(), null, "Conteúdo", true));
-        IllegalArgumentException semConteudo = assertThrows(IllegalArgumentException.class,
+
+        assertEquals("Título da política obrigatório", tituloEmBranco.getMessage());
+        assertEquals("Título da política obrigatório", tituloNulo.getMessage());
+    }
+
+    @Test
+    void deveExigirConteudo() {
+        IllegalArgumentException conteudoVazio = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(empresa(), "Título", "", true));
         IllegalArgumentException conteudoNulo = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(empresa(), "Título", null, true));
 
-        assertEquals("Empresa obrigatória", semEmpresa.getMessage());
-        assertEquals("Título da política obrigatório", semTitulo.getMessage());
-        assertEquals("Título da política obrigatório", tituloNulo.getMessage());
-        assertEquals("Conteúdo da política obrigatório", semConteudo.getMessage());
+        assertEquals("Conteúdo da política obrigatório", conteudoVazio.getMessage());
         assertEquals("Conteúdo da política obrigatório", conteudoNulo.getMessage());
     }
 
     @Test
-    void deveLimitarTamanhoDoTituloEDoConteudo() {
-        IllegalArgumentException tituloLongo = assertThrows(IllegalArgumentException.class,
+    void deveRejeitarTituloComMaisDe150Caracteres() {
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
                 () -> new PoliticaUso(empresa(), "A".repeat(151), "Conteúdo", true));
-        IllegalArgumentException conteudoLongo = assertThrows(IllegalArgumentException.class,
-                () -> new PoliticaUso(empresa(), "Título", "A".repeat(PoliticaUso.TAMANHO_MAXIMO_CONTEUDO + 1), true));
 
-        assertEquals("Título da política deve ter no máximo 150 caracteres", tituloLongo.getMessage());
-        assertEquals("Conteúdo da política deve ter no máximo 20000 caracteres", conteudoLongo.getMessage());
-        assertEquals(150, new PoliticaUso(empresa(), "A".repeat(150), "Conteúdo", false).getTitulo().length());
+        assertEquals("Título da política deve ter no máximo 150 caracteres", erro.getMessage());
+    }
+
+    @Test
+    void deveAceitarTituloComExatamente150Caracteres() {
+        PoliticaUso p = new PoliticaUso(empresa(), "A".repeat(150), "Conteúdo", false);
+
+        assertEquals(150, p.getTitulo().length());
+    }
+
+    @Test
+    void deveRejeitarConteudoComMaisDe20000Caracteres() {
+        String conteudoLongo = "A".repeat(PoliticaUso.TAMANHO_MAXIMO_CONTEUDO + 1);
+
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
+                () -> new PoliticaUso(empresa(), "Título", conteudoLongo, true));
+
+        assertEquals("Conteúdo da política deve ter no máximo 20000 caracteres", erro.getMessage());
     }
 
     // CA-14.3 / RN14: alteração gera nova versão sem excluir a anterior
@@ -90,7 +114,7 @@ class PoliticaUsoTest {
     }
 
     @Test
-    void versaoQueNaoEstaVigenteNaoGeraNovaVersao() {
+    void naoDeveGerarNovaVersaoAPartirDeVersaoSubstituida() {
         PoliticaUso v1 = new PoliticaUso(empresa(), "Uso de IA", "Texto 1", true);
         v1.novaVersao("Uso de IA", "Texto 2", true);
 

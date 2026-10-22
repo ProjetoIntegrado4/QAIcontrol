@@ -51,6 +51,8 @@ class PoliticaControllerTest {
     private static final String CORPO_POLITICA = """
             {"empresaId":"%s","titulo":"Uso responsável de IA","conteudo":"Não insira dados pessoais.","obrigatoria":true}
             """.formatted(EMPRESA);
+    private static final PoliticaRequest PEDIDO_POLITICA =
+            new PoliticaRequest(EMPRESA, "Uso responsável de IA", "Não insira dados pessoais.", true);
 
     @Autowired
     private MockMvc mvc;
@@ -66,9 +68,14 @@ class PoliticaControllerTest {
                 "Não insira dados pessoais.", versao, true, true, Instant.parse("2026-10-22T12:00:00Z"));
     }
 
+    private static AceiteResponse aceite() {
+        return new AceiteResponse(UUID.randomUUID(), FUNCIONARIO, "Ana Souza", POLITICA, CODIGO,
+                "Uso responsável de IA", 1, Instant.parse("2026-10-22T12:30:00Z"));
+    }
+
     // CA-14.1: sem login não publica
     @Test
-    void semLoginNaoPublicaPoliticaE401() throws Exception {
+    void semLoginNaoDevePublicarPolitica() throws Exception {
         mvc.perform(post("/api/politicas").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(CORPO_POLITICA))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().json("{\"message\":\"Autenticacao necessaria\"}"));
@@ -76,7 +83,7 @@ class PoliticaControllerTest {
     }
 
     @Test
-    void semLoginNaoConsultaPoliticas() throws Exception {
+    void semLoginNaoDeveConsultarPoliticas() throws Exception {
         mvc.perform(get("/api/politicas").param("empresaId", EMPRESA.toString()))
                 .andExpect(status().isUnauthorized());
     }
@@ -84,10 +91,16 @@ class PoliticaControllerTest {
     // CA-14.1 / RN04: usuário autenticado sem perfil Administrador não publica nem altera
     @Test
     @WithMockUser(roles = "COLABORADOR")
-    void usuarioSemPerfilAdminNaoPublicaNemAlteraPolitica() throws Exception {
+    void usuarioSemPerfilAdminNaoDevePublicarPolitica() throws Exception {
         mvc.perform(post("/api/politicas").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(CORPO_POLITICA))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value("Acesso restrito ao perfil Administrador"));
+        verifyNoInteractions(useCase);
+    }
+
+    @Test
+    @WithMockUser(roles = "COLABORADOR")
+    void usuarioSemPerfilAdminNaoDevePublicarNovaVersao() throws Exception {
         mvc.perform(put("/api/politicas/" + CODIGO).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(CORPO_POLITICA))
                 .andExpect(status().isForbidden());
         verifyNoInteractions(useCase);
@@ -101,12 +114,11 @@ class PoliticaControllerTest {
                 .andExpect(jsonPath("$.message").value("Token CSRF invalido ou ausente"));
     }
 
-    // BDD 1: admin publica a política vinculada à empresa
+    // Cenário BDD 1: admin publica a política vinculada à empresa
     @Test
     @WithMockUser(roles = "ADMIN")
-    void adminPublicaPoliticaE200() throws Exception {
-        PoliticaRequest pedido = new PoliticaRequest(EMPRESA, "Uso responsável de IA", "Não insira dados pessoais.", true);
-        when(useCase.publicar(pedido)).thenReturn(politica(1));
+    void adminDevePublicarPoliticaE200() throws Exception {
+        when(useCase.publicar(PEDIDO_POLITICA)).thenReturn(politica(1));
 
         mvc.perform(post("/api/politicas").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(CORPO_POLITICA))
                 .andExpect(status().isOk())
@@ -115,19 +127,19 @@ class PoliticaControllerTest {
                 .andExpect(jsonPath("$.versao").value(1))
                 .andExpect(jsonPath("$.obrigatoria").value(true))
                 .andExpect(jsonPath("$.vigente").value(true));
-        verify(useCase).publicar(pedido);
+        verify(useCase).publicar(PEDIDO_POLITICA);
     }
 
     // CA-14.3: PUT publica a próxima versão
     @Test
     @WithMockUser(roles = "ADMIN")
-    void adminPublicaNovaVersaoE200() throws Exception {
-        when(useCase.novaVersao(any(), any())).thenReturn(politica(2));
+    void adminDevePublicarNovaVersaoE200() throws Exception {
+        when(useCase.publicarNovaVersao(CODIGO, PEDIDO_POLITICA)).thenReturn(politica(2));
 
         mvc.perform(put("/api/politicas/" + CODIGO).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(CORPO_POLITICA))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.versao").value(2));
-        verify(useCase).novaVersao(CODIGO, new PoliticaRequest(EMPRESA, "Uso responsável de IA", "Não insira dados pessoais.", true));
+        verify(useCase).publicarNovaVersao(CODIGO, PEDIDO_POLITICA);
     }
 
     @Test
@@ -152,35 +164,45 @@ class PoliticaControllerTest {
                 .andExpect(jsonPath("$.message").value("Empresa inexistente: " + EMPRESA));
     }
 
-    // CA-14.2 / CA-15.1: consultas liberadas para qualquer usuário autenticado
+    // CA-14.2: consultas liberadas para qualquer usuário autenticado
     @Test
     @WithMockUser
-    void consultasDevemResponder200() throws Exception {
-        when(useCase.vigentes(EMPRESA)).thenReturn(List.of(politica(1)));
-        when(useCase.versoes(CODIGO)).thenReturn(List.of(politica(2), politica(1)));
-        when(useCase.pendentes(EMPRESA, FUNCIONARIO)).thenReturn(List.of(politica(1)));
+    void listarVigentesDeveResponder200() throws Exception {
+        when(useCase.listarVigentes(EMPRESA)).thenReturn(List.of(politica(1)));
 
         mvc.perform(get("/api/politicas").param("empresaId", EMPRESA.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].titulo").value("Uso responsável de IA"));
+    }
+
+    @Test
+    @WithMockUser
+    void listarVersoesDeveResponder200() throws Exception {
+        when(useCase.listarVersoes(CODIGO)).thenReturn(List.of(politica(2), politica(1)));
+
         mvc.perform(get("/api/politicas/" + CODIGO + "/versoes"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].versao").value(2))
                 .andExpect(jsonPath("$[1].versao").value(1));
+    }
+
+    // CA-15.1: o colaborador vê o texto completo das políticas pendentes
+    @Test
+    @WithMockUser
+    void listarPendentesDeveResponder200() throws Exception {
+        when(useCase.listarPendentes(EMPRESA, FUNCIONARIO)).thenReturn(List.of(politica(1)));
+
         mvc.perform(get("/api/politicas/pendentes").param("empresaId", EMPRESA.toString())
                         .param("funcionarioId", FUNCIONARIO.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].conteudo").value("Não insira dados pessoais."));
     }
 
-    // CA-15.2 / CA-15.3 / CA-15.4: o colaborador (sem perfil admin) registra e consulta os aceites
+    // CA-15.2 / CA-15.3: o colaborador (sem perfil admin) registra o aceite com versão e data
     @Test
     @WithMockUser
-    void colaboradorRegistraEConsultaAceites() throws Exception {
-        AceiteResponse aceite = new AceiteResponse(UUID.randomUUID(), FUNCIONARIO, "Ana Souza", POLITICA, CODIGO,
-                "Uso responsável de IA", 1, Instant.parse("2026-10-22T12:30:00Z"));
-        when(useCase.aceitar(new AceiteRequest(FUNCIONARIO, POLITICA))).thenReturn(aceite);
-        when(useCase.aceites(FUNCIONARIO)).thenReturn(List.of(aceite));
+    void colaboradorDeveRegistrarAceiteE200() throws Exception {
+        when(useCase.registrarAceite(new AceiteRequest(FUNCIONARIO, POLITICA))).thenReturn(aceite());
 
         mvc.perform(post("/api/politicas/aceites").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                         .content("{\"funcionarioId\":\"%s\",\"politicaId\":\"%s\"}".formatted(FUNCIONARIO, POLITICA)))
@@ -188,12 +210,20 @@ class PoliticaControllerTest {
                 .andExpect(jsonPath("$.funcionarioId").value(FUNCIONARIO.toString()))
                 .andExpect(jsonPath("$.versao").value(1))
                 .andExpect(jsonPath("$.dataAceite").value("2026-10-22T12:30:00Z"));
+    }
+
+    // CA-15.4: histórico de aceites
+    @Test
+    @WithMockUser
+    void listarAceitesDeveResponder200() throws Exception {
+        when(useCase.listarAceites(FUNCIONARIO)).thenReturn(List.of(aceite()));
+
         mvc.perform(get("/api/politicas/aceites").param("funcionarioId", FUNCIONARIO.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].versao").value(1));
     }
 
-    // BDD 2: registro de uso bloqueado responde 409 com a mensagem e as políticas pendentes
+    // Cenário BDD 2: registro de uso bloqueado responde 409 com a mensagem e as políticas pendentes
     @Test
     @WithMockUser
     void usoSemAceiteDeveResponder409ComPendencias() throws Exception {
@@ -213,7 +243,7 @@ class PoliticaControllerTest {
     // Retrocompatibilidade: o corpo antigo do registro de uso (sem funcionarioId) continua aceito
     @Test
     @WithMockUser
-    void usoSemFuncionarioContinuaFuncionando() throws Exception {
+    void usoSemFuncionarioDeveContinuarFuncionando() throws Exception {
         when(usages.register(new UsageRequest(EMPRESA, 500, "gpt-demo"))).thenReturn(
                 new UsageResponse(UUID.randomUUID(), EMPRESA, 500, "gpt-demo", Instant.now(), "INFO", "ok"));
 

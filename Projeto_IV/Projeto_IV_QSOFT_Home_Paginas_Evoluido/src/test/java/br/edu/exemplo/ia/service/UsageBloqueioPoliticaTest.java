@@ -35,15 +35,15 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * BDD 2 da US PP-21: com política obrigatória publicada, o uso de IA do colaborador que ainda não aceitou a versão
- * vigente é bloqueado. Usa o PoliticaService real (repositórios simulados) junto com o UsageService.
+ * Cenário BDD 2 da US PP-21: com política obrigatória publicada, o uso de IA do colaborador que ainda não aceitou a
+ * versão vigente é bloqueado. Usa o PoliticaService real (repositórios simulados) junto com o UsageService.
  */
 class UsageBloqueioPoliticaTest {
 
     private UsageRepository usageRepository;
     private EmpresaUseCase empresas;
     private AlertClient alerts;
-    private PoliticaUsoRepository politicaRepository;
+    private FuncionarioRepository funcionarioRepository;
     private PoliticaService politicas;
     private UsageService service;
 
@@ -57,10 +57,10 @@ class UsageBloqueioPoliticaTest {
         usageRepository = mock(UsageRepository.class);
         empresas = mock(EmpresaUseCase.class);
         alerts = mock(AlertClient.class);
-        politicaRepository = mock(PoliticaUsoRepository.class);
+        funcionarioRepository = mock(FuncionarioRepository.class);
+        PoliticaUsoRepository politicaRepository = mock(PoliticaUsoRepository.class);
         AceitePoliticaRepository aceiteRepository = mock(AceitePoliticaRepository.class);
         EmpresaRepository empresaRepository = mock(EmpresaRepository.class);
-        FuncionarioRepository funcionarioRepository = mock(FuncionarioRepository.class);
         politicas = new PoliticaService(politicaRepository, aceiteRepository, empresaRepository, funcionarioRepository);
         service = new UsageService(usageRepository, empresas, alerts, politicas);
 
@@ -71,7 +71,7 @@ class UsageBloqueioPoliticaTest {
         when(funcionarioRepository.findById(funcionario.getId())).thenReturn(Optional.of(funcionario));
         when(politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(empresa.getId())).thenReturn(vigentes);
         when(politicaRepository.findById(any())).thenAnswer(invocation -> vigentes.stream()
-                .filter(p -> p.getId().equals(invocation.getArgument(0))).findFirst());
+                .filter(politica -> politica.getId().equals(invocation.getArgument(0))).findFirst());
         when(aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionario.getId())).thenReturn(aceites);
         when(aceiteRepository.findByFuncionarioIdAndPoliticaId(any(), any())).thenReturn(Optional.empty());
         when(aceiteRepository.save(any())).thenAnswer(invocation -> {
@@ -86,11 +86,20 @@ class UsageBloqueioPoliticaTest {
         return new UsageRequest(empresa.getId(), 500, "gpt-demo", funcionario.getId());
     }
 
-    // BDD 2: política obrigatória sem aceite bloqueia o registro e informa as pendências
+    private PoliticaUso publicarPolitica(boolean obrigatoria) {
+        PoliticaUso politica = new PoliticaUso(empresa, "Uso responsável de IA", "Texto", obrigatoria);
+        vigentes.add(politica);
+        return politica;
+    }
+
+    private void aceitar(PoliticaUso politica) {
+        politicas.registrarAceite(new AceiteRequest(funcionario.getId(), politica.getId()));
+    }
+
+    // Cenário BDD 2: política obrigatória sem aceite bloqueia o registro e informa as pendências
     @Test
     void usoDeIaSemAceiteDaPoliticaObrigatoriaDeveSerBloqueado() {
-        PoliticaUso politica = new PoliticaUso(empresa, "Uso responsável de IA", "Texto", true);
-        vigentes.add(politica);
+        PoliticaUso politica = publicarPolitica(true);
 
         AceitePendenteException erro = assertThrows(AceitePendenteException.class,
                 () -> service.register(usoDoColaborador()));
@@ -102,12 +111,10 @@ class UsageBloqueioPoliticaTest {
         verifyNoInteractions(alerts);
     }
 
-    // BDD 2 (continuação): depois do aceite o uso é registrado normalmente
+    // Cenário BDD 2 (continuação): depois do aceite o uso é registrado normalmente
     @Test
     void usoDeIaDeveSerLiberadoDepoisDoAceite() {
-        PoliticaUso politica = new PoliticaUso(empresa, "Uso responsável de IA", "Texto", true);
-        vigentes.add(politica);
-        politicas.aceitar(new AceiteRequest(funcionario.getId(), politica.getId()));
+        aceitar(publicarPolitica(true));
 
         UsageResponse uso = service.register(usoDoColaborador());
 
@@ -118,37 +125,50 @@ class UsageBloqueioPoliticaTest {
 
     // Nova versão exige novo aceite: o aceite da versão anterior não libera o uso
     @Test
-    void novaVersaoDaPoliticaVoltaABloquearOUsoAteONovoAceite() {
-        PoliticaUso v1 = new PoliticaUso(empresa, "Uso responsável de IA", "Texto 1", true);
-        vigentes.add(v1);
-        politicas.aceitar(new AceiteRequest(funcionario.getId(), v1.getId()));
-        PoliticaUso v2 = v1.novaVersao("Uso responsável de IA", "Texto 2", true);
-        vigentes.set(0, v2);
+    void novaVersaoDaPoliticaDeveVoltarABloquearOUso() {
+        PoliticaUso v1 = publicarPolitica(true);
+        aceitar(v1);
+        vigentes.set(0, v1.novaVersao("Uso responsável de IA", "Texto 2", true));
 
         AceitePendenteException erro = assertThrows(AceitePendenteException.class,
                 () -> service.register(usoDoColaborador()));
 
         assertEquals(2, erro.getPendentes().get(0).versao());
-        politicas.aceitar(new AceiteRequest(funcionario.getId(), v2.getId()));
-        assertNotNull(service.register(usoDoColaborador()).id());
     }
 
     @Test
-    void politicaNaoObrigatoriaNaoBloqueiaOUso() {
-        vigentes.add(new PoliticaUso(empresa, "Boas práticas", "Texto", false));
+    void usoDeIaDeveSerLiberadoDepoisDoAceiteDaNovaVersao() {
+        PoliticaUso v1 = publicarPolitica(true);
+        aceitar(v1);
+        PoliticaUso v2 = v1.novaVersao("Uso responsável de IA", "Texto 2", true);
+        vigentes.set(0, v2);
+        aceitar(v2);
 
-        assertNotNull(service.register(usoDoColaborador()).id());
+        UsageResponse uso = service.register(usoDoColaborador());
+
+        assertNotNull(uso.id());
     }
 
     @Test
-    void empresaSemPoliticaNaoBloqueiaOUso() {
-        assertNotNull(service.register(usoDoColaborador()).id());
+    void politicaNaoObrigatoriaNaoDeveBloquearOUso() {
+        publicarPolitica(false);
+
+        UsageResponse uso = service.register(usoDoColaborador());
+
+        assertNotNull(uso.id());
+    }
+
+    @Test
+    void empresaSemPoliticaNaoDeveBloquearOUso() {
+        UsageResponse uso = service.register(usoDoColaborador());
+
+        assertNotNull(uso.id());
     }
 
     // Retrocompatibilidade: sem funcionarioId o registro de uso continua igual ao comportamento atual
     @Test
-    void usoSemFuncionarioNaoConsultaPoliticas() {
-        vigentes.add(new PoliticaUso(empresa, "Uso responsável de IA", "Texto", true));
+    void usoSemFuncionarioNaoDeveConsultarPoliticas() {
+        publicarPolitica(true);
         PoliticaUseCase politicasSimuladas = mock(PoliticaUseCase.class);
         UsageService semColaborador = new UsageService(usageRepository, empresas, alerts, politicasSimuladas);
 
@@ -160,52 +180,50 @@ class UsageBloqueioPoliticaTest {
     }
 
     @Test
-    void requestAntigoDeUsoTemFuncionarioNulo() {
-        assertNull(new UsageRequest(empresa.getId(), 500, "gpt-demo").funcionarioId());
+    void requestAntigoDeUsoDeveTerFuncionarioNulo() {
+        UsageRequest request = new UsageRequest(empresa.getId(), 500, "gpt-demo");
+
+        assertNull(request.funcionarioId());
     }
 
     @Test
-    void funcionarioDeOutraEmpresaNaoRegistraUso() {
+    void funcionarioDeOutraEmpresaNaoDeveRegistrarUso() {
         Funcionario deOutraEmpresa = new Funcionario("Bruno", new Empresa(new EmpresaVO("Outra"), "Saude"), "Dev");
-        when(politicaRepository.findByEmpresaIdAndVigenteTrueOrderByTituloAsc(any())).thenReturn(List.of());
-        FuncionarioRepository funcionarios = mock(FuncionarioRepository.class);
-        when(funcionarios.findById(deOutraEmpresa.getId())).thenReturn(Optional.of(deOutraEmpresa));
-        PoliticaService politicasComOutroFuncionario = new PoliticaService(politicaRepository,
-                mock(AceitePoliticaRepository.class), mock(EmpresaRepository.class), funcionarios);
-        UsageService usos = new UsageService(usageRepository, empresas, alerts, politicasComOutroFuncionario);
+        when(funcionarioRepository.findById(deOutraEmpresa.getId())).thenReturn(Optional.of(deOutraEmpresa));
+        UsageRequest request = new UsageRequest(empresa.getId(), 500, "gpt-demo", deOutraEmpresa.getId());
 
-        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> usos.register(new UsageRequest(empresa.getId(), 500, "gpt-demo", deOutraEmpresa.getId())));
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class, () -> service.register(request));
 
         assertEquals("Funcionário não pertence à empresa informada", erro.getMessage());
         verify(usageRepository, never()).save(any());
     }
 
     @Test
-    void funcionarioInexistenteNaoRegistraUso() {
-        UUID inexistente = UUID.randomUUID();
+    void funcionarioInexistenteNaoDeveRegistrarUso() {
+        UsageRequest request = new UsageRequest(empresa.getId(), 500, "gpt-demo", UUID.randomUUID());
 
-        assertThrows(NaoEncontradoException.class,
-                () -> service.register(new UsageRequest(empresa.getId(), 500, "gpt-demo", inexistente)));
+        assertThrows(NaoEncontradoException.class, () -> service.register(request));
+
         verify(usageRepository, never()).save(any());
     }
 
     @Test
-    void empresaInexistenteContinuaComAMesmaMensagemDeAntes() {
+    void empresaInexistenteDeveManterAMensagemDeAntes() {
         UUID inexistente = UUID.randomUUID();
+        UsageRequest request = new UsageRequest(inexistente, 500, "gpt-demo", funcionario.getId());
 
-        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class,
-                () -> service.register(new UsageRequest(inexistente, 500, "gpt-demo", funcionario.getId())));
+        IllegalArgumentException erro = assertThrows(IllegalArgumentException.class, () -> service.register(request));
 
         assertEquals("Empresa inexistente: " + inexistente, erro.getMessage());
     }
 
     // O construtor antigo (sem PoliticaUseCase) não deixa passar uso com colaborador sem verificar o aceite
     @Test
-    void construtorAntigoNaoRegistraUsoComColaboradorSemVerificarPoliticas() {
+    void construtorAntigoNaoDeveRegistrarUsoComColaborador() {
         UsageService antigo = new UsageService(usageRepository, empresas, alerts);
 
         assertThrows(IllegalStateException.class, () -> antigo.register(usoDoColaborador()));
+
         verify(usageRepository, never()).save(any());
     }
 }
