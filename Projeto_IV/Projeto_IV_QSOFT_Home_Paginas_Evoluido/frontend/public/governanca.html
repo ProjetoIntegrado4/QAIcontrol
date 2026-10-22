@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Governança de IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="Estilo.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./capacitacao.html">Capacitações</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
+    <a href="./custos.html">Custos de IA</a>
+    <a class="active" href="./governanca.html">Governança</a>
+</nav>
+
+<h1>Governança de IA</h1>
+<p>Publique as políticas de uso responsável de IA da empresa e registre o aceite dos colaboradores.</p>
+
+<section>
+    <h2>Publicar política (Administrador)</h2>
+    <p id="editando" class="callout" hidden></p>
+    <div class="form-row">
+        <div class="ctl">
+            <label for="empresaAdmin">Empresa</label>
+            <select id="empresaAdmin" required>
+                <option value="">Carregando empresas...</option>
+            </select>
+        </div>
+        <div class="ctl">
+            <label for="titulo">Título</label>
+            <input id="titulo" placeholder="Ex.: Uso responsável de IA" maxlength="150" required>
+        </div>
+        <div class="ctl">
+            <label for="obrigatoria">Aceite obrigatório</label>
+            <select id="obrigatoria">
+                <option value="true">Sim (bloqueia o uso de IA até o aceite)</option>
+                <option value="false">Não</option>
+            </select>
+        </div>
+    </div>
+    <div class="ctl">
+        <label for="conteudo">Texto da política</label>
+        <textarea id="conteudo" maxlength="20000" required
+                  placeholder="Ex.: Não insira dados pessoais de clientes ou colaboradores em ferramentas de IA."></textarea>
+    </div>
+    <div class="form-row">
+        <button type="button" id="publicar">Publicar</button>
+        <button type="button" id="cancelarEdicao" class="secondary-button" hidden>Cancelar nova versão</button>
+    </div>
+    <div id="mensagemAdmin" class="message" aria-live="polite"></div>
+</section>
+
+<section>
+    <div class="section-heading">
+        <h2>Políticas vigentes</h2>
+        <button type="button" id="atualizarVigentes" class="secondary-button">Atualizar lista</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Título</th>
+                <th class="n">Versão</th>
+                <th>Obrigatória</th>
+                <th>Publicada em</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="listaVigentes">
+            <tr><td colspan="5">Selecione uma empresa para ver as políticas.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="secaoVersoes" hidden>
+    <div class="section-heading">
+        <h2 id="tituloVersoes">Histórico de versões</h2>
+        <button type="button" id="fecharVersoes" class="secondary-button">Fechar histórico</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th class="n">Versão</th>
+                <th>Título</th>
+                <th>Obrigatória</th>
+                <th>Situação</th>
+                <th>Publicada em</th>
+                <th>Texto</th>
+            </tr>
+            </thead>
+            <tbody id="listaVersoes"></tbody>
+        </table>
+    </div>
+    <pre id="textoVersao" hidden></pre>
+</section>
+
+<section id="colaborador">
+    <h2>Aceite do colaborador</h2>
+    <p class="note">Provisório: enquanto não existe login de colaborador, escolha a empresa e o colaborador. O aceite
+        fica registrado com o colaborador, a versão da política e a data.</p>
+    <div class="form-row">
+        <div class="ctl">
+            <label for="empresaColaborador">Empresa</label>
+            <select id="empresaColaborador" required>
+                <option value="">Carregando empresas...</option>
+            </select>
+        </div>
+        <div class="ctl">
+            <label for="funcionarioId">Colaborador</label>
+            <select id="funcionarioId" disabled required>
+                <option value="">Selecione o colaborador</option>
+            </select>
+        </div>
+    </div>
+    <div id="mensagemColaborador" class="message" aria-live="polite"></div>
+</section>
+
+<section aria-label="Resumo dos aceites do colaborador">
+    <div class="metric-grid">
+        <div class="metric-card"><span>Políticas vigentes</span><strong id="resumoVigentes">-</strong></div>
+        <div class="metric-card"><span>Pendentes</span><strong id="resumoPendentes">-</strong></div>
+        <div class="metric-card"><span>Aceites registrados</span><strong id="resumoAceites">-</strong></div>
+    </div>
+</section>
+
+<section>
+    <h2>Situação das políticas vigentes</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Política</th>
+                <th class="n">Versão</th>
+                <th>Obrigatória</th>
+                <th>Situação</th>
+            </tr>
+            </thead>
+            <tbody id="listaSituacao">
+            <tr><td colspan="4">Selecione um colaborador para ver a situação.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>Políticas para ler e aceitar</h2>
+    <div id="listaParaAceitar"></div>
+</section>
+
+<section>
+    <h2>Histórico de aceites</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Política</th>
+                <th class="n">Versão</th>
+                <th>Data do aceite</th>
+            </tr>
+            </thead>
+            <tbody id="listaAceites">
+            <tr><td colspan="3">Selecione um colaborador para ver os aceites.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    const mensagemAdmin = document.getElementById('mensagemAdmin');
+    const mensagemColaborador = document.getElementById('mensagemColaborador');
+    const empresaAdminSelect = document.getElementById('empresaAdmin');
+    const empresaColaboradorSelect = document.getElementById('empresaColaborador');
+    const funcionarioSelect = document.getElementById('funcionarioId');
+    const tituloInput = document.getElementById('titulo');
+    const conteudoInput = document.getElementById('conteudo');
+    const obrigatoriaSelect = document.getElementById('obrigatoria');
+    const botaoPublicar = document.getElementById('publicar');
+    const botaoCancelarEdicao = document.getElementById('cancelarEdicao');
+    const avisoEdicao = document.getElementById('editando');
+    const secaoVersoes = document.getElementById('secaoVersoes');
+    const textoVersao = document.getElementById('textoVersao');
+    const listaParaAceitar = document.getElementById('listaParaAceitar');
+
+    // Política vigente que está ganhando uma nova versão; sem ela, "Publicar" cria uma política nova (versão 1).
+    let politicaEmEdicao = null;
+
+    function mostrarMensagem(elemento, texto, tipo) {
+        elemento.textContent = texto || '';
+        elemento.classList.remove('erro', 'sucesso');
+        if (tipo) elemento.classList.add(tipo);
+    }
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    function enviarJson(url, metodo, dados) {
+        return fetch(url, {method: metodo, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados)});
+    }
+
+    function formatarDataHora(valor) {
+        return valor ? new Date(valor).toLocaleString('pt-BR') : '';
+    }
+
+    const simOuNao = (valor) => valor ? 'Sim' : 'Não';
+
+    function preencherSelect(select, itens, vazio) {
+        select.innerHTML = '';
+        select.appendChild(new Option(vazio, ''));
+        for (const item of itens) select.appendChild(new Option(item.nome, item.id));
+    }
+
+    function linhaUnica(id, colunas, texto) {
+        const corpo = document.getElementById(id);
+        corpo.innerHTML = '';
+        const cell = corpo.insertRow().insertCell();
+        cell.colSpan = colunas;
+        cell.textContent = texto;
+    }
+
+    // Acrescenta uma linha à tabela; cada valor é texto ou um elemento (pill, botão).
+    function adicionarLinha(corpo, valores, colunasNumericas = []) {
+        const tr = corpo.insertRow();
+        valores.forEach((valor, i) => {
+            const cell = tr.insertCell();
+            if (valor instanceof Node) cell.appendChild(valor);
+            else cell.textContent = valor ?? '';
+            if (colunasNumericas.includes(i)) cell.className = 'n';
+        });
+    }
+
+    function criarPill(texto, tipo) {
+        const pill = document.createElement('span');
+        pill.className = tipo ? `pill ${tipo}` : 'pill';
+        pill.textContent = texto;
+        return pill;
+    }
+
+    function criarBotao(texto, aoClicar, classe) {
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.textContent = texto;
+        if (classe) botao.className = classe;
+        botao.addEventListener('click', aoClicar);
+        return botao;
+    }
+
+    async function carregarEmpresas() {
+        const empresas = await lerResposta(await fetch('/api/empresa'));
+        const itens = empresas.map(empresa => ({id: empresa.id, nome: `${empresa.name} (${empresa.area})`}));
+        const vazio = empresas.length ? 'Selecione uma empresa' : 'Cadastre uma empresa primeiro';
+        preencherSelect(empresaAdminSelect, itens, vazio);
+        preencherSelect(empresaColaboradorSelect, itens, vazio);
+    }
+
+    // ---------------------------------------------------------------- Administrador
+
+    async function carregarPoliticasVigentes() {
+        if (!empresaAdminSelect.value) {
+            linhaUnica('listaVigentes', 5, 'Selecione uma empresa para ver as políticas.');
+            return;
+        }
+        const politicas = await lerResposta(await fetch(`/api/politicas?empresaId=${encodeURIComponent(empresaAdminSelect.value)}`));
+        if (!politicas.length) {
+            linhaUnica('listaVigentes', 5, 'Nenhuma política publicada para esta empresa.');
+            return;
+        }
+        const corpo = document.getElementById('listaVigentes');
+        corpo.innerHTML = '';
+        for (const politica of politicas) {
+            const acoes = document.createElement('div');
+            acoes.append(
+                criarBotao('Nova versão', () => iniciarNovaVersao(politica), 'secondary-button'), ' ',
+                criarBotao('Histórico', () => carregarVersoes(politica.codigo), 'secondary-button'));
+            adicionarLinha(corpo, [politica.titulo, politica.versao, simOuNao(politica.obrigatoria),
+                formatarDataHora(politica.publicadaEm), acoes], [1]);
+        }
+    }
+
+    function iniciarNovaVersao(politica) {
+        politicaEmEdicao = politica;
+        empresaAdminSelect.value = politica.empresaId;
+        empresaAdminSelect.disabled = true;
+        tituloInput.value = politica.titulo;
+        conteudoInput.value = politica.conteudo;
+        obrigatoriaSelect.value = String(politica.obrigatoria);
+        // RN14: a versão atual não é apagada, só deixa de ser a vigente.
+        avisoEdicao.textContent = `Nova versão de "${politica.titulo}": ao publicar, ela vira a versão ${politica.versao + 1} `
+            + `e a versão ${politica.versao} continua no histórico.`;
+        avisoEdicao.hidden = false;
+        botaoCancelarEdicao.hidden = false;
+        botaoPublicar.textContent = `Publicar versão ${politica.versao + 1}`;
+        mostrarMensagem(mensagemAdmin, '');
+        tituloInput.focus();
+    }
+
+    function limparFormulario() {
+        politicaEmEdicao = null;
+        empresaAdminSelect.disabled = false;
+        tituloInput.value = '';
+        conteudoInput.value = '';
+        obrigatoriaSelect.value = 'true';
+        avisoEdicao.hidden = true;
+        botaoCancelarEdicao.hidden = true;
+        botaoPublicar.textContent = 'Publicar';
+    }
+
+    async function publicar() {
+        try {
+            const titulo = tituloInput.value.trim();
+            const conteudo = conteudoInput.value.trim();
+            if (!empresaAdminSelect.value) throw new Error('Selecione a empresa');
+            if (!titulo) throw new Error('Título da política obrigatório');
+            if (!conteudo) throw new Error('Conteúdo da política obrigatório');
+
+            botaoPublicar.disabled = true;
+            const dados = {empresaId: empresaAdminSelect.value, titulo, conteudo, obrigatoria: obrigatoriaSelect.value === 'true'};
+            const politica = politicaEmEdicao
+                ? await lerResposta(await enviarJson(`/api/politicas/${encodeURIComponent(politicaEmEdicao.codigo)}`, 'PUT', dados))
+                : await lerResposta(await enviarJson('/api/politicas', 'POST', dados));
+
+            mostrarMensagem(mensagemAdmin, `"${politica.titulo}" publicada na versão ${politica.versao} para ${politica.empresaNome}.`, 'sucesso');
+            limparFormulario();
+            await carregarPoliticasVigentes();
+            if (!secaoVersoes.hidden) await carregarVersoes(politica.codigo);
+            if (funcionarioSelect.value) await carregarColaborador();
+        } catch (e) {
+            mostrarMensagem(mensagemAdmin, e.message, 'erro');
+        } finally {
+            botaoPublicar.disabled = false;
+        }
+    }
+
+    async function carregarVersoes(codigo) {
+        try {
+            const versoes = await lerResposta(await fetch(`/api/politicas/${encodeURIComponent(codigo)}/versoes`));
+            document.getElementById('tituloVersoes').textContent = `Histórico de versões: ${versoes[0].titulo}`;
+            textoVersao.hidden = true;
+            const corpo = document.getElementById('listaVersoes');
+            corpo.innerHTML = '';
+            for (const versao of versoes) {
+                const situacao = versao.vigente ? criarPill('Vigente', 'good') : criarPill('Substituída');
+                adicionarLinha(corpo, [versao.versao, versao.titulo, simOuNao(versao.obrigatoria), situacao,
+                    formatarDataHora(versao.publicadaEm), criarBotao('Ver texto', () => mostrarTextoDaVersao(versao), 'secondary-button')], [0]);
+            }
+            secaoVersoes.hidden = false;
+        } catch (e) {
+            mostrarMensagem(mensagemAdmin, e.message, 'erro');
+        }
+    }
+
+    function mostrarTextoDaVersao(versao) {
+        textoVersao.textContent = `Versão ${versao.versao} - ${versao.titulo}\n\n${versao.conteudo}`;
+        textoVersao.hidden = false;
+    }
+
+    // ---------------------------------------------------------------- Colaborador
+
+    async function carregarFuncionarios() {
+        preencherSelect(funcionarioSelect, [], 'Selecione o colaborador');
+        funcionarioSelect.disabled = !empresaColaboradorSelect.value;
+        limparColaborador();
+        if (!empresaColaboradorSelect.value) return;
+
+        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaColaboradorSelect.value)}`));
+        preencherSelect(funcionarioSelect, funcionarios.map(funcionario => ({
+            id: funcionario.id,
+            nome: funcionario.cargo ? `${funcionario.nome} (${funcionario.cargo})` : funcionario.nome
+        })), 'Selecione o colaborador');
+    }
+
+    function limparColaborador() {
+        for (const id of ['resumoVigentes', 'resumoPendentes', 'resumoAceites']) {
+            document.getElementById(id).textContent = '-';
+        }
+        linhaUnica('listaSituacao', 4, 'Selecione um colaborador para ver a situação.');
+        linhaUnica('listaAceites', 3, 'Selecione um colaborador para ver os aceites.');
+        listaParaAceitar.innerHTML = '';
+    }
+
+    async function carregarColaborador() {
+        try {
+            if (!funcionarioSelect.value) {
+                limparColaborador();
+                return;
+            }
+            const empresaId = encodeURIComponent(empresaColaboradorSelect.value);
+            const funcionarioId = encodeURIComponent(funcionarioSelect.value);
+            const [vigentes, pendentes, aceites] = await Promise.all([
+                fetch(`/api/politicas?empresaId=${empresaId}`).then(lerResposta),
+                fetch(`/api/politicas/pendentes?empresaId=${empresaId}&funcionarioId=${funcionarioId}`).then(lerResposta),
+                fetch(`/api/politicas/aceites?funcionarioId=${funcionarioId}`).then(lerResposta)
+            ]);
+            const idsAceitos = new Set(aceites.map(aceite => aceite.politicaId));
+            const idsPendentes = new Set(pendentes.map(politica => politica.id));
+
+            mostrarResumo(vigentes, pendentes, aceites);
+            mostrarSituacao(vigentes, idsAceitos, idsPendentes);
+            mostrarPoliticasParaAceitar(vigentes.filter(politica => !idsAceitos.has(politica.id)), idsPendentes);
+            mostrarAceites(aceites);
+        } catch (e) {
+            mostrarMensagem(mensagemColaborador, e.message, 'erro');
+        }
+    }
+
+    function mostrarResumo(vigentes, pendentes, aceites) {
+        document.getElementById('resumoVigentes').textContent = vigentes.length;
+        document.getElementById('resumoPendentes').textContent = pendentes.length;
+        document.getElementById('resumoAceites').textContent = aceites.length;
+    }
+
+    function situacaoDaPolitica(politica, idsAceitos, idsPendentes) {
+        if (idsAceitos.has(politica.id)) return criarPill('Aceita', 'good');
+        if (idsPendentes.has(politica.id)) return criarPill('Pendente', 'warn');
+        return criarPill('Não aceita (opcional)');
+    }
+
+    function mostrarSituacao(vigentes, idsAceitos, idsPendentes) {
+        if (!vigentes.length) {
+            linhaUnica('listaSituacao', 4, 'Nenhuma política vigente para esta empresa.');
+            return;
+        }
+        const corpo = document.getElementById('listaSituacao');
+        corpo.innerHTML = '';
+        for (const politica of vigentes) {
+            adicionarLinha(corpo, [politica.titulo, politica.versao, simOuNao(politica.obrigatoria),
+                situacaoDaPolitica(politica, idsAceitos, idsPendentes)], [1]);
+        }
+    }
+
+    // Cada política ainda não aceita aparece com o texto completo e o botão "Li e aceito".
+    function mostrarPoliticasParaAceitar(naoAceitas, idsPendentes) {
+        listaParaAceitar.innerHTML = '';
+        if (!naoAceitas.length) {
+            const vazio = document.createElement('p');
+            vazio.className = 'muted';
+            vazio.textContent = 'Nenhuma política aguardando aceite deste colaborador.';
+            listaParaAceitar.appendChild(vazio);
+            return;
+        }
+        for (const politica of naoAceitas) {
+            const caixa = document.createElement('section');
+            caixa.className = 'info-box';
+            const titulo = document.createElement('h3');
+            titulo.textContent = politica.titulo;
+            const texto = document.createElement('pre');
+            texto.textContent = politica.conteudo;
+            const situacao = idsPendentes.has(politica.id) ? criarPill('Pendente', 'warn') : criarPill('Opcional');
+            const versao = criarPill(`Versão ${politica.versao} · publicada em ${formatarDataHora(politica.publicadaEm)}`);
+            const acoes = document.createElement('div');
+            acoes.appendChild(criarBotao('Li e aceito', (evento) => aceitar(politica, evento.currentTarget)));
+            caixa.append(titulo, situacao, versao, texto, acoes);
+            listaParaAceitar.appendChild(caixa);
+        }
+    }
+
+    function mostrarAceites(aceites) {
+        if (!aceites.length) {
+            linhaUnica('listaAceites', 3, 'Nenhum aceite registrado para este colaborador.');
+            return;
+        }
+        const corpo = document.getElementById('listaAceites');
+        corpo.innerHTML = '';
+        for (const aceite of aceites) {
+            adicionarLinha(corpo, [aceite.titulo, aceite.versao, formatarDataHora(aceite.dataAceite)], [1]);
+        }
+    }
+
+    async function aceitar(politica, botao) {
+        try {
+            botao.disabled = true;
+            const aceite = await lerResposta(await enviarJson('/api/politicas/aceites', 'POST', {
+                funcionarioId: funcionarioSelect.value, politicaId: politica.id
+            }));
+            mostrarMensagem(mensagemColaborador,
+                `Aceite de "${aceite.titulo}" (versão ${aceite.versao}) registrado em ${formatarDataHora(aceite.dataAceite)}.`, 'sucesso');
+            await carregarColaborador();
+        } catch (e) {
+            botao.disabled = false;
+            mostrarMensagem(mensagemColaborador, e.message, 'erro');
+        }
+    }
+
+    // Link vindo do Consumo de IA quando o uso é bloqueado: ?empresaId=...&funcionarioId=...#colaborador
+    async function abrirColaboradorDoLink() {
+        const parametros = new URLSearchParams(window.location.search);
+        const empresaId = parametros.get('empresaId');
+        const funcionarioId = parametros.get('funcionarioId');
+        if (!empresaId) return;
+
+        empresaAdminSelect.value = empresaId;
+        empresaColaboradorSelect.value = empresaId;
+        await Promise.all([carregarPoliticasVigentes(), carregarFuncionarios()]);
+        if (!funcionarioId) return;
+
+        funcionarioSelect.value = funcionarioId;
+        await carregarColaborador();
+        document.getElementById('colaborador').scrollIntoView();
+    }
+
+    botaoPublicar.addEventListener('click', publicar);
+    botaoCancelarEdicao.addEventListener('click', () => {
+        limparFormulario();
+        mostrarMensagem(mensagemAdmin, '');
+    });
+    document.getElementById('atualizarVigentes').addEventListener('click', () =>
+        carregarPoliticasVigentes().catch(e => mostrarMensagem(mensagemAdmin, e.message, 'erro')));
+    document.getElementById('fecharVersoes').addEventListener('click', () => {
+        secaoVersoes.hidden = true;
+    });
+    empresaAdminSelect.addEventListener('change', () => {
+        mostrarMensagem(mensagemAdmin, '');
+        secaoVersoes.hidden = true;
+        carregarPoliticasVigentes().catch(e => mostrarMensagem(mensagemAdmin, e.message, 'erro'));
+    });
+    empresaColaboradorSelect.addEventListener('change', () => {
+        mostrarMensagem(mensagemColaborador, '');
+        carregarFuncionarios().catch(e => mostrarMensagem(mensagemColaborador, e.message, 'erro'));
+    });
+    funcionarioSelect.addEventListener('change', () => {
+        mostrarMensagem(mensagemColaborador, '');
+        carregarColaborador();
+    });
+
+    carregarEmpresas()
+        .then(abrirColaboradorDoLink)
+        .catch(e => mostrarMensagem(mensagemAdmin, e.message, 'erro'));
+</script>
+<script src="./auth.js"></script>
+</body>
+</html>

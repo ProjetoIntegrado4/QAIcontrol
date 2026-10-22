@@ -19,6 +19,7 @@
     <a href="./dashboard.html">Dashboard</a>
     <a href="./produtividade.html">Produtividade IA</a>
     <a href="./custos.html">Custos de IA</a>
+    <a href="./governanca.html">Governança</a>
 </nav>
 
 <h1>Registrar Consumo de IA</h1>
@@ -28,6 +29,9 @@
     <h2>Novo consumo</h2>
     <div class="form-row">
         <select id="empresaId"></select>
+        <select id="funcionarioId" aria-label="Colaborador (opcional)">
+            <option value="">Sem colaborador (opcional)</option>
+        </select>
         <input id="tokens" type="number" min="1" value="100" placeholder="Tokens">
         <input id="modelo" value="gpt-demo" placeholder="Modelo">
         <button type="button" onclick="consumir()">Registrar consumo</button>
@@ -40,6 +44,7 @@
     const out = document.getElementById('out');
     const alerta = document.getElementById('alerta');
     const empresaSelect = document.getElementById('empresaId');
+    const funcionarioSelect = document.getElementById('funcionarioId');
 
     async function lerResposta(response) {
         const text = await response.text();
@@ -72,6 +77,35 @@
         }
     }
 
+    // US PP-21: colaborador opcional. Com ele, o uso só é registrado se as políticas obrigatórias estiverem aceitas.
+    async function carregarFuncionarios() {
+        funcionarioSelect.innerHTML = '<option value="">Sem colaborador (opcional)</option>';
+        if (!empresaSelect.value) return;
+
+        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        for (const funcionario of funcionarios) {
+            const option = document.createElement('option');
+            option.value = funcionario.id;
+            option.textContent = funcionario.nome;
+            funcionarioSelect.appendChild(option);
+        }
+    }
+
+    // Uso bloqueado por falta de aceite: mostra as políticas pendentes e o link para a tela de aceite.
+    async function mostrarPendencias() {
+        const empresaId = encodeURIComponent(empresaSelect.value);
+        const funcionarioId = encodeURIComponent(funcionarioSelect.value);
+        const pendentes = await lerResposta(await fetch(`/api/politicas/pendentes?empresaId=${empresaId}&funcionarioId=${funcionarioId}`));
+        if (!pendentes.length) return;
+
+        const link = document.createElement('a');
+        link.href = `./governanca.html?empresaId=${empresaId}&funcionarioId=${funcionarioId}#colaborador`;
+        link.textContent = 'Ir para o aceite';
+        alerta.textContent = 'Uso bloqueado. Políticas pendentes: '
+            + pendentes.map(politica => `${politica.titulo} (versão ${politica.versao})`).join(', ') + '. ';
+        alerta.appendChild(link);
+    }
+
     async function consumir() {
         try {
             if (!empresaSelect.value) throw new Error('Cadastre e selecione uma empresa.');
@@ -82,7 +116,9 @@
                 body: JSON.stringify({
                     empresaId: empresaSelect.value,
                     tokens: Number(document.getElementById('tokens').value),
-                    model: document.getElementById('modelo').value
+                    model: document.getElementById('modelo').value,
+                    // Sem colaborador fica undefined e o JSON sai igual ao de antes da US PP-21.
+                    funcionarioId: funcionarioSelect.value || undefined
                 })
             }));
 
@@ -90,10 +126,18 @@
             alerta.textContent = `${body.alertLevel}: ${body.alertMessage}`;
         } catch (e) {
             out.textContent = e.message;
+            // O erro principal já está em "out"; se as pendências não puderem ser lidas, não há o que acrescentar.
+            if (funcionarioSelect.value) mostrarPendencias().catch(() => {});
         }
     }
 
-    carregarEmpresas().catch(e => {
+    empresaSelect.addEventListener('change', () => {
+        carregarFuncionarios().catch(e => {
+            out.textContent = e.message;
+        });
+    });
+
+    carregarEmpresas().then(carregarFuncionarios).catch(e => {
         out.textContent = e.message;
     });
 </script>

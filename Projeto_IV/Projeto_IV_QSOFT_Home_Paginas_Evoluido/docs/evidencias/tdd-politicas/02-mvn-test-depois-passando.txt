@@ -1,0 +1,208 @@
+# PS-72 - Evidencia TDD (fase verde): mesmos testes da fase vermelha passando com o backend de politicas (US PP-21)
+# Branch: feature/politicas-lgpd | Data: 2026-10-22 11:20:53 | Comando: mvn -B test
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< br.edu.exemplo:qsoft-ia-backend >-------------------
+[INFO] Building QSOFT IA Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.13:prepare-agent (prepare-agent) @ qsoft-ia-backend ---
+[INFO] argLine set to "-javaagent:C:\\Users\\Gustavo Carvalho\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.13\\org.jacoco.agent-0.8.13-runtime.jar=destfile=C:\\Users\\Gustavo Carvalho\\Desktop\\PI\\QAIcontrol\\Projeto_IV\\Projeto_IV_QSOFT_Home_Paginas_Evoluido\\target\\jacoco.exec"
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ qsoft-ia-backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ qsoft-ia-backend ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ qsoft-ia-backend ---
+[INFO] skip non existing resourceDirectory C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ qsoft-ia-backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 47 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: Some input files use unchecked or unsafe operations.
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ qsoft-ia-backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.edu.exemplo.ia.config.CustosConfigTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.210 s -- in br.edu.exemplo.ia.config.CustosConfigTest
+[INFO] Running br.edu.exemplo.ia.config.ProdutividadeConfigTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.122 s -- in br.edu.exemplo.ia.config.ProdutividadeConfigTest
+[INFO] Running br.edu.exemplo.ia.controller.ApiExceptionHandlerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in br.edu.exemplo.ia.controller.ApiExceptionHandlerTest
+[INFO] Running br.edu.exemplo.ia.controller.AuthControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\Gustavo Carvalho\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.063 s -- in br.edu.exemplo.ia.controller.AuthControllerTest
+[INFO] Running br.edu.exemplo.ia.controller.CertificacaoControllerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in br.edu.exemplo.ia.controller.CertificacaoControllerTest
+[INFO] Running br.edu.exemplo.ia.controller.CrudControllersTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.240 s -- in br.edu.exemplo.ia.controller.CrudControllersTest
+[INFO] Running br.edu.exemplo.ia.controller.CustosControllerTest
+11:21:10.385 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.edu.exemplo.ia.controller.CustosControllerTest]: CustosControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:21:10.740 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.edu.exemplo.ia.LayeredApplication for test class br.edu.exemplo.ia.controller.CustosControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2026-10-22T11:21:11.521-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.controller.CustosControllerTest  : Starting CustosControllerTest using Java 25.0.2 with PID 11580 (started by Gustavo Carvalho in C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido)
+2026-10-22T11:21:11.524-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.controller.CustosControllerTest  : No active profile set, falling back to 1 default profile: "default"
+2026-10-22T11:21:13.794-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2026-10-22T11:21:14.770-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-22T11:21:14.770-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-22T11:21:14.772-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-10-22T11:21:14.809-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.controller.CustosControllerTest  : Started CustosControllerTest in 3.909 seconds (process running for 10.935)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.051 s -- in br.edu.exemplo.ia.controller.CustosControllerTest
+[INFO] Running br.edu.exemplo.ia.controller.PoliticaControllerTest
+2026-10-22T11:21:15.304-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [br.edu.exemplo.ia.controller.PoliticaControllerTest]: PoliticaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-22T11:21:15.323-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration br.edu.exemplo.ia.LayeredApplication for test class br.edu.exemplo.ia.controller.PoliticaControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2026-10-22T11:21:15.378-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.PoliticaControllerTest         : Starting PoliticaControllerTest using Java 25.0.2 with PID 11580 (started by Gustavo Carvalho in C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido)
+2026-10-22T11:21:15.378-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.PoliticaControllerTest         : No active profile set, falling back to 1 default profile: "default"
+2026-10-22T11:21:15.946-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2026-10-22T11:21:16.119-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-22T11:21:16.119-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-22T11:21:16.120-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-10-22T11:21:16.130-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.PoliticaControllerTest         : Started PoliticaControllerTest in 0.8 seconds (process running for 12.255)
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.302 s -- in br.edu.exemplo.ia.controller.PoliticaControllerTest
+[INFO] Running br.edu.exemplo.ia.controller.ProdutividadeControllerTest
+2026-10-22T11:21:16.606-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [br.edu.exemplo.ia.controller.ProdutividadeControllerTest]: ProdutividadeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-22T11:21:16.626-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration br.edu.exemplo.ia.LayeredApplication for test class br.edu.exemplo.ia.controller.ProdutividadeControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2026-10-22T11:21:16.678-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.ProdutividadeControllerTest    : Starting ProdutividadeControllerTest using Java 25.0.2 with PID 11580 (started by Gustavo Carvalho in C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido)
+2026-10-22T11:21:16.678-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.ProdutividadeControllerTest    : No active profile set, falling back to 1 default profile: "default"
+2026-10-22T11:21:17.196-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2026-10-22T11:21:17.325-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-22T11:21:17.325-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-22T11:21:17.326-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-10-22T11:21:17.338-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.c.ProdutividadeControllerTest    : Started ProdutividadeControllerTest in 0.706 seconds (process running for 13.464)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.810 s -- in br.edu.exemplo.ia.controller.ProdutividadeControllerTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.AdminTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in br.edu.exemplo.ia.domain.entity.AdminTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.AIUsageTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in br.edu.exemplo.ia.domain.entity.AIUsageTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.CertificacaoTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in br.edu.exemplo.ia.domain.entity.CertificacaoTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.EmpresaTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in br.edu.exemplo.ia.domain.entity.EmpresaTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.FuncionarioTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in br.edu.exemplo.ia.domain.entity.FuncionarioTest
+[INFO] Running br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.AdminVOTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in br.edu.exemplo.ia.domain.vo.AdminVOTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.AIUsageVOTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in br.edu.exemplo.ia.domain.vo.AIUsageVOTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.DomainValueObjectsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in br.edu.exemplo.ia.domain.vo.DomainValueObjectsTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.EmpresaDadosVOTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in br.edu.exemplo.ia.domain.vo.EmpresaDadosVOTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.EmpresaVOTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in br.edu.exemplo.ia.domain.vo.EmpresaVOTest
+[INFO] Running br.edu.exemplo.ia.domain.vo.FuncionarioVOTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in br.edu.exemplo.ia.domain.vo.FuncionarioVOTest
+[INFO] Running br.edu.exemplo.ia.domainTeste.vo.CamposTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in br.edu.exemplo.ia.domainTeste.vo.CamposTest
+[INFO] Running br.edu.exemplo.ia.domainTeste.vo.CpfTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in br.edu.exemplo.ia.domainTeste.vo.CpfTest
+[INFO] Running br.edu.exemplo.ia.integration.alert.NodeAlertClientTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.593 s -- in br.edu.exemplo.ia.integration.alert.NodeAlertClientTest
+[INFO] Running br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.691 s -- in br.edu.exemplo.ia.repository.custos.CustosConsultasTest
+[INFO] Running br.edu.exemplo.ia.repository.produtividade.CatalogoBancoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.857 s -- in br.edu.exemplo.ia.repository.produtividade.CatalogoBancoTest
+[INFO] Running br.edu.exemplo.ia.repository.produtividade.ConsultasTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.329 s -- in br.edu.exemplo.ia.repository.produtividade.ConsultasTest
+[INFO] Running br.edu.exemplo.ia.repository.produtividade.EsquemaBaseTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.136 s -- in br.edu.exemplo.ia.repository.produtividade.EsquemaBaseTest
+[INFO] Running br.edu.exemplo.ia.service.AdminServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.604 s -- in br.edu.exemplo.ia.service.AdminServiceTest
+[INFO] Running br.edu.exemplo.ia.service.AuthServiceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.558 s -- in br.edu.exemplo.ia.service.AuthServiceTest
+[INFO] Running br.edu.exemplo.ia.service.CertificacaoServiceTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.306 s -- in br.edu.exemplo.ia.service.CertificacaoServiceTest
+[INFO] Running br.edu.exemplo.ia.service.custos.CustosServiceTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.397 s -- in br.edu.exemplo.ia.service.custos.CustosServiceTest
+[INFO] Running br.edu.exemplo.ia.service.custos.RegraCustoTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in br.edu.exemplo.ia.service.custos.RegraCustoTest
+[INFO] Running br.edu.exemplo.ia.service.EmpresaServiceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in br.edu.exemplo.ia.service.EmpresaServiceTest
+[INFO] Running br.edu.exemplo.ia.service.FuncionarioServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in br.edu.exemplo.ia.service.FuncionarioServiceTest
+[INFO] Running br.edu.exemplo.ia.service.PoliticaServiceTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 s -- in br.edu.exemplo.ia.service.PoliticaServiceTest
+[INFO] Running br.edu.exemplo.ia.service.PontuacaoAiLiteracyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in br.edu.exemplo.ia.service.PontuacaoAiLiteracyTest
+[INFO] Running br.edu.exemplo.ia.service.produtividade.importacao.ProdutividadeCsvImporterTest
+2026-10-22T11:21:22.552-03:00 ERROR 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: falha ao importar C:\Users\GUSTAV~1\AppData\Local\Temp\junit-12924200932034362311\a.csv: nome inválido para tabela/coluna: nome invalido
+2026-10-22T11:21:22.558-03:00 ERROR 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: falha ao importar C:\Users\GUSTAV~1\AppData\Local\Temp\junit-12924200932034362311\b.csv: arquivo vazio
+2026-10-22T11:21:22.656-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: 1 linhas importadas em c (98 ms).
+2026-10-22T11:21:22.689-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: 2 linhas importadas em fornecedores (6 ms).
+2026-10-22T11:21:22.699-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: pasta de CSVs C:\Users\GUSTAV~1\AppData\Local\Temp\junit-12330728349090664884\nao-existe não encontrada; usando apenas o que já está no banco.
+2026-10-22T11:21:22.718-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: 501 linhas importadas em departments (7 ms).
+2026-10-22T11:21:22.751-03:00  INFO 11580 --- [qsoft-ia-backend] [           main] b.e.e.i.s.p.i.ProdutividadeCsvImporter   : Produtividade: 2 linhas importadas em uso (4 ms).
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.241 s -- in br.edu.exemplo.ia.service.produtividade.importacao.ProdutividadeCsvImporterTest
+[INFO] Running br.edu.exemplo.ia.service.produtividade.importacao.TipoColunaTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in br.edu.exemplo.ia.service.produtividade.importacao.TipoColunaTest
+[INFO] Running br.edu.exemplo.ia.service.produtividade.ProdutividadeServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.265 s -- in br.edu.exemplo.ia.service.produtividade.ProdutividadeServiceTest
+[INFO] Running br.edu.exemplo.ia.service.produtividade.secao.SecoesTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.546 s -- in br.edu.exemplo.ia.service.produtividade.secao.SecoesTest
+[INFO] Running br.edu.exemplo.ia.service.produtividade.ValoresTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in br.edu.exemplo.ia.service.produtividade.ValoresTest
+[INFO] Running br.edu.exemplo.ia.service.SecurityConfigTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.278 s -- in br.edu.exemplo.ia.service.SecurityConfigTest
+[INFO] Running br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.260 s -- in br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[INFO] Running br.edu.exemplo.ia.service.UsageServiceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in br.edu.exemplo.ia.service.UsageServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 251, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  28.749 s
+[INFO] Finished at: 2026-10-22T11:21:24-03:00
+[INFO] ------------------------------------------------------------------------

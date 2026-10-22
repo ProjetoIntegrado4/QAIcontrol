@@ -202,3 +202,6 @@ body.login-page { min-height: 100vh; place-content: center; padding-block: 24px 
 .form-row > .ctl > input, .form-row > .ctl > select { width: 100%; min-width: 0 }
 .message.erro { color: var(--crit-ink) }
 .message.sucesso { color: var(--good-ink) }
+
+/* Tela de Governança */
+textarea { font: 15px var(--f-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-height: 8em; resize: vertical }

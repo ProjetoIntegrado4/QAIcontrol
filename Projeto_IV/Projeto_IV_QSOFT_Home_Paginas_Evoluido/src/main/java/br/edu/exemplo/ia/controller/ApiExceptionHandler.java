@@ -1,5 +1,7 @@
 package br.edu.exemplo.ia.controller;
 
+import br.edu.exemplo.ia.service.AceitePendenteException;
+import br.edu.exemplo.ia.service.NaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +19,19 @@ public class ApiExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(NaoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> handleNaoEncontrado(NaoEncontradoException ex) {
+        return error(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    // US PP-21 (BDD 2): uso de IA bloqueado; devolve também as políticas que faltam aceitar.
+    @ExceptionHandler(AceitePendenteException.class)
+    public ResponseEntity<Map<String, Object>> handleAceitePendente(AceitePendenteException ex) {
+        ResponseEntity<Map<String, Object>> response = error(HttpStatus.CONFLICT, ex.getMessage());
+        response.getBody().put("pendentes", ex.getPendentes());
+        return response;
     }
 
     @ExceptionHandler(AuthenticationException.class)

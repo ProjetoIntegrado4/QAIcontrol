@@ -174,6 +174,75 @@ carregar os ~269 mil registros na memória.
 4. não existe "equipe" nos dados (só empresa, departamento, colaborador, projeto e centro de custo), então o filtro
    por equipe da US não foi implementado.
 
+## Políticas de uso de IA e aceite (US PP-21)
+
+Página `frontend/public/governanca.html` (menu "Governança"), com duas partes:
+
+- **Administrador:** escolhe a empresa, informa título e texto, marca se o aceite é obrigatório e clica em
+  "Publicar". A lista mostra as políticas vigentes com a versão; "Nova versão" carrega o texto atual para editar e
+  publica a versão seguinte; "Histórico" mostra todas as versões (vigente e substituídas) e o texto de cada uma.
+- **Colaborador (provisório):** como ainda não existe login de funcionário, o colaborador é escolhido pela empresa e
+  pelo nome. A tela mostra as políticas obrigatórias pendentes com o texto completo e o botão "Li e aceito", e o
+  histórico de aceites (versão e data).
+
+Em `consumo.html` há um seletor **opcional** de colaborador. Se o uso for bloqueado, aparece a mensagem com as
+políticas pendentes e um link que abre a Governança já no colaborador.
+
+**Endpoints** (exigem login como os demais; erros respondem com `message`: 400 validação, 401 sem login, 403 sem
+perfil Administrador, 404 empresa/funcionário/política inexistente, 409 uso bloqueado):
+
+- `POST /api/politicas` – publica a versão 1: `{"empresaId","titulo","conteudo","obrigatoria"}` (**só Administrador**);
+- `PUT /api/politicas/{codigo}` – publica a próxima versão (`empresaId` pode ser omitido; não pode trocar de empresa)
+  (**só Administrador**);
+- `GET /api/politicas?empresaId=...` – versões vigentes da empresa;
+- `GET /api/politicas/{codigo}/versoes` – histórico de versões, da mais recente para a mais antiga;
+- `GET /api/politicas/pendentes?empresaId=...&funcionarioId=...` – vigentes e obrigatórias que o colaborador não aceitou;
+- `POST /api/politicas/aceites` – `{"funcionarioId","politicaId"}`, em que `politicaId` é o `id` da **versão**;
+- `GET /api/politicas/aceites?funcionarioId=...` – histórico de aceites, incluindo versões antigas.
+
+`POST /api/usages` aceita o campo opcional `funcionarioId`. Sem ele, nada muda. Com ele, o funcionário precisa existir
+(404) e ser da empresa (400); se houver política vigente e obrigatória sem aceite, o uso **não é salvo** e a resposta é
+`409` com `"message": "Aceite da política de uso de IA obrigatório"` e a lista `pendentes`.
+
+**Regras**
+
+- cada linha de `politica_uso` é uma versão; as versões da mesma política têm o mesmo `codigo` e só a última fica
+  `vigente`. Nenhuma versão é apagada (RN14, CA-14.3);
+- título obrigatório (até 150 caracteres) e conteúdo obrigatório (até 20.000);
+- o aceite (`aceite_politica`) guarda funcionário, versão e data (RN15) e só pode ser feito na versão vigente, por
+  funcionário da mesma empresa da política;
+- nova versão exige novo aceite; o histórico de aceites continua disponível (CA-15.4);
+- aceitar de novo a mesma versão devolve o aceite existente (200), sem duplicar nem mudar a data;
+- política **não** obrigatória não bloqueia o uso;
+- RN04/CA-14.1: `POST`/`PUT` de política exigem `ROLE_ADMIN` (`SecurityConfig`). O admin temporário tem esse perfil.
+  Quando existir login de colaborador, ele não terá `ROLE_ADMIN` e receberá 403 ao tentar publicar.
+
+As tabelas `politica_uso` e `aceite_politica` são criadas pelo Hibernate (`ddl-auto: update`).
+
+Teste manual pela API (com o cookie de sessão e o token CSRF, como no navegador; pelo BFF basta usar a tela):
+
+```bash
+curl -c c.txt -b c.txt http://localhost:8080/api/auth/csrf
+TOKEN=$(grep XSRF-TOKEN c.txt | awk '{print $7}')
+curl -c c.txt -b c.txt -H "X-XSRF-TOKEN: $TOKEN" -H "Content-Type: application/json" \
+  -d '{"usuario":"admin@qsoft.com","senha":"Qsoft123!"}' http://localhost:8080/api/auth/login
+curl -b c.txt -H "X-XSRF-TOKEN: $TOKEN" -H "Content-Type: application/json" \
+  -d '{"empresaId":"UUID-DA-EMPRESA","titulo":"Uso responsável de IA","conteudo":"Não insira dados pessoais.","obrigatoria":true}' \
+  http://localhost:8080/api/politicas
+```
+
+Conformidade LGPD (dados guardados, finalidade, acesso, retenção e pontos em aberto):
+[`docs/lgpd/conformidade-politicas.md`](docs/lgpd/conformidade-politicas.md).
+
+**Limitações e pendências**
+
+1. não existe login de colaborador: o colaborador é escolhido na tela, e qualquer usuário autenticado consegue
+   registrar aceite ou consultar o histórico de qualquer colaborador. Com o login, o `funcionarioId` deve vir da sessão;
+2. o bloqueio só vale quando o registro de uso informa `funcionarioId` (usos sem colaborador continuam como antes);
+3. base legal, prazo de retenção e procedimento de exclusão/anonimização dos aceites estão **A VALIDAR** (ver o
+   documento LGPD);
+4. o comportamento do aceite repetido (devolver o existente em vez de 409) precisa ser confirmado com o PO.
+
 ## Painel de Produtividade de IA
 
 Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em

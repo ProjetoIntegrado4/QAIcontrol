@@ -1,0 +1,648 @@
+# PS-74 - Evidencia TDD (fase vermelha): testes de politicas e aceite LGPD (US PP-21) escritos ANTES do codigo
+# Branch: feature/politicas-lgpd | Data: 2026-10-22 11:17:38 | Comando: mvn -B test
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< br.edu.exemplo:qsoft-ia-backend >-------------------
+[INFO] Building QSOFT IA Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.13:prepare-agent (prepare-agent) @ qsoft-ia-backend ---
+[INFO] argLine set to "-javaagent:C:\\Users\\Gustavo Carvalho\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.13\\org.jacoco.agent-0.8.13-runtime.jar=destfile=C:\\Users\\Gustavo Carvalho\\Desktop\\PI\\QAIcontrol\\Projeto_IV\\Projeto_IV_QSOFT_Home_Paginas_Evoluido\\target\\jacoco.exec"
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ qsoft-ia-backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ qsoft-ia-backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 102 source files with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ qsoft-ia-backend ---
+[INFO] skip non existing resourceDirectory C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ qsoft-ia-backend ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 47 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: C:\Users\Gustavo Carvalho\Desktop\PI\QAIcontrol\Projeto_IV\Projeto_IV_QSOFT_Home_Paginas_Evoluido\src\test\java\br\edu\exemplo\ia\repository\produtividade\ConsultasTest.java uses unchecked or unsafe operations.
+[INFO] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/repository/produtividade/ConsultasTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[3,29] cannot find symbol
+  symbol:   class AceiteRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[4,29] cannot find symbol
+  symbol:   class AceiteResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[5,29] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[6,29] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[9,33] cannot find symbol
+  symbol:   class AceitePendenteException
+  location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[10,33] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[11,33] cannot find symbol
+  symbol:   class PoliticaUseCase
+  location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[59,13] cannot find symbol
+  symbol:   class PoliticaUseCase
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[64,20] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[13,19] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[3,39] cannot find symbol
+  symbol:   class AceitePolitica
+  location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[6,39] cannot find symbol
+  symbol:   class PoliticaUso
+  location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[8,29] cannot find symbol
+  symbol:   class AceiteRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[9,29] cannot find symbol
+  symbol:   class AceiteResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[10,29] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[11,29] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[12,36] cannot find symbol
+  symbol:   class AceitePoliticaRepository
+  location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[15,36] cannot find symbol
+  symbol:   class PoliticaUsoRepository
+  location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[39,13] cannot find symbol
+  symbol:   class PoliticaUsoRepository
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[40,13] cannot find symbol
+  symbol:   class AceitePoliticaRepository
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[43,13] cannot find symbol
+  symbol:   class PoliticaService
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[65,13] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[4,39] cannot find symbol
+  symbol:   class AceitePolitica
+  location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[7,39] cannot find symbol
+  symbol:   class PoliticaUso
+  location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[9,29] cannot find symbol
+  symbol:   class AceiteRequest
+  location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[14,36] cannot find symbol
+  symbol:   class AceitePoliticaRepository
+  location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[17,36] cannot find symbol
+  symbol:   class PoliticaUsoRepository
+  location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[46,13] cannot find symbol
+  symbol:   class PoliticaUsoRepository
+  location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[47,13] cannot find symbol
+  symbol:   class PoliticaService
+  location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[52,24] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[53,24] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[43,14] cannot find symbol
+  symbol: class PoliticaController
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[65,20] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[108,9] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[108,38] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[130,48] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[147,53] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[180,9] cannot find symbol
+  symbol:   class AceiteResponse
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[180,37] cannot find symbol
+  symbol:   class AceiteResponse
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[182,34] cannot find symbol
+  symbol:   class AceiteRequest
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[200,52] cannot find symbol
+  symbol:   class AceitePendenteException
+  location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[210,33] constructor UsageRequest in record br.edu.exemplo.ia.dto.UsageRequest cannot be applied to given types;
+  required: java.util.UUID,long,java.lang.String
+  found:    java.util.UUID,int,java.lang.String,java.util.UUID
+  reason: actual and formal argument lists differ in length
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[13,46] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[18,9] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[18,37] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[30,27] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[32,27] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[43,27] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[53,27] cannot find symbol
+  symbol:   class AceitePolitica
+  location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[18,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[18,29] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[34,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[36,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[38,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[40,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[42,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[54,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[56,27] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[56,71] cannot find symbol
+  symbol:   variable PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[60,31] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[66,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[66,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[68,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[85,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[85,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[94,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[94,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[50,35] cannot find symbol
+  symbol:   class PoliticaUsoRepository
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[51,33] cannot find symbol
+  symbol:   class AceitePoliticaRepository
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[54,23] cannot find symbol
+  symbol:   class PoliticaService
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[66,20] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[72,9] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[75,24] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[75,69] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[89,14] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[100,9] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[100,52] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[101,44] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[110,44] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[132,22] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[138,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[138,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[141,9] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[149,24] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[149,70] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[158,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[158,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[161,9] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[161,70] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[168,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[168,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[172,62] cannot find symbol
+  symbol:   class PoliticaRequest
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[184,9] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[184,52] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[192,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[192,30] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[193,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[196,14] cannot find symbol
+  symbol:   class PoliticaResponse
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[210,22] cannot find symbol
+  symbol:   class NaoEncontradoException
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[216,9] cannot find symbol
+  symbol:   class PoliticaUso
+  location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[INFO] 100 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.317 s
+[INFO] Finished at: 2026-10-22T11:17:54-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.0:testCompile (default-testCompile) on project qsoft-ia-backend: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[3,29] cannot find symbol
+[ERROR]   symbol:   class AceiteRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[4,29] cannot find symbol
+[ERROR]   symbol:   class AceiteResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[5,29] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[6,29] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[9,33] cannot find symbol
+[ERROR]   symbol:   class AceitePendenteException
+[ERROR]   location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[10,33] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[11,33] cannot find symbol
+[ERROR]   symbol:   class PoliticaUseCase
+[ERROR]   location: package br.edu.exemplo.ia.service
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[59,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaUseCase
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[64,20] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[13,19] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[3,39] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[6,39] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[8,29] cannot find symbol
+[ERROR]   symbol:   class AceiteRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[9,29] cannot find symbol
+[ERROR]   symbol:   class AceiteResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[10,29] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[11,29] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[12,36] cannot find symbol
+[ERROR]   symbol:   class AceitePoliticaRepository
+[ERROR]   location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[15,36] cannot find symbol
+[ERROR]   symbol:   class PoliticaUsoRepository
+[ERROR]   location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[39,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaUsoRepository
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[40,13] cannot find symbol
+[ERROR]   symbol:   class AceitePoliticaRepository
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[43,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaService
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[65,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[4,39] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[7,39] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: package br.edu.exemplo.ia.domain.entity
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[9,29] cannot find symbol
+[ERROR]   symbol:   class AceiteRequest
+[ERROR]   location: package br.edu.exemplo.ia.dto
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[14,36] cannot find symbol
+[ERROR]   symbol:   class AceitePoliticaRepository
+[ERROR]   location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[17,36] cannot find symbol
+[ERROR]   symbol:   class PoliticaUsoRepository
+[ERROR]   location: package br.edu.exemplo.ia.repository
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[46,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaUsoRepository
+[ERROR]   location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[47,13] cannot find symbol
+[ERROR]   symbol:   class PoliticaService
+[ERROR]   location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[52,24] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/UsageBloqueioPoliticaTest.java:[53,24] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.service.UsageBloqueioPoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[43,14] cannot find symbol
+[ERROR]   symbol: class PoliticaController
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[65,20] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[108,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[108,38] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[130,48] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[147,53] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[180,9] cannot find symbol
+[ERROR]   symbol:   class AceiteResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[180,37] cannot find symbol
+[ERROR]   symbol:   class AceiteResponse
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[182,34] cannot find symbol
+[ERROR]   symbol:   class AceiteRequest
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[200,52] cannot find symbol
+[ERROR]   symbol:   class AceitePendenteException
+[ERROR]   location: class br.edu.exemplo.ia.controller.PoliticaControllerTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/controller/PoliticaControllerTest.java:[210,33] constructor UsageRequest in record br.edu.exemplo.ia.dto.UsageRequest cannot be applied to given types;
+[ERROR]   required: java.util.UUID,long,java.lang.String
+[ERROR]   found:    java.util.UUID,int,java.lang.String,java.util.UUID
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[13,46] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[18,9] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[18,37] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[30,27] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[32,27] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[43,27] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/AceitePoliticaTest.java:[53,27] cannot find symbol
+[ERROR]   symbol:   class AceitePolitica
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.AceitePoliticaTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[18,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[18,29] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[34,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[36,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[38,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[40,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[42,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[54,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[56,27] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[56,71] cannot find symbol
+[ERROR]   symbol:   variable PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[60,31] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[66,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[66,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[68,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[85,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[85,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[94,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/domainTeste/entity/PoliticaUsoTest.java:[94,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.domain.entity.PoliticaUsoTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[50,35] cannot find symbol
+[ERROR]   symbol:   class PoliticaUsoRepository
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[51,33] cannot find symbol
+[ERROR]   symbol:   class AceitePoliticaRepository
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[54,23] cannot find symbol
+[ERROR]   symbol:   class PoliticaService
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[66,20] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[72,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[75,24] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[75,69] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[89,14] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[100,9] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[100,52] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[101,44] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[110,44] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[132,22] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[138,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[138,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[141,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[149,24] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[149,70] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[158,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[158,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[161,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[161,70] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[168,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[168,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[172,62] cannot find symbol
+[ERROR]   symbol:   class PoliticaRequest
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[184,9] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[184,52] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[192,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[192,30] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[193,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[196,14] cannot find symbol
+[ERROR]   symbol:   class PoliticaResponse
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[210,22] cannot find symbol
+[ERROR]   symbol:   class NaoEncontradoException
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] /C:/Users/Gustavo Carvalho/Desktop/PI/QAIcontrol/Projeto_IV/Projeto_IV_QSOFT_Home_Paginas_Evoluido/src/test/java/br/edu/exemplo/ia/service/PoliticaServiceTest.java:[216,9] cannot find symbol
+[ERROR]   symbol:   class PoliticaUso
+[ERROR]   location: class br.edu.exemplo.ia.service.PoliticaServiceTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
