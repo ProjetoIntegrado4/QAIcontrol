@@ -41,6 +41,34 @@ custos:
   aplicacoes-agente: [Pipeline Interno, Integracao via Backend Interno, API Direta]
   limite-colaboradores: 10
 
+# Recomendações por faixa de risco de dependência de IA (Task PS-290 / RF27, US PP-75).
+# Aplicada só em service/risco/RegraRecomendacaoRisco, que valida esta seção na subida (faixas cobrindo 0 a 100
+# sem buraco nem sobreposição; toda faixa com recomendação; nenhuma recomendação de faixa inexistente).
+# Faixa: limite inferior inclusivo, superior exclusivo; a última inclui o 100. Score ausente = dados insuficientes.
+# PRELIMINAR – validar com o PO: o documento do projeto ainda não define as faixas nem os textos.
+risco:
+  versao-regra: risco-recomendacoes-v1-preliminar
+  vigencia: "2026-10-22"
+  faixas:
+    - { nome: BAIXO, limite-inferior: 0, limite-superior: 25 }
+    - { nome: MODERADO, limite-inferior: 25, limite-superior: 50 }
+    - { nome: ALTO, limite-inferior: 50, limite-superior: 75 }
+    - { nome: CRITICO, limite-inferior: 75, limite-superior: 100 }
+  recomendacoes:
+    BAIXO:
+      - "Manter as práticas atuais de uso de IA e acompanhar o indicador mensalmente."
+    MODERADO:
+      - "Reforçar a revisão humana nas entregas produzidas com apoio de IA."
+      - "Indicar trilha de capacitação em uso responsável de IA."
+    ALTO:
+      - "Gestor revisar com a equipe o processo em que a IA é utilizada."
+      - "Exigir registro de revisão humana nas entregas com IA."
+      - "Priorizar capacitação em uso responsável de IA."
+    CRITICO:
+      - "Definir plano de ação com o gestor em até 30 dias."
+      - "Revisar o processo e as políticas de uso de IA da área."
+      - "Acompanhar o indicador semanalmente até sair da faixa crítica."
+
 server:
   servlet:
     session:
