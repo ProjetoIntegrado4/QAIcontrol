@@ -19,6 +19,7 @@
     <a href="./dashboard.html">Dashboard</a>
     <a href="./produtividade.html">Produtividade IA</a>
     <a href="./custos.html">Custos de IA</a>
+    <a href="./governanca.html">Governança</a>
 </nav>
 
 <h1>Registrar Consumo de IA</h1>
@@ -28,6 +29,9 @@
     <h2>Novo consumo</h2>
     <div class="form-row">
         <select id="empresaId"></select>
+        <select id="funcionarioId" aria-label="Colaborador (opcional)">
+            <option value="">Sem colaborador (opcional)</option>
+        </select>
         <input id="tokens" type="number" min="1" value="100" placeholder="Tokens">
         <input id="modelo" value="gpt-demo" placeholder="Modelo">
         <button type="button" onclick="consumir()">Registrar consumo</button>
@@ -40,6 +44,7 @@
     const out = document.getElementById('out');
     const alerta = document.getElementById('alerta');
     const empresaSelect = document.getElementById('empresaId');
+    const funcionarioSelect = document.getElementById('funcionarioId');
 
     async function lerResposta(response) {
         const text = await response.text();
@@ -49,8 +54,36 @@
         } catch {
             body = {raw: text};
         }
-        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        if (!response.ok) {
+            const erro = new Error(body.message || body.error || `HTTP ${response.status}`);
+            erro.body = body;
+            throw erro;
+        }
         return body;
+    }
+
+    // US PP-21: colaborador opcional. Com ele, o uso só é registrado se as políticas obrigatórias estiverem aceitas.
+    async function carregarFuncionarios() {
+        funcionarioSelect.innerHTML = '<option value="">Sem colaborador (opcional)</option>';
+        if (!empresaSelect.value) return;
+
+        const funcionarios = await lerResposta(await fetch(`/api/funcionario?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        for (const funcionario of funcionarios) {
+            const option = document.createElement('option');
+            option.value = funcionario.id;
+            option.textContent = funcionario.nome;
+            funcionarioSelect.appendChild(option);
+        }
+    }
+
+    // Uso bloqueado (409): mostra as políticas pendentes e o link para a tela de aceite.
+    function mostrarBloqueio(body) {
+        const pendentes = (body.pendentes || []).map(p => `"${p.titulo}" (versão ${p.versao})`).join(', ');
+        const link = document.createElement('a');
+        link.href = `./governanca.html?empresaId=${encodeURIComponent(empresaSelect.value)}`
+            + `&funcionarioId=${encodeURIComponent(funcionarioSelect.value)}#colaborador`;
+        link.textContent = 'Ir para o aceite da política';
+        alerta.replaceChildren(`BLOQUEADO: ${body.message}. Pendente(s): ${pendentes}. `, link);
     }
 
     async function carregarEmpresas() {
@@ -76,24 +109,37 @@
         try {
             if (!empresaSelect.value) throw new Error('Cadastre e selecione uma empresa.');
 
+            const dados = {
+                empresaId: empresaSelect.value,
+                tokens: Number(document.getElementById('tokens').value),
+                model: document.getElementById('modelo').value
+            };
+            if (funcionarioSelect.value) dados.funcionarioId = funcionarioSelect.value;
+
             const body = await lerResposta(await fetch('/api/usages', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    empresaId: empresaSelect.value,
-                    tokens: Number(document.getElementById('tokens').value),
-                    model: document.getElementById('modelo').value
-                })
+                body: JSON.stringify(dados)
             }));
 
             out.textContent = JSON.stringify(body, null, 2);
             alerta.textContent = `${body.alertLevel}: ${body.alertMessage}`;
         } catch (e) {
             out.textContent = e.message;
+            if (e.body && e.body.status === 409) {
+                out.textContent = JSON.stringify(e.body, null, 2);
+                mostrarBloqueio(e.body);
+            }
         }
     }
 
-    carregarEmpresas().catch(e => {
+    empresaSelect.addEventListener('change', () => {
+        carregarFuncionarios().catch(e => {
+            out.textContent = e.message;
+        });
+    });
+
+    carregarEmpresas().then(carregarFuncionarios).catch(e => {
         out.textContent = e.message;
     });
 </script>
