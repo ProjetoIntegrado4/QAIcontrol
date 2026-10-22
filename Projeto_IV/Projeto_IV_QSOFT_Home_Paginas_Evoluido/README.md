@@ -121,6 +121,59 @@ Os pontos de AI Literacy por registro ficam em `app.ai-literacy` no `application
 `service/PontuacaoAiLiteracy`. Os valores atuais (curso = 10, certificação = 20) são **preliminares** e precisam ser
 validados com o PO.
 
+## Custos de IA (US PP-18)
+
+Página `frontend/public/custos.html` (menu "Custos de IA"). O gestor escolhe a empresa, o período (já vem preenchido
+com o último mês que tem uso registrado) e, se quiser, um departamento **ou** um colaborador, e clica em "Calcular".
+A tela mostra o custo total, os usos cobrados, agentes × uso direto, os usos sem preço, tabelas por departamento,
+colaborador (os de maior custo) e ferramenta, e a memória de cálculo (versão da regra, vigência e fórmula).
+Se o período não tiver uso, o total é 0 e aparece "Nenhum uso de IA registrado no período selecionado".
+
+Os dados vêm das tabelas analíticas importadas de `dados/csv` (`ai_usage_logs`, `ai_models`, `companies`,
+`departments`, `employees`, `ai_tools`), com ids como `C01`, `C01-D02` e `C01-E0001`. Elas **não** são as entidades
+Empresa/Funcionario (UUID) do CRUD. As tabelas `uso_custo` (ai_usage_logs com `model_id` e `application`) e `modelos`
+(ai_models) foram acrescentadas ao `produtividade.yml`; as demais reaproveitam o mapeamento do painel.
+
+**Endpoints** (exigem login, como os demais; erros de validação respondem 400 com `message`):
+
+- `GET /api/custos/opcoes[?empresaId=C01]`: empresas e, para a empresa informada, seus departamentos e colaboradores;
+  traz também `dataMinima` e `dataMaxima` do uso registrado;
+- `GET /api/custos?empresaId=C01&inicio=2026-07-01&fim=2026-07-31[&departamentoId=C01-D02 | &colaboradorId=C01-E0001]`:
+  `total`, `moeda`, `usosCobrados`, `usosSemPreco`, `tokensEntrada`, `tokensSaida`, `totalAgentes`, `totalUsoDireto`,
+  `porDepartamento[]`, `porColaborador[]`, `porFerramenta[]`, `versaoRegra`, `vigencia`, `formula`, `statusCobrados`,
+  `aplicacoesAgente`, `mensagem` e `indisponiveis`.
+
+Validações: empresa, início e fim obrigatórios (datas em `AAAA-MM-DD`, fim inclusive); início ≤ fim; departamento e
+colaborador precisam ser da empresa; não aceita os dois filtros ao mesmo tempo. Se as tabelas não existirem no banco,
+a resposta vem com `total: null`, a mensagem e o motivo em `indisponiveis` (mesmo padrão do painel de produtividade).
+
+**Regra de cálculo** (aplicada só em `service/custos/RegraCusto`, configurada na seção `custos` do `application.yml`):
+
+```
+custo por uso = input_tokens / 1000 × input_price_usd_per_1k_tokens + output_tokens / 1000 × output_price_usd_per_1k_tokens
+```
+
+- moeda `USD`, sem conversão de câmbio;
+- só entram usos com status em `status-cobrados` (`[success]`);
+- usos cuja `application` está em `aplicacoes-agente` (`Pipeline Interno`, `Integracao via Backend Interno`,
+  `API Direta`) somam em `totalAgentes`; os demais, em `totalUsoDireto`;
+- uso de modelo sem preço não vira custo zero: fica fora do total e é contado em `usosSemPreco` (RN19);
+- a versão (`custos-v1-preliminar`) e a vigência voltam em toda resposta, com a fórmula (RN17);
+- `limite-colaboradores` (10) define quantos colaboradores aparecem no detalhamento.
+
+O banco faz a soma (`SUM`/`GROUP BY` por dimensão × modelo × agente, filtrando empresa, período e status) e o Java
+aplica o preço de cada modelo. Como a fórmula é linear nos tokens, o resultado é o mesmo de somar uso a uso, sem
+carregar os ~269 mil registros na memória.
+
+**Pendências para validar com o PO** (a regra está marcada como PRELIMINAR):
+
+1. moeda e câmbio: os preços de `ai_models` estão em USD, mas `ai_billing` está em BRL; falta definir se a tela
+   converte e com qual cotação;
+2. status cobrados: hoje só `success`; `error`, `timeout` e `rate_limited` também consomem tokens nos registros;
+3. lista de "agentes": as três aplicações acima foram escolhidas por serem integrações automáticas, sem usuário;
+4. não existe "equipe" nos dados (só empresa, departamento, colaborador, projeto e centro de custo), então o filtro
+   por equipe da US não foi implementado.
+
 ## Painel de Produtividade de IA
 
 Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em

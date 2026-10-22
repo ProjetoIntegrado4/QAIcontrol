@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Custos de IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="Estilo.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./capacitacao.html">Capacitações</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
+    <a class="active" href="./custos.html">Custos de IA</a>
+</nav>
+
+<h1>Custos de IA</h1>
+<p>Calcule quanto a empresa gastou com IA no período, somando o custo de cada uso registrado, inclusive o dos
+    agentes de IA.</p>
+
+<section>
+    <h2>Filtros</h2>
+    <div class="form-row">
+        <div class="ctl">
+            <label for="empresaId">Empresa</label>
+            <select id="empresaId" required>
+                <option value="">Carregando empresas...</option>
+            </select>
+        </div>
+        <div class="ctl">
+            <label for="inicio">Início do período</label>
+            <input id="inicio" type="date" required>
+        </div>
+        <div class="ctl">
+            <label for="fim">Fim do período</label>
+            <input id="fim" type="date" required>
+        </div>
+        <div class="ctl">
+            <label for="tipoFiltro">Filtro opcional</label>
+            <select id="tipoFiltro">
+                <option value="">Empresa inteira</option>
+                <option value="departamento">Departamento</option>
+                <option value="colaborador">Colaborador</option>
+            </select>
+        </div>
+        <div class="ctl" id="filtroCampo" hidden>
+            <label for="filtroValor" id="filtroRotulo">Departamento</label>
+            <select id="filtroValor"></select>
+        </div>
+        <button type="button" id="calcular">Calcular</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+</section>
+
+<section aria-label="Resumo dos custos de IA no período">
+    <div class="metric-grid">
+        <div class="metric-card"><span>Custo total</span><strong id="total">-</strong></div>
+        <div class="metric-card"><span>Usos cobrados</span><strong id="usos">-</strong></div>
+        <div class="metric-card"><span>Agentes de IA</span><strong id="agentes">-</strong></div>
+        <div class="metric-card"><span>Uso direto</span><strong id="direto">-</strong></div>
+        <div class="metric-card"><span>Usos sem preço</span><strong id="semPreco">-</strong></div>
+    </div>
+</section>
+
+<section>
+    <h2>Custo por departamento</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Departamento</th>
+                <th class="n">Usos</th>
+                <th class="n">Custo</th>
+                <th class="n">% do total</th>
+            </tr>
+            </thead>
+            <tbody id="porDepartamento">
+            <tr><td colspan="4">Selecione a empresa e o período e clique em "Calcular".</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>Colaboradores com maior custo</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Colaborador</th>
+                <th class="n">Usos</th>
+                <th class="n">Custo</th>
+                <th class="n">% do total</th>
+            </tr>
+            </thead>
+            <tbody id="porColaborador">
+            <tr><td colspan="4">Selecione a empresa e o período e clique em "Calcular".</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>Custo por ferramenta</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Ferramenta</th>
+                <th class="n">Usos</th>
+                <th class="n">Custo</th>
+                <th class="n">% do total</th>
+            </tr>
+            </thead>
+            <tbody id="porFerramenta">
+            <tr><td colspan="4">Selecione a empresa e o período e clique em "Calcular".</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="info-box">
+    <h2>Memória de cálculo</h2>
+    <p id="formula">Custo por uso = tokens de entrada / 1000 × preço de entrada + tokens de saída / 1000 × preço de
+        saída, com os preços por 1k tokens de cada modelo.</p>
+    <p id="regra">A regra é preliminar e ainda será validada com o PO.</p>
+    <p id="tokens"></p>
+</section>
+
+<script>
+    const mensagem = document.getElementById('mensagem');
+    const empresaSelect = document.getElementById('empresaId');
+    const inicioInput = document.getElementById('inicio');
+    const fimInput = document.getElementById('fim');
+    const tipoFiltro = document.getElementById('tipoFiltro');
+    const filtroCampo = document.getElementById('filtroCampo');
+    const filtroValor = document.getElementById('filtroValor');
+    const botao = document.getElementById('calcular');
+    const INSTRUCAO = 'Selecione a empresa e o período e clique em "Calcular".';
+    let opcoes = {departamentos: [], colaboradores: []};
+
+    function mostrarMensagem(texto, tipo) {
+        mensagem.textContent = texto || '';
+        mensagem.classList.remove('erro', 'sucesso');
+        if (tipo) mensagem.classList.add(tipo);
+    }
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    function dinheiro(valor, moeda) {
+        if (valor === null || valor === undefined) return '-';
+        const n = Number(valor);
+        // Valores pequenos (custo de poucos usos) precisam das 4 casas para não aparecerem como zero.
+        const casas = n !== 0 && Math.abs(n) < 1 ? 4 : 2;
+        return new Intl.NumberFormat('pt-BR', {style: 'currency', currency: moeda || 'USD',
+            minimumFractionDigits: 2, maximumFractionDigits: casas}).format(n);
+    }
+
+    const inteiro = (n) => new Intl.NumberFormat('pt-BR').format(Number(n || 0));
+
+    function formatarData(valor) {
+        if (!valor) return '';
+        const [ano, mes, dia] = valor.substring(0, 10).split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    function preencherSelect(select, itens, vazio) {
+        select.innerHTML = '';
+        if (vazio) select.appendChild(new Option(vazio, ''));
+        for (const item of itens) select.appendChild(new Option(item.nome || item.id, item.id));
+    }
+
+    function atualizarFiltro() {
+        const tipo = tipoFiltro.value;
+        filtroCampo.hidden = !tipo;
+        if (!tipo) return;
+        document.getElementById('filtroRotulo').textContent = tipo === 'departamento' ? 'Departamento' : 'Colaborador';
+        preencherSelect(filtroValor, tipo === 'departamento' ? opcoes.departamentos : opcoes.colaboradores,
+            tipo === 'departamento' ? 'Selecione o departamento' : 'Selecione o colaborador');
+    }
+
+    function indisponivel(faltas) {
+        const motivos = Object.values(faltas || {});
+        return motivos.length ? `Dados indisponíveis no banco (${motivos.join('; ')}).` : '';
+    }
+
+    function linhaUnica(id, texto) {
+        const corpo = document.getElementById(id);
+        corpo.innerHTML = '';
+        const cell = corpo.insertRow().insertCell();
+        cell.colSpan = 4;
+        cell.textContent = texto;
+    }
+
+    function limparResultado() {
+        for (const id of ['total', 'usos', 'agentes', 'direto', 'semPreco']) {
+            document.getElementById(id).textContent = '-';
+        }
+        for (const id of ['porDepartamento', 'porColaborador', 'porFerramenta']) linhaUnica(id, INSTRUCAO);
+        document.getElementById('tokens').textContent = '';
+    }
+
+    async function carregarEmpresas() {
+        const r = await lerResposta(await fetch('/api/custos/opcoes'));
+        preencherSelect(empresaSelect, r.empresas, r.empresas.length ? 'Selecione uma empresa' : 'Nenhuma empresa disponível');
+        // Período sugerido: o último mês com uso registrado.
+        if (r.dataMaxima) {
+            fimInput.value = r.dataMaxima;
+            inicioInput.value = r.dataMaxima.substring(0, 8) + '01';
+        }
+        if (!r.empresas.length) mostrarMensagem(indisponivel(r.indisponiveis) || 'Nenhuma empresa cadastrada.', 'erro');
+    }
+
+    async function carregarOpcoesDaEmpresa() {
+        opcoes = {departamentos: [], colaboradores: []};
+        limparResultado();
+        if (empresaSelect.value) {
+            opcoes = await lerResposta(await fetch(`/api/custos/opcoes?empresaId=${encodeURIComponent(empresaSelect.value)}`));
+        }
+        atualizarFiltro();
+    }
+
+    function preencherTabela(id, itens, total, moeda) {
+        if (!itens.length) {
+            linhaUnica(id, 'Nenhum uso de IA no período.');
+            return;
+        }
+        const corpo = document.getElementById(id);
+        corpo.innerHTML = '';
+        for (const item of itens) {
+            const tr = corpo.insertRow();
+            const pct = Number(total) > 0 ? (100 * Number(item.custo) / Number(total)).toFixed(1).replace('.', ',') + '%' : '-';
+            const usos = item.usosSemPreco ? `${inteiro(item.usos)} (+${inteiro(item.usosSemPreco)} sem preço)` : inteiro(item.usos);
+            [item.nome, usos, dinheiro(item.custo, moeda), pct].forEach((valor, i) => {
+                const cell = tr.insertCell();
+                cell.textContent = valor;
+                if (i > 0) cell.className = 'n';
+            });
+        }
+    }
+
+    function mostrarResultado(r) {
+        const moeda = r.moeda;
+        document.getElementById('total').textContent = dinheiro(r.total, moeda);
+        document.getElementById('usos').textContent = inteiro(r.usosCobrados);
+        document.getElementById('agentes').textContent = dinheiro(r.totalAgentes, moeda);
+        document.getElementById('direto').textContent = dinheiro(r.totalUsoDireto, moeda);
+        document.getElementById('semPreco').textContent = inteiro(r.usosSemPreco);
+
+        preencherTabela('porDepartamento', r.porDepartamento, r.total, moeda);
+        preencherTabela('porColaborador', r.porColaborador, r.total, moeda);
+        preencherTabela('porFerramenta', r.porFerramenta, r.total, moeda);
+
+        document.getElementById('formula').textContent = `Fórmula: ${r.formula}.`;
+        document.getElementById('regra').textContent = `Regra ${r.versaoRegra}, vigente desde ${formatarData(r.vigencia)}, `
+            + `em ${moeda} sem conversão de câmbio. Status cobrados: ${(r.statusCobrados || []).join(', ')}. `
+            + `Aplicações tratadas como agente de IA: ${(r.aplicacoesAgente || []).join(', ')}. `
+            + 'Regra preliminar, a validar com o PO.';
+        document.getElementById('tokens').textContent = `Tokens considerados: ${inteiro(r.tokensEntrada)} de entrada e `
+            + `${inteiro(r.tokensSaida)} de saída.`;
+        mostrarMensagem(r.mensagem);
+    }
+
+    async function calcular() {
+        mostrarMensagem('');
+        try {
+            if (!empresaSelect.value) throw new Error('Selecione a empresa');
+            if (!inicioInput.value || !fimInput.value) throw new Error('Informe o início e o fim do período');
+            if (inicioInput.value > fimInput.value) throw new Error('A data de início deve ser anterior ou igual à data de fim');
+            if (tipoFiltro.value && !filtroValor.value) throw new Error(`Selecione o ${tipoFiltro.value}`);
+
+            const params = new URLSearchParams({empresaId: empresaSelect.value, inicio: inicioInput.value, fim: fimInput.value});
+            if (tipoFiltro.value === 'departamento') params.set('departamentoId', filtroValor.value);
+            if (tipoFiltro.value === 'colaborador') params.set('colaboradorId', filtroValor.value);
+
+            botao.disabled = true;
+            botao.textContent = 'Calculando...';
+            const r = await lerResposta(await fetch(`/api/custos?${params}`));
+            if (r.total === null) {
+                limparResultado();
+                mostrarMensagem(r.mensagem || indisponivel(r.indisponiveis), 'erro');
+                return;
+            }
+            mostrarResultado(r);
+        } catch (e) {
+            limparResultado();
+            mostrarMensagem(e.message, 'erro');
+        } finally {
+            botao.disabled = false;
+            botao.textContent = 'Calcular';
+        }
+    }
+
+    empresaSelect.addEventListener('change', () => {
+        mostrarMensagem('');
+        carregarOpcoesDaEmpresa().catch(e => mostrarMensagem(e.message, 'erro'));
+    });
+    tipoFiltro.addEventListener('change', atualizarFiltro);
+    botao.addEventListener('click', calcular);
+
+    carregarEmpresas().catch(e => mostrarMensagem(e.message, 'erro'));
+</script>
+<script src="./auth.js"></script>
+</body>
+</html>
