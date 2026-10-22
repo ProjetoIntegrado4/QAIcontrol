@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QSOFT - Recomendações de Risco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="Estilo.css">
+</head>
+<body>
+<nav class="top-nav" aria-label="Navegação principal">
+    <a href="./index.html">Home</a>
+    <a href="./empresa.html">Empresas</a>
+    <a href="./admin.html">Admins</a>
+    <a href="./funcionario.html">Funcionarios</a>
+    <a href="./capacitacao.html">Capacitações</a>
+    <a href="./consumo.html">Consumo de IA</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <a href="./produtividade.html">Produtividade IA</a>
+    <a href="./custos.html">Custos de IA</a>
+    <a href="./governanca.html">Governança</a>
+    <a class="active" href="./risco.html">Recomendações de Risco</a>
+</nav>
+
+<h1>Recomendações de Risco</h1>
+<p>Veja as orientações associadas a cada faixa do risco de dependência de IA. O resultado é um apoio à decisão do
+    gestor, voltado a ações preventivas, e não um diagnóstico nem uma avaliação individual de desempenho.</p>
+
+<section>
+    <h2>Simular recomendação</h2>
+    <div class="form-row">
+        <div class="ctl">
+            <label for="score">Score de risco (0 a 100)</label>
+            <input id="score" type="number" min="0" max="100" step="0.01" placeholder="Ex.: 42,5">
+        </div>
+        <button type="button" id="ver">Ver recomendações</button>
+    </div>
+    <div id="mensagem" class="message" aria-live="polite"></div>
+</section>
+
+<section aria-label="Faixa de risco do score informado">
+    <div class="metric-grid">
+        <div class="metric-card"><span>Score</span><strong id="resultadoScore">-</strong></div>
+        <div class="metric-card"><span>Faixa</span><strong id="resultadoFaixa">-</strong></div>
+    </div>
+</section>
+
+<section class="info-box">
+    <h2>Recomendações</h2>
+    <ul id="recomendacoes">
+        <li>Informe o score e clique em "Ver recomendações".</li>
+    </ul>
+    <p id="regraAplicada"></p>
+</section>
+
+<section>
+    <div class="section-heading">
+        <h2>Regras vigentes</h2>
+        <button type="button" id="atualizarRegras" class="secondary-button">Atualizar</button>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Faixa</th>
+                <th class="n">De</th>
+                <th class="n">Até</th>
+                <th>Recomendações</th>
+            </tr>
+            </thead>
+            <tbody id="listaRegras">
+            <tr><td colspan="4">Carregando regras...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <p id="regra" class="note"></p>
+    <p class="note">PRELIMINAR: as faixas e os textos das recomendações ainda serão validados com o PO. O Risk Score
+        ainda é calculado fora do sistema (notebook de análise preditiva); aqui ele é informado para simulação.</p>
+</section>
+
+<script>
+    const mensagem = document.getElementById('mensagem');
+    const scoreInput = document.getElementById('score');
+    const botao = document.getElementById('ver');
+    const listaRecomendacoes = document.getElementById('recomendacoes');
+    const listaRegras = document.getElementById('listaRegras');
+    const ROTULOS = {BAIXO: 'Baixo', MODERADO: 'Moderado', ALTO: 'Alto', CRITICO: 'Crítico',
+        DADOS_INSUFICIENTES: 'Dados insuficientes'};
+    const CORES = {BAIXO: 'good', MODERADO: 'warn', ALTO: 'crit', CRITICO: 'crit'};
+
+    function mostrarMensagem(texto, tipo) {
+        mensagem.textContent = texto || '';
+        mensagem.classList.remove('erro', 'sucesso');
+        if (tipo) mensagem.classList.add(tipo);
+    }
+
+    async function lerResposta(response) {
+        const text = await response.text();
+        let body;
+        try {
+            body = text ? JSON.parse(text) : {};
+        } catch {
+            body = {raw: text};
+        }
+        if (!response.ok) throw new Error(body.message || body.error || `HTTP ${response.status}`);
+        return body;
+    }
+
+    function formatarData(valor) {
+        if (!valor) return '';
+        const [ano, mes, dia] = valor.substring(0, 10).split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    const numero = (n) => new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 2}).format(Number(n));
+
+    // Faixas novas configuradas no backend aparecem com o próprio nome e a pill neutra.
+    function pillDaFaixa(faixa) {
+        const pill = document.createElement('span');
+        pill.className = CORES[faixa] ? `pill ${CORES[faixa]}` : 'pill';
+        pill.textContent = ROTULOS[faixa] || faixa;
+        return pill;
+    }
+
+    function preencherLista(lista, textos) {
+        lista.innerHTML = '';
+        for (const texto of textos) {
+            const item = document.createElement('li');
+            item.textContent = texto;
+            lista.appendChild(item);
+        }
+    }
+
+    function limparResultado(instrucao) {
+        document.getElementById('resultadoScore').textContent = '-';
+        document.getElementById('resultadoFaixa').textContent = '-';
+        preencherLista(listaRecomendacoes, [instrucao]);
+        document.getElementById('regraAplicada').textContent = '';
+    }
+
+    function mostrarResultado(r) {
+        document.getElementById('resultadoScore').textContent = r.score === null ? '-' : numero(r.score);
+        document.getElementById('resultadoFaixa').replaceChildren(pillDaFaixa(r.faixa));
+        preencherLista(listaRecomendacoes, r.recomendacoes.length ? r.recomendacoes
+            : ['Sem recomendação: não há score para classificar o risco.']);
+        document.getElementById('regraAplicada').textContent =
+            `Regra ${r.versaoRegra}, vigente desde ${formatarData(r.vigencia)}.`;
+        mostrarMensagem(r.mensagem);
+    }
+
+    async function verRecomendacoes() {
+        mostrarMensagem('');
+        try {
+            const valor = scoreInput.value;
+            if (valor !== '' && (Number(valor) < 0 || Number(valor) > 100)) {
+                throw new Error('Score deve estar entre 0 e 100');
+            }
+            // Sem score a API responde "dados insuficientes" (o score ausente não é tratado como zero).
+            const params = valor === '' ? '' : `?${new URLSearchParams({score: valor})}`;
+
+            botao.disabled = true;
+            botao.textContent = 'Consultando...';
+            mostrarResultado(await lerResposta(await fetch(`/api/risco/recomendacoes${params}`)));
+        } catch (e) {
+            limparResultado('Corrija o score e tente novamente.');
+            mostrarMensagem(e.message, 'erro');
+        } finally {
+            botao.disabled = false;
+            botao.textContent = 'Ver recomendações';
+        }
+    }
+
+    function linhaDaFaixa(faixa) {
+        const tr = listaRegras.insertRow();
+        tr.insertCell().appendChild(pillDaFaixa(faixa.nome));
+        const de = tr.insertCell();
+        de.className = 'n';
+        de.textContent = numero(faixa.limiteInferior);
+        const ate = tr.insertCell();
+        ate.className = 'n';
+        ate.textContent = `${faixa.limiteSuperiorInclusivo ? '≤' : '<'} ${numero(faixa.limiteSuperior)}`;
+        const recomendacoes = tr.insertCell();
+        for (const texto of faixa.recomendacoes) {
+            const linha = document.createElement('div');
+            linha.textContent = texto;
+            recomendacoes.appendChild(linha);
+        }
+    }
+
+    async function carregarRegras() {
+        try {
+            const r = await lerResposta(await fetch('/api/risco/recomendacoes/regras'));
+            listaRegras.innerHTML = '';
+            r.faixas.forEach(linhaDaFaixa);
+            document.getElementById('regra').textContent = `Regra ${r.versaoRegra}, vigente desde `
+                + `${formatarData(r.vigencia)}. ${r.criterio}`;
+        } catch (e) {
+            listaRegras.innerHTML = '';
+            const cell = listaRegras.insertRow().insertCell();
+            cell.colSpan = 4;
+            cell.textContent = `Não foi possível carregar as regras: ${e.message}`;
+        }
+    }
+
+    botao.addEventListener('click', verRecomendacoes);
+    scoreInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') verRecomendacoes();
+    });
+    document.getElementById('atualizarRegras').addEventListener('click', carregarRegras);
+
+    carregarRegras();
+</script>
+<script src="./auth.js"></script>
+</body>
+</html>

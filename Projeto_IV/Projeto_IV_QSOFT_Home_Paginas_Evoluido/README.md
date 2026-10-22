@@ -243,6 +243,65 @@ Conformidade LGPD (dados guardados, finalidade, acesso, retenção e pontos em a
    documento LGPD);
 4. o comportamento do aceite repetido (devolver o existente em vez de 409) precisa ser confirmado com o PO.
 
+## Recomendações por faixa de risco (PS-290 / RF27)
+
+Parte do Mapa Inteligente de Risco de Dependência de IA (US PP-75). Página `frontend/public/risco.html` (menu
+"Recomendações de Risco"): o gestor informa um score de 0 a 100 e clica em "Ver recomendações"; a tela mostra o
+score, a faixa (pill verde, amarela ou vermelha) e as recomendações dela. Abaixo ficam as regras vigentes (faixas,
+limites e recomendações), com a versão e a vigência. O resultado é **apoio à decisão do gestor**, voltado a ações
+preventivas (capacitação, revisão humana, revisão de processo e governança), e não diagnóstico nem punição.
+
+**Endpoints** (exigem login, como os demais; erros de validação respondem 400 com `message`):
+
+- `GET /api/risco/recomendacoes/regras`: `versaoRegra`, `vigencia`, `criterio` e `faixas[]` com `nome`,
+  `limiteInferior`, `limiteSuperior`, `limiteSuperiorInclusivo` e `recomendacoes[]` (memória da regra, RN17);
+- `GET /api/risco/recomendacoes?score=42.5`: `score`, `faixa`, `recomendacoes[]`, `versaoRegra`, `vigencia` e
+  `mensagem`. Sem `score`, a faixa é `DADOS_INSUFICIENTES`, sem recomendação, com a mensagem
+  "Dados insuficientes para calcular o risco" (RN19 / CA-23.3: o score ausente não vira zero);
+- `POST /api/risco/recomendacoes` com uma lista `[{"unidade":"C01-E0001","periodo":"2026-07","score":42.5}, ...]`
+  (`score` pode ser `null`): devolve, na mesma ordem, `unidade`, `periodo`, `score`, `faixa`, `recomendacoes[]` e
+  `versaoRegra` (RD11). Fica pronto para quando o Risk Score for calculado no sistema.
+
+Validações: score fora de 0 a 100 ou que não seja número → 400 (`Score deve estar entre 0 e 100`); no lote, lista
+vazia, unidade ou período em branco → 400, e o score fora da escala informa a unidade.
+
+```bash
+curl -b c.txt "http://localhost:8080/api/risco/recomendacoes?score=60"
+curl -b c.txt http://localhost:8080/api/risco/recomendacoes/regras
+curl -b c.txt -H "X-XSRF-TOKEN: $TOKEN" -H "Content-Type: application/json" \
+  -d '[{"unidade":"C01-E0001","periodo":"2026-07","score":12.5},{"unidade":"C01-E0002","periodo":"2026-07","score":null}]' \
+  http://localhost:8080/api/risco/recomendacoes
+```
+
+**Regra** (aplicada só em `service/risco/RegraRecomendacaoRisco`, configurada na seção `risco` do `application.yml`,
+versão `risco-recomendacoes-v1-preliminar`). Limite inferior inclusivo e superior exclusivo; a última faixa inclui o 100.
+
+| Faixa | Score | Recomendações |
+|---|---|---|
+| BAIXO | 0 a < 25 | Manter as práticas atuais de uso de IA e acompanhar o indicador mensalmente. |
+| MODERADO | 25 a < 50 | Reforçar a revisão humana nas entregas produzidas com apoio de IA. Indicar trilha de capacitação em uso responsável de IA. |
+| ALTO | 50 a < 75 | Gestor revisar com a equipe o processo em que a IA é utilizada. Exigir registro de revisão humana nas entregas com IA. Priorizar capacitação em uso responsável de IA. |
+| CRITICO | 75 a 100 | Definir plano de ação com o gestor em até 30 dias. Revisar o processo e as políticas de uso de IA da área. Acompanhar o indicador semanalmente até sair da faixa crítica. |
+
+Para mudar faixas ou textos, basta editar a seção `risco` (e a versão/vigência). A configuração é validada na subida:
+se as faixas não cobrirem 0 a 100, tiverem buraco ou sobreposição, nome repetido, faixa sem recomendação ou
+recomendação de faixa inexistente, a aplicação **não sobe** e a mensagem diz o que corrigir.
+
+Evidências do TDD (testes falhando antes do código, passando depois e `mvn clean verify` com cobertura) em
+`docs/evidencias/tdd-risco/`.
+
+**Limitações e pendências**
+
+1. o Risk Score ainda existe só no notebook `PI_IV_Grupo4_Deliverable_2/08_Analise_Preditiva` (colaborador × mês,
+   média dos percentis mensais de dias ativos, requisições por dia ativo, tokens e concentração de ferramentas). Esta
+   task **não** porta esse cálculo: a tela e o `GET` recebem o score informado e o `POST` fica pronto para a integração;
+2. faixas e textos das recomendações são **PRELIMINARES** (o documento do projeto não os define) e precisam ser
+   validados com o PO;
+3. não há histórico das recomendações por unidade (RD11 completo): depende do Risk Score ser calculado e gravado no
+   sistema;
+4. JSON malformado no `POST` (ex.: score como texto) é recusado pelo Spring com 400, mas no formato padrão dele, não
+   no do `ApiExceptionHandler`.
+
 ## Painel de Produtividade de IA
 
 Página `frontend/public/produtividade.html` (menu "Produtividade IA"). Os dados vêm do backend em
