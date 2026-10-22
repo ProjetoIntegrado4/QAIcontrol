@@ -1,0 +1,590 @@
+{
+  "status": "passed",
+  "input_sha256": "042325a81677d8dad5ad1f1598dac8844fe78374ea14f65052a30f0889bf9ad2",
+  "engine": "PostgreSQL 17.6 native Windows",
+  "databases": [
+    {
+      "name": "qai_csv_import_test",
+      "tables": 30,
+      "rows": 491024,
+      "row_counts": {
+        "ai_billing": 7025,
+        "ai_budgets": 2254,
+        "ai_licenses": 5605,
+        "ai_models": 25,
+        "ai_tools": 15,
+        "ai_usage_logs": 269515,
+        "approved_ai_tools": 105,
+        "builds": 12414,
+        "companies": 18,
+        "departments": 161,
+        "deployments": 1800,
+        "employees": 2356,
+        "issues": 3455,
+        "projects": 18,
+        "pull_requests": 5124,
+        "security_events": 69,
+        "training_records": 1597,
+        "innovation_processes": 161,
+        "innovation_tasks": 52870,
+        "innovation_task_usage": 39204,
+        "innovation_reviews": 39204,
+        "innovation_manual_assessments": 10037,
+        "innovation_teams": 279,
+        "innovation_team_memberships": 2356,
+        "innovation_score_versions": 1,
+        "innovation_risk_scores": 5868,
+        "innovation_score_components": 29340,
+        "innovation_alerts": 70,
+        "innovation_management_actions": 53,
+        "innovation_manager_feedback": 25
+      },
+      "mode": "types inferred by the same rules as project CSV importer",
+      "validation_checks": [
+        {
+          "check": "ai_billing:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_billing:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_billing:model_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_budgets:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_models:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:model_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "approved_ai_tools:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "approved_ai_tools:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "builds:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "departments:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "deployments:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "employees:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "employees:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issues:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issues:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "projects:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pull_requests:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pull_requests:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_records:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_records:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_processes:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_processes:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manual_assessments:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_teams:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_teams:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_team_memberships:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_task_usage:task_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_task_usage:usage_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_reviews:task_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manual_assessments:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_team_memberships:team_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:version_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:team_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_score_components:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_alerts:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_management_actions:alert_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manager_feedback:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_before_hire",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_duration",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_log_window",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_results",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issue_dates",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pr_dates",
+          "inconsistencies": 0
+        },
+        {
+          "check": "score_recalculation",
+          "inconsistencies": 0
+        },
+        {
+          "check": "score_eligibility",
+          "inconsistencies": 0
+        }
+      ],
+      "elapsed_seconds": 19.69,
+      "status": "passed"
+    },
+    {
+      "name": "qai_constraints_test",
+      "tables": 30,
+      "rows": 491024,
+      "row_counts": {
+        "ai_billing": 7025,
+        "ai_budgets": 2254,
+        "ai_licenses": 5605,
+        "ai_models": 25,
+        "ai_tools": 15,
+        "ai_usage_logs": 269515,
+        "approved_ai_tools": 105,
+        "builds": 12414,
+        "companies": 18,
+        "departments": 161,
+        "deployments": 1800,
+        "employees": 2356,
+        "issues": 3455,
+        "projects": 18,
+        "pull_requests": 5124,
+        "security_events": 69,
+        "training_records": 1597,
+        "innovation_processes": 161,
+        "innovation_tasks": 52870,
+        "innovation_task_usage": 39204,
+        "innovation_reviews": 39204,
+        "innovation_manual_assessments": 10037,
+        "innovation_teams": 279,
+        "innovation_team_memberships": 2356,
+        "innovation_score_versions": 1,
+        "innovation_risk_scores": 5868,
+        "innovation_score_components": 29340,
+        "innovation_alerts": 70,
+        "innovation_management_actions": 53,
+        "innovation_manager_feedback": 25
+      },
+      "mode": "typed original DDL with CHECKs and FKs",
+      "validation_checks": [
+        {
+          "check": "ai_billing:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_billing:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_billing:model_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_budgets:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_licenses:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_models:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:model_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "ai_usage_logs:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "approved_ai_tools:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "approved_ai_tools:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "builds:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "departments:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "deployments:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "employees:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "employees:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issues:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issues:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "projects:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pull_requests:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pull_requests:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "security_events:ai_tool_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_records:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_records:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_processes:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_processes:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:project_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manual_assessments:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_teams:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_teams:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_team_memberships:employee_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:company_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:department_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_tasks:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_task_usage:task_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_task_usage:usage_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_reviews:task_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manual_assessments:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_team_memberships:team_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:version_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:team_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_risk_scores:process_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_score_components:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_alerts:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_management_actions:alert_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "innovation_manager_feedback:score_id",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_before_hire",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_duration",
+          "inconsistencies": 0
+        },
+        {
+          "check": "task_log_window",
+          "inconsistencies": 0
+        },
+        {
+          "check": "training_results",
+          "inconsistencies": 0
+        },
+        {
+          "check": "issue_dates",
+          "inconsistencies": 0
+        },
+        {
+          "check": "pr_dates",
+          "inconsistencies": 0
+        },
+        {
+          "check": "score_recalculation",
+          "inconsistencies": 0
+        },
+        {
+          "check": "score_eligibility",
+          "inconsistencies": 0
+        }
+      ],
+      "elapsed_seconds": 27.67,
+      "status": "passed"
+    }
+  ],
+  "server_version": "PostgreSQL 17.6 on x86_64-windows, compiled by msvc-19.44.35213, 64-bit",
+  "source_zip_unchanged": true,
+  "temporary_server_stopped": true
+}

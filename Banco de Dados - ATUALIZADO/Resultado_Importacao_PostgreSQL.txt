@@ -1,0 +1,24 @@
+TESTE DE IMPORTAÇÃO DO BANCO QAI CONTROL
+
+Data: 22/10/2026
+Resultado: APROVADO
+Servidor: PostgreSQL 17.6 on x86_64-windows, compiled by msvc-19.44.35213, 64-bit
+Arquivo testado: csv_preenchidos.zip
+SHA-256: 042325a81677d8dad5ad1f1598dac8844fe78374ea14f65052a30f0889bf9ad2
+
+Cenário 1
+Importação nativa por COPY, com tipos inferidos pelas mesmas regras do importador de CSVs do projeto.
+Resultado: 30 tabelas e 491.024 registros importados; contagens conferidas em todas as tabelas.
+
+Cenário 2
+Importação com a estrutura SQL original das 13 tabelas de inovação, incluindo chaves primárias, chaves estrangeiras, restrições CHECK, índices e views. As 17 tabelas originais também foram carregadas.
+Resultado: 30 tabelas e 491.024 registros importados; contagens conferidas em todas as tabelas.
+
+Validações
+Foram executadas 124 verificações de referências e regras, somadas nos dois cenários, sem inconsistências. Foram conferidos vínculos com os cadastros e entre as tabelas de inovação, início das tarefas após a contratação, duração das tarefas, logs dentro das janelas, nulos de eventos não ocorridos e recálculo dos scores. As consultas de validação do pacote SQL original também passaram. A view do painel retornou os 5.868 scores esperados.
+
+Escopo
+O teste foi executado em um PostgreSQL 17.6 real, temporário e isolado, usando libpq e COPY. Não foi executado o backend Java completo nem utilizada uma conexão ao servidor do grupo. O teste confirma a carga e as validações dos dados nesse PostgreSQL.
+
+Preservação
+Nenhum CSV ou arquivo do ZIP foi alterado. O servidor temporário foi desligado ao final. O banco existente do projeto não foi utilizado nem modificado.
