@@ -1,12 +1,12 @@
 ---
-title: "QAIsoft — Sprint 2 | Análise multivariada e correção da Sprint 1"
+title: "QAIsoft — Sprint 2 | Indicadores organizacionais e análise multivariada"
 author: "Equipe QAIsoft"
 output: html_document
 ---
 
 ## Objetivo
 
-Corrigir os pontos indicados na avaliação da Sprint 1 e avançar para a análise multivariada de indicadores organizacionais de segurança, capacitação, uso de IA e produtividade. Os gráficos e as conclusões devem ser conferidos após executar o documento com os 17 CSVs originais.
+Aplicar técnicas estatísticas, construir indicadores organizacionais e interpretar as relações entre segurança, capacitação, uso de IA e atividade de desenvolvimento. O relatório mantém as análises e os cinco dashboards da Sprint 2. Os resultados numéricos apresentados no texto são calculados durante a execução do Rmd.
 
 ## 1. Carregamento das bases
 
@@ -16,8 +16,12 @@ library(tidyr)
 library(readr)
 library(ggplot2)
 library(plotly)
-setwd("C:/Users/pedro.perroni/OneDrive - ESPM/4° Semestre/Projeto Integrado")
+# Extraia csv_preenchidos.zip ao lado deste Rmd antes de usar Knit.
+# Também é possível colocar os CSVs diretamente na pasta do Rmd.
 pasta_dados = if (file.exists("csv_preenchidos/companies.csv")) "csv_preenchidos" else "."
+if (!file.exists(file.path(pasta_dados, "companies.csv"))) {
+  stop("Base não encontrada. Coloque a pasta csv_preenchidos ao lado deste Rmd.")
+}
 ler_csv = function(nome) readr::read_csv(file.path(pasta_dados, nome), show_col_types = FALSE)
 
 billing = ler_csv("ai_billing.csv")
@@ -39,9 +43,40 @@ training.records = ler_csv("training_records.csv")
 security_events = ler_csv("security_events.csv")
 ```
 
+```{r preparacao-analise, include=FALSE}
+inicio_analise = min(as.Date(usage.logs$timestamp), na.rm = TRUE)
+fim_analise = max(as.Date(usage.logs$timestamp), na.rm = TRUE)
+fmt_num = function(x, casas = 1) formatC(x, format = "f", digits = casas,
+                                      decimal.mark = ",", big.mark = ".")
+fmt_p = function(x) ifelse(is.na(x), "não disponível",
+                         ifelse(x < 0.001, "< 0,001", fmt_num(x, 3)))
+
+# A base original permanece disponível em pull.requests.
+# Esta cópia validada alimenta os indicadores, a regressão e o dashboard.
+prs_auditoria = pull.requests %>%
+  left_join(select(employees, employee_id, hire_date), by = "employee_id") %>%
+  mutate(antes_contratacao = !is.na(created_at) & !is.na(hire_date) &
+           as.Date(created_at) < as.Date(hire_date),
+         outras_datas_invalidas = is.na(created_at) | is.na(hire_date) |
+           (!is.na(merged_at) & merged_at < created_at))
+n_pr_antes_contratacao = sum(prs_auditoria$antes_contratacao, na.rm = TRUE)
+n_pr_outros_problemas = sum(prs_auditoria$outras_datas_invalidas &
+                             !prs_auditoria$antes_contratacao, na.rm = TRUE)
+pull.requests.analise = prs_auditoria %>%
+  filter(!antes_contratacao, !outras_datas_invalidas) %>%
+  select(all_of(names(pull.requests)))
+
+# O status de conclusão precisa ter data válida até o corte dos logs.
+treinos_concluidos_corte = training.records %>%
+  filter(completion_status == "Concluido", !is.na(completion_date),
+         !is.na(enrollment_date),
+         as.Date(completion_date) >= as.Date(enrollment_date),
+         as.Date(completion_date) <= fim_analise)
+```
+
 ## Escopo da análise
 
-Os CSVs contêm **18 empresas**. A análise utiliza a base completa, mantendo `department_id` (não `department_name`) como identificador único de departamento — vários departamentos de empresas diferentes compartilham o mesmo nome (ex.: "Financeiro" existe em 18 empresas), então agrupar só pelo nome misturaria empresas distintas. A interpretação dos resultados é sobre o conjunto de empresas, não sobre uma empresa individual chamada QSOFT. Descompacte os 17 CSVs na mesma pasta do Rmd.
+A base atualizada contém 30 tabelas; este relatório utiliza as **17 tabelas necessárias às análises existentes**, de **`r nrow(companies)` empresas** e **`r nrow(departments)` departamentos**, no período de **`r format(inicio_analise, "%d/%m/%Y")` a `r format(fim_analise, "%d/%m/%Y")`**. O identificador dos departamentos é `department_id`, pois nomes iguais podem pertencer a empresas diferentes. As análises iniciais consideram os colaboradores cadastrados; os dashboards de adoção e cobertura de capacitação usam os atualmente ativos. Essas populações têm denominadores diferentes, explicitados em cada seção. Extraia o ZIP atualizado e mantenha a pasta `csv_preenchidos` ao lado do Rmd.
 
 ## 2. Conferência de estrutura e valores ausentes
 
@@ -68,18 +103,20 @@ colSums(is.na(usage.logs))
 colSums(is.na(pull.requests))
 ```
 
-**Decisão metodológica (resposta direta ao feedback "que tipo de preenchimento de dados vocês realizaram?"):** mantivemos as bases originais intactas e **não aplicamos nenhuma imputação automática** (não substituímos NA por média, mediana ou zero). Quando uma análise exige dados completos em uma variável específica, as linhas com ausência nessa variável são excluídas pontualmente com `drop_na()`, e a quantidade excluída deve ser conferida em cada análise. A única exceção é quando a ausência de registro é, por definição do negócio, equivalente a "zero eventos" (por exemplo: um departamento sem nenhuma pull request registrada tem 0 entregas, não um valor desconhecido) — nesses casos específicos, documentados em cada seção, convertemos a ausência de linha em 0.
+**Tratamento dos dados:** as fontes permanecem intactas e não há imputação automática por média, mediana ou zero. Ausência de registro de evento é tratada como **zero eventos registrados**, sem afirmar que a cobertura do sistema seja completa. Dados ausentes são excluídos apenas das análises que precisam dessas variáveis, com a quantidade informada na seção 11.
+
+Foram identificados **`r n_pr_antes_contratacao` PRs abertos antes da contratação registrada** e **`r n_pr_outros_problemas` registros com outros problemas de datas ou vínculo**. Esses registros ficam fora dos indicadores de PRs, da regressão e do dashboard de produtividade. A tabela original `pull.requests` é preservada; a cópia `pull.requests.analise` contém os registros válidos. Conclusões de treinamento posteriores a `r format(fim_analise, "%d/%m/%Y")`, sem data ou com data anterior à matrícula não contam como conclusão válida até o corte.
 
 ## 3. Quais são os indicadores organizacionais?
 
-Resposta direta ao feedback: os indicadores usados neste relatório, por departamento, são:
+Os indicadores abaixo são calculados por departamento. PRs abertos medem volume de atividade de desenvolvimento; PRs mergeados, tempo de merge, builds e deploys são acompanhados no dashboard da seção 12.
 
 -   **funcionarios** — número de funcionários alocados no departamento.
 -   **incidentes** — número de eventos de segurança (`security_events`) ligados a funcionários do departamento.
 -   **incidentes_graves** — subconjunto dos incidentes com severidade "Alta" ou "Critica".
 -   **requisicoes_ia** — soma de `request_count` nos logs de uso de IA (`ai_usage_logs`) do departamento.
--   **entregas** — número de pull requests (`pull_requests`) abertas por funcionários do departamento.
--   **taxa_treinamento** — proporção de funcionários do departamento com ao menos um treinamento concluído (`completion_status == "Concluido"`).
+-   **entregas** — nome mantido no código para o número de **PRs abertos válidos no período** por funcionários do departamento. Esse indicador não representa entregas concluídas.
+-   **taxa_treinamento** — proporção dos funcionários cadastrados no departamento com ao menos um treinamento concluído, com data válida até o corte.
 -   **incidentes_por_funcionario** e **entregas_por_funcionario** — taxas que normalizam os indicadores de contagem pelo tamanho do departamento, para permitir comparação entre departamentos de tamanhos diferentes.
 
 ```{r}
@@ -92,7 +129,9 @@ funcionarios_area = employees %>%
 incidentes_area = security_events %>%
   left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
   group_by(department_id) %>%
-  summarise(incidentes = n(), .groups = "drop")
+  summarise(incidentes = n(),
+            incidentes_graves = sum(severity %in% c("Alta", "Critica")),
+            .groups = "drop")
 
 # Quantidade de requisições de IA por departamento
 uso_area = usage.logs %>%
@@ -102,21 +141,21 @@ uso_area = usage.logs %>%
             .groups = "drop")
 
 # Quantidade de pull requests por departamento
-entregas_area = pull.requests %>%
+entregas_area = pull.requests.analise %>%
+  filter(between(as.Date(created_at), inicio_analise, fim_analise)) %>%
   left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
   group_by(department_id) %>%
   summarise(entregas = n(), .groups = "drop")
 
 # Taxa de treinamento concluído por departamento
-treino_area = training.records %>%
-  filter(completion_status == "Concluido") %>%
+treino_area = treinos_concluidos_corte %>%
   left_join(select(employees, employee_id, department_id), by = "employee_id") %>%
   distinct(employee_id, department_id) %>%
   group_by(department_id) %>%
   summarise(func_treino_concluido = n(), .groups = "drop")
 
 # Quadro de indicadores. Ausência de linha em incidentes/entregas/requisições
-# significa "nenhum evento registrado" (0), por definição do negócio; por isso
+# significa "nenhum evento registrado na fonte" (0), por definição do negócio; por isso
 # convertemos essas ausências para 0 (não são valores desconhecidos). Já
 # "funcionarios" e "latencia_media" permanecem NA quando não há como calculá-los.
 indicadores = departments %>%
@@ -127,6 +166,7 @@ indicadores = departments %>%
   left_join(entregas_area, by = "department_id") %>%
   left_join(treino_area, by = "department_id") %>%
   mutate(incidentes = replace_na(incidentes, 0),
+         incidentes_graves = replace_na(incidentes_graves, 0),
          requisicoes_ia = replace_na(requisicoes_ia, 0),
          entregas = replace_na(entregas, 0),
          func_treino_concluido = replace_na(func_treino_concluido, 0),
@@ -185,7 +225,7 @@ incidentes_graves = base_gravidade %>%
 print(incidentes_graves)
 ```
 
-A base de eventos de segurança tem apenas 69 registros no total, espalhados por 52 departamentos distintos — a maioria com 1 ou 2 eventos. Por isso, proporções de 100% devem ser lidas junto ao número absoluto de eventos: departamentos com poucos eventos podem apresentar percentuais extremos sem representar um padrão robusto.
+Foram registrados **`r nrow(security_events)` eventos de segurança**, dos quais **`r sum(security_events$severity %in% c("Alta", "Critica"))` de gravidade alta ou crítica**, distribuídos em `r n_distinct(base_gravidade$department_id)` departamentos com eventos. A maior parte dos departamentos com eventos tem poucos registros; percentuais extremos devem ser lidos com as contagens. A prioridade de investigação considera a gravidade e o volume, sem atribuir automaticamente infração ao colaborador relacionado ao evento.
 
 ## 5. Existe gargalo de capacitação?
 
@@ -263,12 +303,12 @@ plotly::ggplotly(grafico_senioridade)
 
 ```{r}
 base_produtividade = indicadores %>%
-  select(department_id, dept_label = department_name, requisicoes_ia, entregas) %>%
+  select(department_id, dept_label = department_name, company_id, requisicoes_ia, entregas) %>%
   drop_na()
 
 grafico_disp = ggplot(base_produtividade,
                        aes(x = requisicoes_ia, y = entregas,
-                           text = paste("Departamento:", dept_label))) +
+                           text = paste("Departamento:", dept_label, "| Empresa:", company_id))) +
   geom_point(color = "steelblue", alpha = 0.6) +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(title = "Uso de IA e volume de pull requests por departamento",
@@ -344,8 +384,7 @@ Pontos isolados representam observações atípicas segundo o critério do boxpl
 ## 10. Capacitação concluída: indicador complementar
 
 ```{r}
-concluidos = training.records %>%
-  filter(completion_status == "Concluido") %>%
+concluidos = treinos_concluidos_corte %>%
   select(employee_id) %>%
   distinct()
 
@@ -358,51 +397,121 @@ porcentagem_conclusao = round(prop.table(contagem_conclusao) * 100, 1)
 print(cbind(contagem_conclusao, porcentagem_conclusao))
 ```
 
-Este indicador mede conclusão de ao menos um curso, não proficiência nem eficácia do treinamento.
+Entre os **`r nrow(employees)` colaboradores cadastrados**, **`r nrow(concluidos)`** têm ao menos uma conclusão válida até o corte, correspondendo a **`r fmt_num(100 * nrow(concluidos) / nrow(employees))`%**. O indicador mede conclusão registrada; não mede proficiência ou eficácia do curso. Na seção 12, a cobertura considera somente os atualmente ativos, por isso pode apresentar outro percentual.
 
 ## 11. Análise multivariada: correlação e regressão múltipla
 
-Esta seção substitui o que na Sprint 1 era apenas uma promessa de análise futura. A unidade de análise é o **departamento** (`department_id`), e a ausência de registro em incidentes/requisições/entregas foi tratada como 0 (seção 3), por ser o significado correto desses dados — não uma imputação estatística.
+A unidade de análise é o **departamento**. A matriz de correlação descreve relações entre pares de indicadores. A regressão linear múltipla estima a associação entre o volume de PRs abertos, o uso de IA, o tamanho da equipe e a cobertura de conclusão de treinamento. A análise é exploratória e utiliza a mesma cópia validada de PRs dos dashboards.
 
 ### 11.1 Matriz de correlação
 
-```{r}
-base_multivariada = indicadores %>%
-  select(funcionarios, incidentes, requisicoes_ia, entregas, taxa_treinamento, latencia_media) %>%
+```{r matriz-correlacao}
+# A matriz usa somente departamentos com os seis indicadores disponíveis.
+base_correlacao = indicadores %>%
+  select(funcionarios, incidentes, requisicoes_ia, entregas,
+         taxa_treinamento, latencia_media) %>%
   drop_na()
-
-matriz_cor = round(cor(base_multivariada), 2)
-print(matriz_cor)
+matriz_cor = cor(base_correlacao)
+knitr::kable(round(matriz_cor, 2), caption = "Correlações de Pearson por departamento")
 
 matriz_cor_long = as.data.frame(matriz_cor) %>%
   mutate(var1 = rownames(matriz_cor)) %>%
   pivot_longer(-var1, names_to = "var2", values_to = "correlacao")
-
 ggplot(matriz_cor_long, aes(x = var1, y = var2, fill = correlacao)) +
   geom_tile() +
-  geom_text(aes(label = correlacao), size = 3) +
-  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b", midpoint = 0, limits = c(-1, 1)) +
-  labs(title = "Correlação entre indicadores organizacionais (nível departamento)",
+  geom_text(aes(label = round(correlacao, 2)), size = 3) +
+  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b",
+                       midpoint = 0, limits = c(-1, 1)) +
+  labs(title = "Correlação entre indicadores organizacionais",
        x = NULL, y = NULL, fill = "r") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+**Resultado:** a matriz utiliza **`r nrow(base_correlacao)` de `r nrow(indicadores)` departamentos**; `r nrow(indicadores) - nrow(base_correlacao)` ficam fora por ausência em ao menos uma das seis variáveis. A correlação entre requisições de IA e PRs abertos é **`r fmt_num(matriz_cor["requisicoes_ia", "entregas"], 2)`**. O valor descreve a associação no conjunto de departamentos, que inclui áreas com funções e tamanhos diferentes. Essa associação agregada não mede o ganho individual de produtividade.
+
 ### 11.2 Regressão linear múltipla
 
-Pergunta de negócio (retomando a Sprint 1): **equipes que usam mais IA entregam mais, controlando pelo tamanho do time e pela capacitação?**
+**Pergunta:** qual é a associação entre requisições de IA e PRs abertos, mantendo constantes o número de funcionários e a cobertura de conclusão de treinamento?
 
-```{r}
+```{r regressao-multipla}
+# A regressão possui sua própria seleção de dados: latência e incidentes
+# não excluem departamentos, pois não fazem parte desta especificação.
+base_multivariada = indicadores %>%
+  select(department_id, company_id, department_name, entregas,
+         requisicoes_ia, funcionarios, taxa_treinamento) %>%
+  drop_na(entregas, requisicoes_ia, funcionarios, taxa_treinamento) %>%
+  filter(funcionarios > 0)
+
 modelo_entregas = lm(entregas ~ requisicoes_ia + funcionarios + taxa_treinamento,
-                      data = base_multivariada)
+                     data = base_multivariada)
+resumo_modelo = summary(modelo_entregas)
 summary(modelo_entregas)
+
+ic_modelo = confint(modelo_entregas, level = 0.95)
+tabela_coeficientes = data.frame(
+  Variavel = rownames(resumo_modelo$coefficients),
+  Estimativa = resumo_modelo$coefficients[, "Estimate"],
+  IC95_inferior = ic_modelo[, 1],
+  IC95_superior = ic_modelo[, 2],
+  valor_p = resumo_modelo$coefficients[, "Pr(>|t|)"],
+  row.names = NULL)
+knitr::kable(tabela_coeficientes %>% mutate(valor_p = fmt_p(valor_p)),
+             digits = c(0, 6, 6, 6, 3),
+             caption = "Coeficientes e intervalos de confiança convencionais de 95%")
+
+teste_f = resumo_modelo$fstatistic
+p_global = pf(teste_f[1], teste_f[2], teste_f[3], lower.tail = FALSE)
+beta_ia = coef(modelo_entregas)["requisicoes_ia"]
+beta_treino = coef(modelo_entregas)["taxa_treinamento"]
+p_ia = resumo_modelo$coefficients["requisicoes_ia", "Pr(>|t|)"]
+p_funcionarios = resumo_modelo$coefficients["funcionarios", "Pr(>|t|)"]
+p_treino = resumo_modelo$coefficients["taxa_treinamento", "Pr(>|t|)"]
 ```
 
-```{r}
+**Resultados da especificação:**
+
+- A regressão usa **`r nrow(base_multivariada)` departamentos**; `r nrow(indicadores) - nrow(base_multivariada)` ficam fora por ausência nas variáveis necessárias ou por não terem funcionários cadastrados. Departamentos sem latência permanecem elegíveis.
+- O **R² ajustado é `r fmt_num(resumo_modelo$adj.r.squared, 4)`**, correspondente a cerca de **`r fmt_num(100 * resumo_modelo$adj.r.squared)`%** da variação observada no volume de PRs abertos, com a penalização pelo número de variáveis. O teste global apresenta **valor-p `r fmt_p(p_global)`**. Esses números descrevem o ajuste na amostra e não validam, sozinhos, a especificação.
+- Para cada **1.000 requisições adicionais**, a associação estimada é de **`r fmt_num(1000 * beta_ia, 2)` PRs abertos**, mantendo constantes as outras duas variáveis; o intervalo convencional de 95% vai de **`r fmt_num(1000 * ic_modelo["requisicoes_ia", 1], 2)` a `r fmt_num(1000 * ic_modelo["requisicoes_ia", 2], 2)` PRs**, com **valor-p `r fmt_p(p_ia)`**.
+- O coeficiente do tamanho da equipe é **`r fmt_num(coef(modelo_entregas)["funcionarios"], 3)` por funcionário**, com **valor-p `r fmt_p(p_funcionarios)`**. O sinal é uma associação condicional nesta especificação, que não separa empresas e tipos de área.
+- Para um aumento de **10 pontos percentuais** na cobertura de treinamento, a associação estimada é de **`r fmt_num(0.1 * beta_treino, 2)` PRs**, com **valor-p `r fmt_p(p_treino)`**. Pelo teste convencional a 5%, **`r if (p_treino < 0.05) "há indicação de associação nesta especificação" else "não há evidência suficiente de associação nesta especificação"`**; isso não estabelece a eficácia ou a ineficácia do treinamento.
+
+### 11.3 Diagnósticos e limites da interpretação
+
+```{r diagnosticos-modelo, fig.width=9, fig.height=7}
 par(mfrow = c(2, 2))
 plot(modelo_entregas)
 par(mfrow = c(1, 1))
 ```
+
+```{r resumo-diagnosticos}
+# VIF calculado com regressões auxiliares, sem pacote adicional.
+preditores = c("requisicoes_ia", "funcionarios", "taxa_treinamento")
+vif_modelo = vapply(preditores, function(v) {
+  auxiliar = lm(reformulate(setdiff(preditores, v), response = v),
+                data = base_multivariada)
+  1 / (1 - summary(auxiliar)$r.squared)
+}, numeric(1))
+knitr::kable(data.frame(Variavel = names(vif_modelo), VIF = unname(vif_modelo)),
+             digits = 2, caption = "Verificação de multicolinearidade")
+
+teste_normalidade = shapiro.test(residuals(modelo_entregas))
+n_influentes = sum(cooks.distance(modelo_entregas) > 4 / nobs(modelo_entregas))
+n_previsoes_negativas = sum(fitted(modelo_entregas) < 0)
+n_areas_sem_pr = sum(base_multivariada$entregas == 0)
+indice_influente = which.max(cooks.distance(modelo_entregas))
+rotulo_influente = paste(base_multivariada$company_id[indice_influente],
+                         base_multivariada$department_name[indice_influente], sep = " · ")
+```
+
+**Avaliação dos diagnósticos:** o maior VIF foi **`r fmt_num(max(vif_modelo), 2)`**, `r if (max(vif_modelo) > 5) "acima do valor de referência 5 usado em aula; há indicação de multicolinearidade a investigar" else "abaixo do valor de referência 5 usado em aula"`. O teste de Shapiro–Wilk dos resíduos apresentou **valor-p `r fmt_p(teste_normalidade$p.value)`**, `r if (teste_normalidade$p.value < 0.05) "indicando desvio da normalidade ao nível de 5%" else "sem rejeitar a normalidade ao nível de 5%, o que não garante os demais pressupostos"`. Há **`r n_influentes` departamentos** acima da referência exploratória de distância de Cook de `4/n`; esses pontos merecem investigação e foram mantidos na análise.
+
+Na base atual, o gráfico **Resíduos × valores ajustados** apresenta curvatura na linha de suavização e o gráfico **Scale-Location** mostra dispersão desigual dos resíduos ao longo dos valores ajustados. Esses padrões indicam inadequação da forma linear e da hipótese de variância constante. O gráfico **Q-Q** apresenta desvios nas caudas, coerentes com o teste de normalidade. O departamento **`r rotulo_influente`** tem a maior distância de Cook e alavancagem de **`r fmt_num(hatvalues(modelo_entregas)[indice_influente], 2)`**, sinalizando sensibilidade do ajuste a essa observação; o registro foi mantido.
+
+O modelo produz **`r n_previsoes_negativas` valores ajustados negativos**, embora PRs sejam uma contagem não negativa. Além disso, **`r n_areas_sem_pr` departamentos não têm PRs abertos registrados**, incluindo áreas administrativas cuja atividade não é medida por PRs. A combinação de setores diferentes pode explicar parte da associação agregada. A especificação também não controla empresa, tipo de departamento ou tempo de exposição desde a contratação.
+
+**Interpretação organizacional:** o modelo apresenta uma associação exploratória entre uso de IA e atividade registrada de desenvolvimento. Os problemas de adequação da resposta e os diagnósticos limitam a confiança nos valores-p e intervalos convencionais; eles não devem fundamentar uma afirmação de efeito causal ou uma previsão operacional validada. PRs abertos também não representam automaticamente entregas concluídas ou de maior qualidade. As decisões devem combinar esse resultado com PRs mergeados, tempo até o merge, builds e deploys do dashboard de produtividade.
 
 ## 12. Dashboards produtividade IA {.tabset}
 
@@ -410,9 +519,10 @@ par(mfrow = c(1, 1))
 dash_empresa = "TODAS"
 dash_ids = if (dash_empresa == "TODAS") companies$company_id else dash_empresa
 stopifnot(all(dash_ids %in% companies$company_id))
-dash_fim = max(as.Date(usage.logs$timestamp), na.rm = TRUE)
-dash_inicio = min(as.Date(usage.logs$timestamp), na.rm = TRUE)
-dash_pct = function(n, d) ifelse(d > 0, round(100 * n / d, 1), NA_real_)
+dash_fim = fim_analise
+dash_inicio = inicio_analise
+# Funciona para numerador vetorial e denominador escalar ou vetorial.
+dash_pct = function(n, d) round(100 * n / ifelse(d > 0, d, NA_real_), 1)
 dash_med = function(x) if (any(!is.na(x))) median(x, na.rm = TRUE) else NA_real_
 dash_plot = function(g, altura = 420) plotly::ggplotly(g, height = altura) %>%
   plotly::config(displaylogo = FALSE)
@@ -431,10 +541,11 @@ dash_uso_pessoa = dash_logs %>% group_by(employee_id) %>% summarise(
 dash_coorte = dash_ativos %>% left_join(dash_uso_pessoa, by = "employee_id") %>%
   mutate(across(c(requisicoes, sucesso), ~ replace_na(.x, 0)))
 dash_projetos = projects %>% filter(company_id %in% dash_ids)
-dash_pr = pull.requests %>% semi_join(dash_projetos, by = "project_id") %>%
+dash_pr = pull.requests.analise %>% semi_join(dash_projetos, by = "project_id") %>%
   inner_join(select(dash_pessoas, employee_id, hire_date), by = "employee_id")
-dash_pr_antes_contratacao = sum(as.Date(dash_pr$created_at) < as.Date(dash_pr$hire_date), na.rm = TRUE)
-dash_pr = dash_pr %>% filter(as.Date(created_at) >= as.Date(hire_date))
+dash_pr_antes_contratacao = prs_auditoria %>%
+  semi_join(dash_projetos, by = "project_id") %>%
+  summarise(n = sum(antes_contratacao, na.rm = TRUE)) %>% pull(n)
 dash_merge = dash_pr %>% filter(status == "Merged", !is.na(merged_at),
   as.Date(merged_at) >= dash_inicio, as.Date(merged_at) <= dash_fim) %>%
   mutate(horas_merge = as.numeric(difftime(merged_at, created_at, units = "hours")))
@@ -451,10 +562,10 @@ dash_deploy = deployments %>% semi_join(dash_projetos, by = "project_id") %>%
 dash_treino = training.records %>% filter(company_id %in% dash_ids,
   between(as.Date(enrollment_date), dash_inicio, dash_fim)) %>%
   mutate(situacao = ifelse(completion_status == "Concluido" &
-    (is.na(completion_date) | as.Date(completion_date) > dash_fim),
-    "Conclusão posterior ao corte / sem data", completion_status))
-dash_concluidos = training.records %>% filter(company_id %in% dash_ids,
-  completion_status == "Concluido", !is.na(completion_date), as.Date(completion_date) <= dash_fim) %>%
+    (is.na(completion_date) | as.Date(completion_date) > dash_fim |
+     as.Date(completion_date) < as.Date(enrollment_date)),
+    "Conclusão posterior ao corte / data inválida", completion_status))
+dash_concluidos = treinos_concluidos_corte %>% filter(company_id %in% dash_ids) %>%
   distinct(employee_id)
 dash_coorte = dash_coorte %>% mutate(capacitado = employee_id %in% dash_concluidos$employee_id)
 dash_adocao = dash_coorte %>% group_by(area) %>% summarise(
@@ -552,7 +663,7 @@ dash_plot(ggplot(dash_mensal, aes(mes, usuarios)) + geom_line(color = "steelblue
   labs(title = "Usuários distintos de IA por mês", x = NULL, y = "Usuários") + theme_minimal())
 ```
 
-A coorte usa colaboradores atualmente ativos, contratados até o fim dos logs. A série acompanha essa coorte; sem datas de desligamento, não representa a reconstrução do quadro ativo de cada mês. Mais requisições não significam mais entregas.
+A adoção foi de **`r fmt_num(dash_pct(sum(dash_coorte$requisicoes > 0), nrow(dash_coorte)))`%**, com **`r sum(dash_coorte$requisicoes > 0)` usuários de IA entre `r nrow(dash_coorte)` colaboradores atualmente ativos**. A série acompanha essa coorte, contratada até o fim dos logs; sem datas de desligamento, não representa a reconstrução do quadro ativo de cada mês. O indicador revela alcance de uso, sem comprovar melhora nas entregas.
 
 ### Governança
 
@@ -595,7 +706,7 @@ if (nrow(dash_incidentes)) dash_plot(ggplot(dash_incidentes, aes(company_id, fil
     x = "Empresa", y = "Eventos", fill = "Severidade") + theme_minimal())
 ```
 
-A classificação considera empresa, ferramenta, área e data da decisão. Uso anterior à decisão fica sem confirmação, pois não há histórico completo de aprovações. As porcentagens são ponderadas por `request_count`; eventos de segurança são contagens, não pessoas distintas.
+No período, **`r fmt_num(sum(dash_resumo_politica$percentual[dash_resumo_politica$situacao == "Fora da regra confirmada"]))`% das requisições** ficam fora da regra confirmada e **`r fmt_num(sum(dash_resumo_politica$percentual[dash_resumo_politica$situacao == "Sem aprovação confirmada"]))`%** ficam sem aprovação confirmada. As categorias devem ser investigadas separadamente: falta de confirmação não comprova descumprimento. A classificação considera empresa, ferramenta, área e data da decisão. Uso anterior à decisão fica sem confirmação, pois não há histórico completo de aprovações. As porcentagens são ponderadas por `request_count`; eventos de segurança são contagens, não pessoas distintas.
 
 ### Capacitação
 
@@ -625,10 +736,15 @@ if (nrow(dash_treino)) {
 }
 ```
 
-Pessoas capacitadas são contadas uma única vez; matrículas podem se repetir para a mesma pessoa. Só entram na cobertura conclusões datadas até o corte. Conclusões posteriores ficam separadas, e o status dos demais cursos é o informado na base. Concluir um curso não comprova proficiência.
-
-**Interpretação:** avalie o R² ajustado e o valor-p de cada coeficiente no resultado de `summary(modelo_entregas)` antes de concluir se existe associação. O modelo usa PRs abertos como resposta, não entregas concluídas. Departamentos de engenharia podem concentrar tanto uso de IA quanto PRs pela natureza da função; a especificação acima não controla esse tipo de área. Os diagnósticos de resíduos devem ser conferidos antes de interpretar testes e intervalos. Associação não demonstra que IA causa produtividade, e coeficientes em unidades diferentes não podem ser comparados diretamente para definir o preditor de maior peso.
+A cobertura de conclusão foi de **`r fmt_num(dash_pct(sum(dash_coorte$capacitado), nrow(dash_coorte)))`% dos colaboradores ativos** (`r sum(dash_coorte$capacitado)` de `r nrow(dash_coorte)`). Já **`r fmt_num(dash_pct(dash_n_conclusoes, nrow(dash_treino)))`% das matrículas do período** têm conclusão válida até o corte. Pessoas são contadas uma única vez na cobertura; matrículas podem se repetir para a mesma pessoa. Os dois percentuais respondem a perguntas diferentes. Conclusões posteriores ou com datas inválidas ficam separadas, e o status dos demais cursos é o informado na base. A cobertura apoia o planejamento de capacitação; concluir um curso não comprova proficiência.
 
 ## Conclusão
 
-Esta versão usa as 17 tabelas fornecidas e endereça diretamente os pontos da avaliação da Sprint 1: eliminamos a duplicação de histogramas (seção 5), explicitamos que nenhuma imputação automática foi feita e em quais casos a ausência de linha foi tratada como zero (seção 2–3), listamos por escrito os indicadores organizacionais (seção 3), respeitamos a ordem ordinal tanto da senioridade quanto da severidade (seções 4 e 6), corrigimos o agrupamento de departamentos para não misturar empresas diferentes que compartilham nome (seção 4), e entregamos de fato os gráficos citados no relatório anterior: colunas empilhadas a 100% por gravidade (seção 4), dispersão com linha de tendência (seção 7) e boxplot de latência (seção 9) — todos interativos via `plotly`. A seção 12 acrescenta os cinco dashboards prioritários aos gráficos e análises já existentes. A seção 11 adiciona a análise multivariada (correlação e regressão múltipla) que a Sprint 1 apenas prometia, com interpretação explícita das limitações (confundimento e diagnósticos do modelo). Os resultados quantitativos finais só podem ser confirmados após a execução deste documento com os CSVs originais.
+A análise organizou indicadores de segurança, adoção de IA, capacitação, custos, licenças e atividade de desenvolvimento, complementados por correlação e regressão linear múltipla. Os resultados se referem ao conjunto das `r nrow(companies)` empresas no período analisado.
+
+- **Adoção e capacitação:** `r fmt_num(dash_pct(sum(dash_coorte$requisicoes > 0), nrow(dash_coorte)))`% dos colaboradores ativos registraram uso de IA e `r fmt_num(dash_pct(sum(dash_coorte$capacitado), nrow(dash_coorte)))`% têm ao menos um curso concluído com data válida até o corte. As coberturas apoiam a identificação de lacunas de acesso e formação; não medem domínio da ferramenta.
+- **Governança e segurança:** foram registrados `r nrow(dash_incidentes)` eventos, dos quais `r sum(dash_incidentes$severity %in% c("Alta", "Critica"))` de severidade alta ou crítica. O uso classificado fora das regras confirmadas e o uso sem confirmação de aprovação exigem apuração distinta. A priorização deve considerar a gravidade dos eventos, além dos percentuais.
+- **Custos e licenças:** há `r nrow(dash_licencas)` licenças classificadas como ativas no corte, das quais `r sum(dash_licencas$situacao == "Sem uso em 90 dias")` não apresentam uso registrado em uma janela completa de 90 dias e `r sum(dash_licencas$situacao == "Janela insuficiente")` têm janela insuficiente. Esse resultado orienta a revisão de alocação. BRL e USD permanecem separados; a ausência de moeda no orçamento impede uma comparação orçamentária confiável.
+- **Atividade de desenvolvimento:** a regressão apresentou R² ajustado de `r fmt_num(resumo_modelo$adj.r.squared, 4)` e associação estimada de `r fmt_num(1000 * beta_ia, 2)` PRs abertos por 1.000 requisições adicionais, mantendo constantes equipe e treinamento. A mistura de áreas, os diagnósticos dos resíduos e os valores ajustados negativos limitam a interpretação. Esse ajuste exploratório não comprova ganho causado pela IA e deve ser lido junto aos indicadores de merge, builds e deploys.
+
+As prioridades sugeridas pelos dados são investigar os eventos graves e o uso fora das regras, revisar licenças sem uso registrado e planejar a capacitação com base na cobertura de pessoas. As fontes são preservadas e as exclusões por datas estão documentadas. A interpretação estatística respeita as diferenças entre atividade registrada, qualidade da entrega e efeito causal.
