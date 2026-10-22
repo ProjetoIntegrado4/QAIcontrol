@@ -30,6 +30,17 @@ app:
     pontos-curso: 10
     pontos-certificacao: 20
 
+# Regra de custos de IA (US PP-18). Aplicada só em service/custos/RegraCusto:
+# custo por uso = input_tokens / 1000 × preço de entrada + output_tokens / 1000 × preço de saída (ai_models).
+# PRELIMINAR – validar com o PO: moeda/câmbio, status cobrados e quais aplicações contam como agente.
+custos:
+  versao-regra: custos-v1-preliminar
+  vigencia: "2026-10-22"
+  moeda: USD
+  status-cobrados: [success]
+  aplicacoes-agente: [Pipeline Interno, Integracao via Backend Interno, API Direta]
+  limite-colaboradores: 10
+
 server:
   servlet:
     session:

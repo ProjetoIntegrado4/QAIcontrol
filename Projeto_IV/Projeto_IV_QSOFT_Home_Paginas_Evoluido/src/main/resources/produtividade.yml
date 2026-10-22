@@ -66,6 +66,16 @@ produtividade:
     deploys:
       nome: deployments
       colunas: { projeto: project_id, data: timestamp, status: status }
+    # Custos de IA (US PP-18): o uso com o modelo e a aplicação de cada registro, e o preço de cada modelo.
+    uso_custo:
+      nome: ai_usage_logs
+      colunas: { data: timestamp, funcionario: employee_id, empresa: company_id, departamento: department_id,
+                 ferramenta: ai_tool_id, modelo: model_id, aplicacao: application, tokens_entrada: input_tokens,
+                 tokens_saida: output_tokens, status: request_status }
+    modelos:
+      nome: ai_models
+      colunas: { id: model_id, ferramenta: ai_tool_id, nome: model_name, familia: model_family,
+                 preco_entrada: input_price_usd_per_1k_tokens, preco_saida: output_price_usd_per_1k_tokens }
 
   # Valores das colunas de status que o painel interpreta. Cada item aceita uma lista.
   valores:
