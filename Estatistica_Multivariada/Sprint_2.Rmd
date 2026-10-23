@@ -1,7 +1,8 @@
 ---
-title: "QAIsoft — Sprint 2 | Indicadores organizacionais e análise multivariada"
-author: "Equipe QAIsoft"
-output: html_document
+title: "QAIcontrol | Sprint 2 — Estatística Multivariada"
+author: "Gustavo Carvalho, Julia Egute, Pablo Perez e Pedro Perroni"
+output:
+  html_document: default
 ---
 
 ## Objetivo
@@ -16,8 +17,7 @@ library(tidyr)
 library(readr)
 library(ggplot2)
 library(plotly)
-# Extraia csv_preenchidos.zip ao lado deste Rmd antes de usar Knit.
-# Também é possível colocar os CSVs diretamente na pasta do Rmd.
+setwd("C:/Users/pedro.perroni/OneDrive - ESPM/4° Semestre/Projeto Integrado")
 pasta_dados = if (file.exists("csv_preenchidos/companies.csv")) "csv_preenchidos" else "."
 if (!file.exists(file.path(pasta_dados, "companies.csv"))) {
   stop("Base não encontrada. Coloque a pasta csv_preenchidos ao lado deste Rmd.")
@@ -471,11 +471,11 @@ p_treino = resumo_modelo$coefficients["taxa_treinamento", "Pr(>|t|)"]
 
 **Resultados da especificação:**
 
-- A regressão usa **`r nrow(base_multivariada)` departamentos**; `r nrow(indicadores) - nrow(base_multivariada)` ficam fora por ausência nas variáveis necessárias ou por não terem funcionários cadastrados. Departamentos sem latência permanecem elegíveis.
-- O **R² ajustado é `r fmt_num(resumo_modelo$adj.r.squared, 4)`**, correspondente a cerca de **`r fmt_num(100 * resumo_modelo$adj.r.squared)`%** da variação observada no volume de PRs abertos, com a penalização pelo número de variáveis. O teste global apresenta **valor-p `r fmt_p(p_global)`**. Esses números descrevem o ajuste na amostra e não validam, sozinhos, a especificação.
-- Para cada **1.000 requisições adicionais**, a associação estimada é de **`r fmt_num(1000 * beta_ia, 2)` PRs abertos**, mantendo constantes as outras duas variáveis; o intervalo convencional de 95% vai de **`r fmt_num(1000 * ic_modelo["requisicoes_ia", 1], 2)` a `r fmt_num(1000 * ic_modelo["requisicoes_ia", 2], 2)` PRs**, com **valor-p `r fmt_p(p_ia)`**.
-- O coeficiente do tamanho da equipe é **`r fmt_num(coef(modelo_entregas)["funcionarios"], 3)` por funcionário**, com **valor-p `r fmt_p(p_funcionarios)`**. O sinal é uma associação condicional nesta especificação, que não separa empresas e tipos de área.
-- Para um aumento de **10 pontos percentuais** na cobertura de treinamento, a associação estimada é de **`r fmt_num(0.1 * beta_treino, 2)` PRs**, com **valor-p `r fmt_p(p_treino)`**. Pelo teste convencional a 5%, **`r if (p_treino < 0.05) "há indicação de associação nesta especificação" else "não há evidência suficiente de associação nesta especificação"`**; isso não estabelece a eficácia ou a ineficácia do treinamento.
+-   A regressão usa **`r nrow(base_multivariada)` departamentos**; `r nrow(indicadores) - nrow(base_multivariada)` ficam fora por ausência nas variáveis necessárias ou por não terem funcionários cadastrados. Departamentos sem latência permanecem elegíveis.
+-   O **R² ajustado é `r fmt_num(resumo_modelo$adj.r.squared, 4)`**, correspondente a cerca de **`r fmt_num(100 * resumo_modelo$adj.r.squared)`%** da variação observada no volume de PRs abertos, com a penalização pelo número de variáveis. O teste global apresenta **valor-p `r fmt_p(p_global)`**. Esses números descrevem o ajuste na amostra e não validam, sozinhos, a especificação.
+-   Para cada **1.000 requisições adicionais**, a associação estimada é de **`r fmt_num(1000 * beta_ia, 2)` PRs abertos**, mantendo constantes as outras duas variáveis; o intervalo convencional de 95% vai de **`r fmt_num(1000 * ic_modelo["requisicoes_ia", 1], 2)` a `r fmt_num(1000 * ic_modelo["requisicoes_ia", 2], 2)` PRs**, com **valor-p `r fmt_p(p_ia)`**.
+-   O coeficiente do tamanho da equipe é **`r fmt_num(coef(modelo_entregas)["funcionarios"], 3)` por funcionário**, com **valor-p `r fmt_p(p_funcionarios)`**. O sinal é uma associação condicional nesta especificação, que não separa empresas e tipos de área.
+-   Para um aumento de **10 pontos percentuais** na cobertura de treinamento, a associação estimada é de **`r fmt_num(0.1 * beta_treino, 2)` PRs**, com **valor-p `r fmt_p(p_treino)`**. Pelo teste convencional a 5%, **`r if (p_treino < 0.05) "há indicação de associação nesta especificação" else "não há evidência suficiente de associação nesta especificação"`**; isso não estabelece a eficácia ou a ineficácia do treinamento.
 
 ### 11.3 Diagnósticos e limites da interpretação
 
@@ -742,9 +742,9 @@ A cobertura de conclusão foi de **`r fmt_num(dash_pct(sum(dash_coorte$capacitad
 
 A análise organizou indicadores de segurança, adoção de IA, capacitação, custos, licenças e atividade de desenvolvimento, complementados por correlação e regressão linear múltipla. Os resultados se referem ao conjunto das `r nrow(companies)` empresas no período analisado.
 
-- **Adoção e capacitação:** `r fmt_num(dash_pct(sum(dash_coorte$requisicoes > 0), nrow(dash_coorte)))`% dos colaboradores ativos registraram uso de IA e `r fmt_num(dash_pct(sum(dash_coorte$capacitado), nrow(dash_coorte)))`% têm ao menos um curso concluído com data válida até o corte. As coberturas apoiam a identificação de lacunas de acesso e formação; não medem domínio da ferramenta.
-- **Governança e segurança:** foram registrados `r nrow(dash_incidentes)` eventos, dos quais `r sum(dash_incidentes$severity %in% c("Alta", "Critica"))` de severidade alta ou crítica. O uso classificado fora das regras confirmadas e o uso sem confirmação de aprovação exigem apuração distinta. A priorização deve considerar a gravidade dos eventos, além dos percentuais.
-- **Custos e licenças:** há `r nrow(dash_licencas)` licenças classificadas como ativas no corte, das quais `r sum(dash_licencas$situacao == "Sem uso em 90 dias")` não apresentam uso registrado em uma janela completa de 90 dias e `r sum(dash_licencas$situacao == "Janela insuficiente")` têm janela insuficiente. Esse resultado orienta a revisão de alocação. BRL e USD permanecem separados; a ausência de moeda no orçamento impede uma comparação orçamentária confiável.
-- **Atividade de desenvolvimento:** a regressão apresentou R² ajustado de `r fmt_num(resumo_modelo$adj.r.squared, 4)` e associação estimada de `r fmt_num(1000 * beta_ia, 2)` PRs abertos por 1.000 requisições adicionais, mantendo constantes equipe e treinamento. A mistura de áreas, os diagnósticos dos resíduos e os valores ajustados negativos limitam a interpretação. Esse ajuste exploratório não comprova ganho causado pela IA e deve ser lido junto aos indicadores de merge, builds e deploys.
+-   **Adoção e capacitação:** `r fmt_num(dash_pct(sum(dash_coorte$requisicoes > 0), nrow(dash_coorte)))`% dos colaboradores ativos registraram uso de IA e `r fmt_num(dash_pct(sum(dash_coorte$capacitado), nrow(dash_coorte)))`% têm ao menos um curso concluído com data válida até o corte. As coberturas apoiam a identificação de lacunas de acesso e formação; não medem domínio da ferramenta.
+-   **Governança e segurança:** foram registrados `r nrow(dash_incidentes)` eventos, dos quais `r sum(dash_incidentes$severity %in% c("Alta", "Critica"))` de severidade alta ou crítica. O uso classificado fora das regras confirmadas e o uso sem confirmação de aprovação exigem apuração distinta. A priorização deve considerar a gravidade dos eventos, além dos percentuais.
+-   **Custos e licenças:** há `r nrow(dash_licencas)` licenças classificadas como ativas no corte, das quais `r sum(dash_licencas$situacao == "Sem uso em 90 dias")` não apresentam uso registrado em uma janela completa de 90 dias e `r sum(dash_licencas$situacao == "Janela insuficiente")` têm janela insuficiente. Esse resultado orienta a revisão de alocação. BRL e USD permanecem separados; a ausência de moeda no orçamento impede uma comparação orçamentária confiável.
+-   **Atividade de desenvolvimento:** a regressão apresentou R² ajustado de `r fmt_num(resumo_modelo$adj.r.squared, 4)` e associação estimada de `r fmt_num(1000 * beta_ia, 2)` PRs abertos por 1.000 requisições adicionais, mantendo constantes equipe e treinamento. A mistura de áreas, os diagnósticos dos resíduos e os valores ajustados negativos limitam a interpretação. Esse ajuste exploratório não comprova ganho causado pela IA e deve ser lido junto aos indicadores de merge, builds e deploys.
 
 As prioridades sugeridas pelos dados são investigar os eventos graves e o uso fora das regras, revisar licenças sem uso registrado e planejar a capacitação com base na cobertura de pessoas. As fontes são preservadas e as exclusões por datas estão documentadas. A interpretação estatística respeita as diferenças entre atividade registrada, qualidade da entrega e efeito causal.
