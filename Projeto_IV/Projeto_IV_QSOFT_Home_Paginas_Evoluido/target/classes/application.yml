@@ -1,6 +1,11 @@
 spring:
   application:
     name: qsoft-ia-backend
+  config:
+    import:
+      - classpath:produtividade.yml
+      # Lê o .env da raiz do projeto ao rodar fora do Docker (IntelliJ, mvn spring-boot:run).
+      - optional:file:.env[.properties]
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/iadb}
     username: ${DB_USER:ia}
@@ -13,9 +18,45 @@ spring:
       hibernate:
         format_sql: true
 
+# Base de dados dos cadastros de empresas, funcionários e admins (companies.csv, employees.csv,
+# departments.csv e admins.csv). O caminho vem só da variável QSOFT_DADOS_DIR, definida no arquivo .env
+# da raiz do projeto; o painel de produtividade lê a mesma pasta.
+qsoft:
+  dados:
+    dir: ${QSOFT_DADOS_DIR:dados/csv}
+
 services:
   alert:
     base-url: ${ALERT_SERVICE_URL:http://localhost:3001}
+
+app:
+  auth:
+    username: ${TEMP_LOGIN_USERNAME:admin@qsoft.com}
+    password: ${TEMP_LOGIN_PASSWORD:Qsoft123!}
+    name: ${TEMP_LOGIN_NAME:Administrador QSOFT}
+  # Pontos de AI Literacy por capacitação registrada (US PP-19). Usados em service/PontuacaoAiLiteracy.
+  # PRELIMINAR – validar com o PO: o documento do projeto ainda não define esses pesos (RF10/RF11).
+  ai-literacy:
+    pontos-curso: 10
+    pontos-certificacao: 20
+
+# Regra de custos de IA (US PP-18). Aplicada só em service/custos/RegraCusto:
+# custo por uso = input_tokens / 1000 × preço de entrada + output_tokens / 1000 × preço de saída (ai_models).
+# PRELIMINAR – validar com o PO: moeda/câmbio, status cobrados e quais aplicações contam como agente.
+custos:
+  versao-regra: custos-v1-preliminar
+  vigencia: "2026-10-22"
+  moeda: USD
+  status-cobrados: [success]
+  aplicacoes-agente: [Pipeline Interno, Integracao via Backend Interno, API Direta]
+  limite-colaboradores: 10
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
 
 management:
   endpoints:
