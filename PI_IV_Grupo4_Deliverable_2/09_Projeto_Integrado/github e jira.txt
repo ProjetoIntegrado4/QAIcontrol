@@ -1,0 +1,10 @@
+﻿Github: https://github.com/ProjetoIntegrado4/QAIcontrol
+
+
+Jira Scrum Master: https://gustavo2.atlassian.net/jira/software/projects/PS/boards/3/backlog?atlOrigin=eyJpIjoiODQ4NWM5NGRjNzFjNGUyZDg2NGZlMDljMDU3OGUzNTkiLCJwIjoiaiJ9
+
+
+
+
+Jira PO: 
+https://gustavo2.atlassian.net/jira/software/projects/PP/boards/4/backlog?atlOrigin=eyJpIjoiN2ZlZmMzZTkxMGE2NDhjNGExNmU0OTFiMTliNTVkODkiLCJwIjoiaiJ9
