@@ -79,7 +79,8 @@ public class AdminService implements AdminUseCase {
                 empresa.getArea(),
                 admin.getCargo(),
                 admin.getStatusConta(),
-                admin.getNivelAcesso()
+                admin.getNivelAcesso(),
+                admin.getCodigo()
         );
     }
 }

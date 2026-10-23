@@ -1,47 +1,26 @@
 package br.edu.exemplo.ia.domain.entity;
 
+import br.edu.exemplo.ia.domain.vo.CodigoCsv;
 import br.edu.exemplo.ia.domain.vo.FuncionarioVO;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "funcionario")
+/** Funcionário de uma empresa. Fica gravado na base de dados em CSV (employees.csv). */
 public class Funcionario {
-    @Id
+    static final String TIPO = "funcionario";
+
     private UUID id;
 
-        @Embedded
-        @AttributeOverrides({
-            @AttributeOverride(name = "nome", column = @Column(name = "nome")),
-            @AttributeOverride(name = "cpf", column = @Column(name = "cpf", length = 11)),
-            @AttributeOverride(name = "emailCorporativo", column = @Column(name = "email_corporativo")),
-            @AttributeOverride(name = "telefone", column = @Column(name = "telefone")),
-            @AttributeOverride(name = "cargo", column = @Column(name = "cargo")),
-            @AttributeOverride(name = "setor", column = @Column(name = "setor")),
-            @AttributeOverride(name = "matricula", column = @Column(name = "matricula")),
-            @AttributeOverride(name = "senha", column = @Column(name = "senha")),
-            @AttributeOverride(name = "statusConta", column = @Column(name = "status_conta"))
-        })
-        private FuncionarioVO dados;
+    /** Código do funcionário na base de dados (employee_id, ex.: C01-E0001). Nulo até ser gravado. */
+    private String codigo;
+
+    private FuncionarioVO dados;
 
     private boolean podeGerenciarFuncionarios;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
     // O gestor responsavel e um admin da mesma empresa do funcionario.
-    @ManyToOne
-    @JoinColumn(name = "gestor_admin_id")
     private Admin gestorResponsavel;
 
     protected Funcionario() {
@@ -73,8 +52,28 @@ public class Funcionario {
         this.podeGerenciarFuncionarios = false;
     }
 
+    /** Recria um funcionário já gravado na base de dados, sem revalidar os campos. */
+    public static Funcionario restaurar(String codigo, FuncionarioVO dados, Empresa empresa, Admin gestorResponsavel) {
+        Funcionario funcionario = new Funcionario();
+        funcionario.definirCodigo(codigo);
+        funcionario.dados = dados;
+        funcionario.empresa = empresa;
+        funcionario.gestorResponsavel = gestorResponsavel;
+        return funcionario;
+    }
+
+    /** Define o código na base de dados; o id passa a ser derivado dele. */
+    public void definirCodigo(String codigo) {
+        this.id = CodigoCsv.uuid(TIPO, codigo);
+        this.codigo = codigo.trim();
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public String getNome() {

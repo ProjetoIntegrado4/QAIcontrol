@@ -55,7 +55,8 @@ public class EmpresaService implements EmpresaUseCase {
                 p.getCidade(),
                 p.getEstado(),
                 p.getAdminResponsavel(),
-                p.getArea()
+                p.getArea(),
+                p.getCodigo()
         );
     }
 }

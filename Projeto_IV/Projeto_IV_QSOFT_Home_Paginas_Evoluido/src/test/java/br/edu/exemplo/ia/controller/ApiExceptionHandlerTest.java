@@ -1,5 +1,6 @@
 package br.edu.exemplo.ia.controller;
 
+import br.edu.exemplo.ia.repository.csv.BaseDadosException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,15 @@ class ApiExceptionHandlerTest {
         assertEquals("CPF inválido", r.getBody().get("message"));
         assertEquals("Bad Request", r.getBody().get("error"));
         assertNotNull(r.getBody().get("timestamp"));
+    }
+
+    @Test
+    void falhaNaBaseDeDadosCsvDeveVirarServiceUnavailable() {
+        ResponseEntity<Map<String, Object>> r = handler.handleBaseDados(
+                new BaseDadosException("Não foi possível gravar companies.csv", new java.io.IOException("x")));
+
+        assertEquals(503, r.getStatusCode().value());
+        assertEquals("Não foi possível gravar companies.csv", r.getBody().get("message"));
     }
 
     @Test

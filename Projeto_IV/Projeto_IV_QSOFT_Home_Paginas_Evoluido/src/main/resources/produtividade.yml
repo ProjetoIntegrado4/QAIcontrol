@@ -7,7 +7,8 @@
 produtividade:
   schema: public
   # Pasta dos CSVs importados na subida quando a tabela não existe ou está vazia.
-  csv-dir: ${PRODUTIVIDADE_CSV_DIR:dados/csv}
+  # É a mesma base de dados dos cadastros (QSOFT_DADOS_DIR, no .env); PRODUTIVIDADE_CSV_DIR só se quiser outra.
+  csv-dir: ${PRODUTIVIDADE_CSV_DIR:${QSOFT_DADOS_DIR:dados/csv}}
   # Janela, em dias, usada em "licenças ociosas" e "colaboradores mais ativos".
   janela-recente-dias: 90
   # Quantos colaboradores aparecem no ranking.

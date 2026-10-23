@@ -63,11 +63,17 @@ services:
       TEMP_LOGIN_USERNAME: ${TEMP_LOGIN_USERNAME:-admin@qsoft.com}
       TEMP_LOGIN_PASSWORD: ${TEMP_LOGIN_PASSWORD:-Qsoft123!}
       TEMP_LOGIN_NAME: ${TEMP_LOGIN_NAME:-Administrador QSOFT}
-      PRODUTIVIDADE_CSV_DIR: /app/dados/csv
+      # Dentro do contêiner a base de dados fica sempre em /app/dados; a pasta real do computador
+      # vem do QSOFT_DADOS_DIR do arquivo .env (veja o volume abaixo).
+      QSOFT_DADOS_DIR: /app/dados
     ports:
       - "8080:8080"
     volumes:
-      - ./dados/csv:/app/dados/csv:ro
+      # Base de dados em CSV (cadastros e painel). Leitura e escrita: o que for cadastrado no site
+      # é gravado nos CSVs, e o que for acrescentado nos CSVs aparece no site.
+      - type: bind
+        source: ${QSOFT_DADOS_DIR:-./dados/csv}
+        target: /app/dados
     depends_on:
       - postgres
       - alert-service

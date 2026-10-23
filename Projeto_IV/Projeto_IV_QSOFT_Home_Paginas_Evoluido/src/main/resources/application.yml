@@ -2,7 +2,10 @@ spring:
   application:
     name: qsoft-ia-backend
   config:
-    import: classpath:produtividade.yml
+    import:
+      - classpath:produtividade.yml
+      # Lê o .env da raiz do projeto ao rodar fora do Docker (IntelliJ, mvn spring-boot:run).
+      - optional:file:.env[.properties]
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/iadb}
     username: ${DB_USER:ia}
@@ -14,6 +17,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+# Base de dados dos cadastros de empresas, funcionários e admins (companies.csv, employees.csv,
+# departments.csv e admins.csv). O caminho vem só da variável QSOFT_DADOS_DIR, definida no arquivo .env
+# da raiz do projeto; o painel de produtividade lê a mesma pasta.
+qsoft:
+  dados:
+    dir: ${QSOFT_DADOS_DIR:dados/csv}
 
 services:
   alert:

@@ -38,7 +38,7 @@ class CrudControllersTest {
         AdminRequest request = new AdminRequest("Ana", "52998224725", "ana@qsoft.com", 11999999999L, "Gerente",
                 empresaId, "Senha@123", "Senha@123", "ATIVO", "TOTAL");
         AdminResponse response = new AdminResponse(id, "Ana", "52998224725", "ana@qsoft.com", 11999999999L,
-                empresaId, "QSoft", "TI", "Gerente", "ATIVO", "TOTAL");
+                empresaId, "QSoft", "TI", "Gerente", "ATIVO", "TOTAL", "C01-A001");
         when(useCase.create(request)).thenReturn(response);
         when(useCase.list(empresaId)).thenReturn(List.of(response));
         when(useCase.getById(id)).thenReturn(response);
@@ -55,7 +55,7 @@ class CrudControllersTest {
         EmpresaRequest request = new EmpresaRequest("QSoft", "QSoft LTDA", "11222333000181", 10, "01001000",
                 "Rua A, 1", "São Paulo", "SP", "Ana", "TI");
         EmpresaResponse response = new EmpresaResponse(empresaId, "QSoft", "QSoft LTDA", "11222333000181", 10,
-                "01001000", "Rua A, 1", "São Paulo", "SP", "Ana", "TI");
+                "01001000", "Rua A, 1", "São Paulo", "SP", "Ana", "TI", "C01");
         when(useCase.create(request)).thenReturn(response);
         when(useCase.list()).thenReturn(List.of(response));
 
@@ -70,7 +70,7 @@ class CrudControllersTest {
         FuncionarioRequest request = new FuncionarioRequest("Bruno", "52998224725", "bruno@qsoft.com",
                 11988887777L, "Dev", "TI", empresaId, "M001", "Senha@123", "ATIVO", null);
         FuncionarioResponse response = new FuncionarioResponse(id, "Bruno", "52998224725", "bruno@qsoft.com",
-                11988887777L, "Dev", "TI", empresaId, "QSoft", "TI", "M001", "ATIVO", null, null, false);
+                11988887777L, "Dev", "TI", empresaId, "QSoft", "TI", "M001", "ATIVO", null, null, false, "C01-E0001");
         when(useCase.create(request)).thenReturn(response);
         when(useCase.list(null)).thenReturn(List.of(response));
         when(useCase.getById(id)).thenReturn(response);

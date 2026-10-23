@@ -44,14 +44,14 @@ public class CertificacaoService implements CertificacaoUseCase {
         Certificacao certificacao = certificacaoRepository.save(new Certificacao(
                 funcionario, request.nome(), request.instituicao(), request.dataConclusao(), tipo
         ));
-        return toDto(certificacao);
+        return toDto(certificacao, funcionario);
     }
 
     @Override
     public List<CertificacaoResponse> listar(UUID funcionarioId) {
-        loadFuncionario(funcionarioId);
+        Funcionario funcionario = loadFuncionario(funcionarioId);
         return certificacaoRepository.findByFuncionarioIdOrderByDataConclusaoDesc(funcionarioId).stream()
-                .map(this::toDto)
+                .map(certificacao -> toDto(certificacao, funcionario))
                 .toList();
     }
 
@@ -93,11 +93,12 @@ public class CertificacaoService implements CertificacaoUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Funcionario inexistente: " + funcionarioId));
     }
 
-    private CertificacaoResponse toDto(Certificacao certificacao) {
+    // O funcionário vem da base de dados em CSV; a certificação guarda só o id dele.
+    private CertificacaoResponse toDto(Certificacao certificacao, Funcionario funcionario) {
         return new CertificacaoResponse(
                 certificacao.getId(),
-                certificacao.getFuncionario().getId(),
-                certificacao.getFuncionario().getNome(),
+                certificacao.getFuncionarioId(),
+                funcionario.getNome(),
                 certificacao.getNome(),
                 certificacao.getInstituicao(),
                 certificacao.getDataConclusao(),

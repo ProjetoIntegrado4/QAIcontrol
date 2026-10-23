@@ -10,6 +10,8 @@ import br.edu.exemplo.ia.repository.AdminRepository;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
 import br.edu.exemplo.ia.repository.FuncionarioRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +19,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -51,7 +54,9 @@ class FuncionarioServiceTest {
         assertEquals(empresa.getId(), response.empresaId());
         assertEquals("Analista", response.cargo());
         assertFalse(response.podeGerenciarFuncionarios());
-        verify(funcionarioRepository).save(any(Funcionario.class));
+        ArgumentCaptor<Funcionario> salvo = ArgumentCaptor.forClass(Funcionario.class);
+        verify(funcionarioRepository).save(salvo.capture());
+        assertTrue(new BCryptPasswordEncoder().matches("senha-segura", salvo.getValue().getSenha()));
     }
 
     @Test

@@ -72,7 +72,7 @@
             <th>Cargo</th>
             <th>Status</th>
             <th>Nível de acesso</th>
-            <th>ID</th>
+            <th>Código</th>
           </tr>
         </thead>
         <tbody id="listaAdmins"></tbody>
@@ -175,7 +175,7 @@ async function carregarAdmins() {
       }
       const idCell = document.createElement('td');
       const code = document.createElement('code');
-      code.textContent = admin.id;
+      code.textContent = admin.codigo || admin.id;
       idCell.appendChild(code);
       tr.appendChild(idCell);
       listaAdmins.appendChild(tr);

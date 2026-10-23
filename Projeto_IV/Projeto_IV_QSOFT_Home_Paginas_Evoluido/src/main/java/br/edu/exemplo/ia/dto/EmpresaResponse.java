@@ -13,6 +13,7 @@ public record EmpresaResponse(
 	String cidade,
 	String estado,
 	String adminResponsavel,
-	String area
+	String area,
+	String codigo
 ) {
 }

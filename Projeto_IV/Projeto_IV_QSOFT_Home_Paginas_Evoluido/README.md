@@ -37,6 +37,38 @@ Fluxo:
 6. chama o Node Alert Service;
 7. devolve consumo + alerta ao BFF/front.
 
+## Base de dados dos cadastros (CSV)
+
+Empresas, funcionários e admins ficam na **base de dados em CSV**, não no PostgreSQL. A sincronização
+vale nos dois sentidos:
+
+- o que for cadastrado no site é gravado no fim do CSV correspondente;
+- o que for acrescentado nos CSVs (por script, Excel ou à mão) aparece no site na próxima vez que a
+  lista for carregada. O backend relê o arquivo sempre que ele muda no disco.
+
+| Cadastro     | Arquivo           | Código gerado                  |
+|--------------|-------------------|--------------------------------|
+| Empresa      | `companies.csv`   | `C19`, `C20`...                |
+| Funcionário  | `employees.csv`   | `C01-E0364`... (por empresa)   |
+| Setor        | `departments.csv` | `C01-D12`... (criado se o setor digitado não existir) |
+| Admin        | `admins.csv`      | `C01-A001`... (arquivo criado no primeiro cadastro) |
+
+As colunas originais da base continuam as mesmas. Os campos que só o site tem (razão social, CNPJ,
+nome, CPF, e-mail, telefone, matrícula, hash da senha, gestor) entram como colunas extras no fim do
+arquivo, vazias nas linhas antigas. Senhas são gravadas apenas como hash BCrypt. O id usado pela API é
+derivado do código (`C01` sempre tem o mesmo id), e a coluna "Código" das telas mostra esse código.
+
+**Onde fica a pasta.** O caminho está num único lugar: a variável `QSOFT_DADOS_DIR` do arquivo `.env`
+na raiz do projeto. Ela é usada pelo `docker compose` (volume do backend, montado em `/app/dados`) e
+pelo Spring quando roda fora do Docker. Para apontar para outra pasta (por exemplo, a pasta Git):
+
+```text
+QSOFT_DADOS_DIR=C:/caminho/da/nova/pasta
+```
+
+Depois, reinicie o backend: `docker compose up -d --force-recreate backend`. Sem `.env`, o padrão é
+`dados/csv`. O painel de produtividade importa os CSVs da mesma pasta.
+
 ## Subir pelo Docker
 
 Na pasta raiz:
@@ -265,7 +297,7 @@ Para acrescentar uma análise:
 4. no frontend, crie `frontend/public/js/produtividade/secoes/<nome>.js`, registre em `SECOES` (`main.js`)
    e marque o HTML com `data-secao="<chave>"`.
 
-**Importação de CSV.** Na subida, cada `*.csv` de `dados/csv` (variável `PRODUTIVIDADE_CSV_DIR`) vira a
+**Importação de CSV.** Na subida, cada `*.csv` da pasta da base de dados (`QSOFT_DADOS_DIR`, no `.env`) vira a
 tabela de mesmo nome, se ela não existir ou estiver vazia. Os tipos das colunas são deduzidos dos valores, a
 primeira coluna `_id` com valores únicos vira chave primária e as demais `_id` ganham índice. Tabelas que já
 têm dados não são alteradas. Cada carga da página consulta o banco: registros novos aparecem ao clicar em

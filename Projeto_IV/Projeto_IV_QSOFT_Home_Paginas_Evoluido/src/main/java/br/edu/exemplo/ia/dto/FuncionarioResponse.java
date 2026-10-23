@@ -17,6 +17,7 @@ public record FuncionarioResponse(
         String statusConta,
         UUID gestorResponsavelId,
         String gestorResponsavelNome,
-        boolean podeGerenciarFuncionarios
+        boolean podeGerenciarFuncionarios,
+        String codigo
 ) {
 }

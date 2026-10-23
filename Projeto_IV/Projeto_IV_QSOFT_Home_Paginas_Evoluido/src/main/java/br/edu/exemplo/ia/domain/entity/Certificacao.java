@@ -6,9 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,8 +26,12 @@ public class Certificacao {
     @Id
     private UUID id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "funcionario_id", nullable = false)
+    // O funcionário fica na base de dados em CSV (fora do banco), então aqui guardamos só o id dele.
+    @Column(name = "funcionario_id", nullable = false)
+    private UUID funcionarioId;
+
+    // Preenchido só quando a certificação é criada nesta execução; ao ler do banco, use getFuncionarioId().
+    @Transient
     private Funcionario funcionario;
 
     @Column(name = "nome", nullable = false, length = TAMANHO_MAXIMO)
@@ -78,6 +81,7 @@ public class Certificacao {
         }
         this.id = UUID.randomUUID();
         this.funcionario = funcionario;
+        this.funcionarioId = funcionario.getId();
         this.nome = nome.trim();
         this.instituicao = instituicao.trim();
         this.dataConclusao = dataConclusao;
@@ -91,6 +95,10 @@ public class Certificacao {
 
     public Funcionario getFuncionario() {
         return funcionario;
+    }
+
+    public UUID getFuncionarioId() {
+        return funcionarioId;
     }
 
     public String getNome() {

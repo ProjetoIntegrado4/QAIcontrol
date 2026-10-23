@@ -1,39 +1,21 @@
 package br.edu.exemplo.ia.domain.entity;
 
 import br.edu.exemplo.ia.domain.vo.AdminVO;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import br.edu.exemplo.ia.domain.vo.CodigoCsv;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "admin")
+/** Administrador de uma empresa. Fica gravado na base de dados em CSV (admins.csv). */
 public class Admin {
-    @Id
+    static final String TIPO = "admin";
+
     private UUID id;
 
-        @Embedded
-        @AttributeOverrides({
-            @AttributeOverride(name = "nome", column = @Column(name = "nome")),
-            @AttributeOverride(name = "cpf", column = @Column(name = "cpf", length = 11)),
-            @AttributeOverride(name = "email", column = @Column(name = "email")),
-            @AttributeOverride(name = "telefone", column = @Column(name = "telefone")),
-            @AttributeOverride(name = "cargo", column = @Column(name = "cargo")),
-            @AttributeOverride(name = "senhaHash", column = @Column(name = "senha_hash")),
-            @AttributeOverride(name = "statusConta", column = @Column(name = "status_conta")),
-            @AttributeOverride(name = "nivelAcesso", column = @Column(name = "nivel_acesso"))
-        })
-        private AdminVO dados;
+    /** Código do admin na base de dados (admin_id, ex.: C01-A001). Nulo até ser gravado. */
+    private String codigo;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "empresa_id", nullable = false)
+    private AdminVO dados;
+
     private Empresa empresa;
 
     protected Admin() {
@@ -56,8 +38,27 @@ public class Admin {
         this.empresa = empresa;
     }
 
+    /** Recria um admin já gravado na base de dados, sem revalidar os campos. */
+    public static Admin restaurar(String codigo, AdminVO dados, Empresa empresa) {
+        Admin admin = new Admin();
+        admin.definirCodigo(codigo);
+        admin.dados = dados;
+        admin.empresa = empresa;
+        return admin;
+    }
+
+    /** Define o código na base de dados; o id passa a ser derivado dele. */
+    public void definirCodigo(String codigo) {
+        this.id = CodigoCsv.uuid(TIPO, codigo);
+        this.codigo = codigo.trim();
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public String getNome() {

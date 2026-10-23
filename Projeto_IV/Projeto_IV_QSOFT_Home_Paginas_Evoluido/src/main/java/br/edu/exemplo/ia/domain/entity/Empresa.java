@@ -1,39 +1,23 @@
 package br.edu.exemplo.ia.domain.entity;
 
+import br.edu.exemplo.ia.domain.vo.CodigoCsv;
 import br.edu.exemplo.ia.domain.vo.EmpresaVO;
 import br.edu.exemplo.ia.domain.vo.EmpresaDadosVO;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "empresa")
+/** Empresa cadastrada. Fica gravada na base de dados em CSV (companies.csv). */
 public class Empresa {
-    @Id
+    static final String TIPO = "empresa";
+
     private UUID id;
 
-    @Embedded
+    /** Código da empresa na base de dados (company_id, ex.: C01). Nulo até ser gravada. */
+    private String codigo;
+
     private EmpresaVO name;
 
-        @Embedded
-        @AttributeOverrides({
-            @AttributeOverride(name = "area", column = @Column(name = "area")),
-            @AttributeOverride(name = "razaoSocial", column = @Column(name = "razao_social")),
-            @AttributeOverride(name = "cnpj", column = @Column(name = "cnpj")),
-            @AttributeOverride(name = "numeroFuncionarios", column = @Column(name = "numero_funcionarios")),
-            @AttributeOverride(name = "cep", column = @Column(name = "cep")),
-            @AttributeOverride(name = "endereco", column = @Column(name = "endereco")),
-            @AttributeOverride(name = "cidade", column = @Column(name = "cidade")),
-            @AttributeOverride(name = "estado", column = @Column(name = "estado")),
-            @AttributeOverride(name = "adminResponsavel", column = @Column(name = "admin_responsavel"))
-        })
-        private EmpresaDadosVO dados;
+    private EmpresaDadosVO dados;
 
     protected Empresa() {
     }
@@ -58,8 +42,27 @@ public class Empresa {
         this.dados = dados.validar();
     }
 
+    /** Recria uma empresa já gravada na base de dados, sem revalidar os campos. */
+    public static Empresa restaurar(String codigo, EmpresaVO name, EmpresaDadosVO dados) {
+        Empresa empresa = new Empresa();
+        empresa.definirCodigo(codigo);
+        empresa.name = name;
+        empresa.dados = dados;
+        return empresa;
+    }
+
+    /** Define o código na base de dados; o id passa a ser derivado dele. */
+    public void definirCodigo(String codigo) {
+        this.id = CodigoCsv.uuid(TIPO, codigo);
+        this.codigo = codigo.trim();
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public EmpresaVO getName() {

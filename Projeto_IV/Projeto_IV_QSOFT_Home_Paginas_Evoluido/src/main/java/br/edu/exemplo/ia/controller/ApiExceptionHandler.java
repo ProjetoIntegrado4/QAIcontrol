@@ -1,5 +1,6 @@
 package br.edu.exemplo.ia.controller;
 
+import br.edu.exemplo.ia.repository.csv.BaseDadosException;
 import br.edu.exemplo.ia.service.AceitePendenteException;
 import br.edu.exemplo.ia.service.NaoEncontradoException;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(BaseDadosException.class)
+    public ResponseEntity<Map<String, Object>> handleBaseDados(BaseDadosException ex) {
+        return error(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
     }
 
     @ExceptionHandler(NaoEncontradoException.class)

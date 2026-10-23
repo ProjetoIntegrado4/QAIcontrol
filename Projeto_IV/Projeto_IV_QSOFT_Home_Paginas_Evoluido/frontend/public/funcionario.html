@@ -79,7 +79,7 @@
                 <th>Status</th>
                 <th>Gestor responsável</th>
                 <th>Gerencia funcionarios</th>
-                <th>ID</th>
+                <th>Código</th>
             </tr>
             </thead>
             <tbody id="listaFuncionarios"></tbody>
@@ -196,6 +196,7 @@
 
             for (const funcionario of funcionarios) {
                 const tr = document.createElement('tr');
+                const codigo = funcionario.codigo || funcionario.id;
                 const values = [
                     funcionario.nome,
                     funcionario.cpf,
@@ -209,11 +210,11 @@
                     funcionario.statusConta,
                     funcionario.gestorResponsavelNome || 'Não informado',
                     funcionario.podeGerenciarFuncionarios ? 'Sim' : 'Não',
-                    funcionario.id
+                    codigo
                 ];
                 for (const value of values) {
                     const cell = document.createElement('td');
-                    if (value === funcionario.id) {
+                    if (value === codigo) {
                         const code = document.createElement('code');
                         code.textContent = value;
                         cell.appendChild(code);

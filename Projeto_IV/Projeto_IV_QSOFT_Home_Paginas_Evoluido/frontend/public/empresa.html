@@ -52,7 +52,7 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Código</th>
                 <th>Nome fantasia</th>
                 <th>Razão social</th>
                 <th>CNPJ</th>
@@ -135,8 +135,9 @@
 
             for (const empresa of empresas) {
                 const tr = document.createElement('tr');
+                const codigo = empresa.codigo || empresa.id;
                 const values = [
-                    empresa.id,
+                    codigo,
                     empresa.name,
                     empresa.razaoSocial,
                     empresa.cnpj,
@@ -150,7 +151,7 @@
                 ];
                 for (const value of values) {
                     const cell = document.createElement('td');
-                    if (value === empresa.id) {
+                    if (value === codigo) {
                         const code = document.createElement('code');
                         code.textContent = value;
                         cell.appendChild(code);

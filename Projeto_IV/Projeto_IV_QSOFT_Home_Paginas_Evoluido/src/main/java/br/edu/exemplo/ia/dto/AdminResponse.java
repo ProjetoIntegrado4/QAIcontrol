@@ -13,6 +13,7 @@ public record AdminResponse(
         String empresaArea,
         String cargo,
         String statusConta,
-        String nivelAcesso
+        String nivelAcesso,
+        String codigo
 ) {
 }

@@ -99,16 +99,16 @@ public class PoliticaService implements PoliticaUseCase {
         Optional<AceitePolitica> aceiteExistente =
                 aceiteRepository.findByFuncionarioIdAndPoliticaId(funcionario.getId(), politica.getId());
         if (aceiteExistente.isPresent()) {
-            return toDto(aceiteExistente.get());
+            return toDto(aceiteExistente.get(), funcionario);
         }
-        return toDto(salvarAceite(new AceitePolitica(funcionario, politica)));
+        return toDto(salvarAceite(new AceitePolitica(funcionario, politica)), funcionario);
     }
 
     @Override
     public List<AceiteResponse> listarAceites(UUID funcionarioId) {
-        loadFuncionario(funcionarioId);
+        Funcionario funcionario = loadFuncionario(funcionarioId);
         return aceiteRepository.findByFuncionarioIdOrderByDataAceiteDesc(funcionarioId).stream()
-                .map(this::toDto)
+                .map(aceite -> toDto(aceite, funcionario))
                 .toList();
     }
 
@@ -118,7 +118,7 @@ public class PoliticaService implements PoliticaUseCase {
         } catch (DataIntegrityViolationException e) {
             // Dois cliques ao mesmo tempo: a restrição única do banco barrou o segundo; devolve o que foi gravado.
             return aceiteRepository.findByFuncionarioIdAndPoliticaId(
-                    aceite.getFuncionario().getId(), aceite.getPolitica().getId()
+                    aceite.getFuncionarioId(), aceite.getPolitica().getId()
             ).orElseThrow(() -> e);
         }
     }
@@ -131,7 +131,7 @@ public class PoliticaService implements PoliticaUseCase {
 
     private void validarMesmaEmpresa(PoliticaUso politica, UUID empresaId) {
         // Na nova versão a empresa pode ser omitida, mas não trocada.
-        if (empresaId != null && !empresaId.equals(politica.getEmpresa().getId())) {
+        if (empresaId != null && !empresaId.equals(politica.getEmpresaId())) {
             throw new IllegalArgumentException("A empresa de uma política não pode ser alterada");
         }
     }
@@ -185,12 +185,16 @@ public class PoliticaService implements PoliticaUseCase {
         return loadVersoes(codigo).get(0);
     }
 
+    // A empresa vem da base de dados em CSV; a política guarda só o id dela.
     private PoliticaResponse toDto(PoliticaUso politica) {
+        Empresa empresa = politica.getEmpresa() != null
+                ? politica.getEmpresa()
+                : empresaRepository.findById(politica.getEmpresaId()).orElse(null);
         return new PoliticaResponse(
                 politica.getId(),
                 politica.getCodigo(),
-                politica.getEmpresa().getId(),
-                politica.getEmpresa().getNome(),
+                politica.getEmpresaId(),
+                empresa == null ? null : empresa.getNome(),
                 politica.getTitulo(),
                 politica.getConteudo(),
                 politica.getVersao(),
@@ -200,11 +204,12 @@ public class PoliticaService implements PoliticaUseCase {
         );
     }
 
-    private AceiteResponse toDto(AceitePolitica aceite) {
+    // O funcionário vem da base de dados em CSV; o aceite guarda só o id dele.
+    private AceiteResponse toDto(AceitePolitica aceite, Funcionario funcionario) {
         return new AceiteResponse(
                 aceite.getId(),
-                aceite.getFuncionario().getId(),
-                aceite.getFuncionario().getNome(),
+                aceite.getFuncionarioId(),
+                funcionario.getNome(),
                 aceite.getPolitica().getId(),
                 aceite.getPolitica().getCodigo(),
                 aceite.getPolitica().getTitulo(),

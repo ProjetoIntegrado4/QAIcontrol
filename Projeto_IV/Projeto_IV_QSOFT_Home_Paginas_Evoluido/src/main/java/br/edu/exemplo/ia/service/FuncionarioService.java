@@ -11,6 +11,7 @@ import br.edu.exemplo.ia.dto.FuncionarioResponse;
 import br.edu.exemplo.ia.repository.AdminRepository;
 import br.edu.exemplo.ia.repository.EmpresaRepository;
 import br.edu.exemplo.ia.repository.FuncionarioRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class FuncionarioService implements FuncionarioUseCase {
     private final FuncionarioRepository funcionarioRepository;
     private final EmpresaRepository empresaRepository;
     private final AdminRepository adminRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public FuncionarioService(FuncionarioRepository funcionarioRepository, EmpresaRepository empresaRepository,
                               AdminRepository adminRepository) {
@@ -44,7 +46,7 @@ public class FuncionarioService implements FuncionarioUseCase {
                 Campos.texto(request.cargo(), "Cargo do funcionário"),
                 Campos.texto(request.setor(), "Setor do funcionário"),
                 Campos.texto(request.matricula(), "Matrícula do funcionário"),
-                Campos.senha(request.senha(), "Senha do funcionário"),
+                passwordEncoder.encode(Campos.senha(request.senha(), "Senha do funcionário")),
                 Campos.statusConta(request.statusConta(), "Status da conta do funcionário")
             ), empresa, gestorResponsavel)
         );
@@ -99,7 +101,8 @@ public class FuncionarioService implements FuncionarioUseCase {
                 funcionario.getStatusConta(),
                 gestorResponsavel == null ? null : gestorResponsavel.getId(),
                 gestorResponsavel == null ? null : gestorResponsavel.getNome(),
-                funcionario.isPodeGerenciarFuncionarios()
+                funcionario.isPodeGerenciarFuncionarios(),
+                funcionario.getCodigo()
         );
     }
 }

@@ -3,9 +3,8 @@ package br.edu.exemplo.ia.domain.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 
 import java.time.Instant;
@@ -31,8 +30,12 @@ public class PoliticaUso {
     @Column(name = "codigo", nullable = false)
     private UUID codigo;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "empresa_id", nullable = false)
+    // A empresa fica na base de dados em CSV (fora do banco), então aqui guardamos só o id dela.
+    @Column(name = "empresa_id", nullable = false)
+    private UUID empresaId;
+
+    // Preenchida só quando a versão é criada nesta execução; ao ler do banco, use getEmpresaId().
+    @Transient
     private Empresa empresa;
 
     @Column(name = "titulo", nullable = false, length = TAMANHO_MAXIMO_TITULO)
@@ -58,11 +61,12 @@ public class PoliticaUso {
 
     /** Publica a versão 1 de uma nova política. */
     public PoliticaUso(Empresa empresa, String titulo, String conteudo, boolean obrigatoria) {
-        this(UUID.randomUUID(), 1, empresa, titulo, conteudo, obrigatoria);
+        this(UUID.randomUUID(), 1, empresa == null ? null : empresa.getId(), empresa, titulo, conteudo, obrigatoria);
     }
 
-    private PoliticaUso(UUID codigo, int versao, Empresa empresa, String titulo, String conteudo, boolean obrigatoria) {
-        if (empresa == null) {
+    private PoliticaUso(UUID codigo, int versao, UUID empresaId, Empresa empresa, String titulo, String conteudo,
+                        boolean obrigatoria) {
+        if (empresaId == null) {
             throw new IllegalArgumentException("Empresa obrigatória");
         }
         if (titulo == null || titulo.isBlank()) {
@@ -80,6 +84,7 @@ public class PoliticaUso {
         this.id = UUID.randomUUID();
         this.codigo = codigo;
         this.versao = versao;
+        this.empresaId = empresaId;
         this.empresa = empresa;
         this.titulo = titulo.trim();
         this.conteudo = conteudo.trim();
@@ -96,7 +101,7 @@ public class PoliticaUso {
         if (!vigente) {
             throw new IllegalArgumentException("Só a versão vigente pode gerar uma nova versão");
         }
-        PoliticaUso proxima = new PoliticaUso(codigo, versao + 1, empresa, titulo, conteudo, obrigatoria);
+        PoliticaUso proxima = new PoliticaUso(codigo, versao + 1, empresaId, empresa, titulo, conteudo, obrigatoria);
         this.vigente = false;
         return proxima;
     }
@@ -111,6 +116,10 @@ public class PoliticaUso {
 
     public Empresa getEmpresa() {
         return empresa;
+    }
+
+    public UUID getEmpresaId() {
+        return empresaId;
     }
 
     public String getTitulo() {
