@@ -1,13 +1,7 @@
 package br.edu.exemplo.ia.domain.entity;
 
 import br.edu.exemplo.ia.domain.vo.TipoCertificacao;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import br.edu.exemplo.ia.domain.vo.CodigoCsv;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -16,38 +10,33 @@ import java.util.UUID;
 /**
  * Curso ou certificação em IA concluído por um funcionário (US PP-19).
  * Cada registro soma pontos de AI Literacy no perfil dele (ver PontuacaoAiLiteracy).
+ * Fica gravado na base de dados em CSV, junto dos treinamentos já existentes (training_records.csv).
  */
-@Entity
-@Table(name = "certificacao")
 public class Certificacao {
-    // Tamanho máximo de nome e instituição (o mesmo da coluna no banco).
+    static final String TIPO_REGISTRO = "certificacao";
+
+    // Tamanho máximo de nome e instituição.
     public static final int TAMANHO_MAXIMO = 150;
 
-    @Id
     private UUID id;
 
-    // O funcionário fica na base de dados em CSV (fora do banco), então aqui guardamos só o id dele.
-    @Column(name = "funcionario_id", nullable = false)
+    /** Código do registro na base de dados (training_id, ex.: TR000001). Nulo até ser gravado. */
+    private String codigo;
+
+    // O funcionário fica na base de dados em CSV, então aqui guardamos só o id dele.
     private UUID funcionarioId;
 
-    // Preenchido só quando a certificação é criada nesta execução; ao ler do banco, use getFuncionarioId().
-    @Transient
+    // Preenchido só quando a certificação é criada nesta execução; ao ler da base, use getFuncionarioId().
     private Funcionario funcionario;
 
-    @Column(name = "nome", nullable = false, length = TAMANHO_MAXIMO)
     private String nome;
 
-    @Column(name = "instituicao", nullable = false, length = TAMANHO_MAXIMO)
     private String instituicao;
 
-    @Column(name = "data_conclusao", nullable = false)
     private LocalDate dataConclusao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false, length = 20)
     private TipoCertificacao tipo;
 
-    @Column(name = "data_criacao", nullable = false)
     private Instant dataCriacao;
 
     protected Certificacao() {
@@ -89,8 +78,35 @@ public class Certificacao {
         this.dataCriacao = Instant.now();
     }
 
+    /**
+     * Recria um registro já gravado na base de dados, sem revalidar os campos
+     * (os treinamentos importados podem não ter instituição nem tipo).
+     */
+    public static Certificacao restaurar(String codigo, String codigoFuncionario, String nome, String instituicao,
+                                         LocalDate dataConclusao, TipoCertificacao tipo, Instant dataCriacao) {
+        Certificacao certificacao = new Certificacao();
+        certificacao.definirCodigo(codigo);
+        certificacao.funcionarioId = CodigoCsv.uuid(Funcionario.TIPO, codigoFuncionario);
+        certificacao.nome = nome;
+        certificacao.instituicao = instituicao;
+        certificacao.dataConclusao = dataConclusao;
+        certificacao.tipo = tipo;
+        certificacao.dataCriacao = dataCriacao;
+        return certificacao;
+    }
+
+    /** Define o código na base de dados; o id passa a ser derivado dele. */
+    public void definirCodigo(String codigo) {
+        this.id = CodigoCsv.uuid(TIPO_REGISTRO, codigo);
+        this.codigo = codigo.trim();
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public Funcionario getFuncionario() {

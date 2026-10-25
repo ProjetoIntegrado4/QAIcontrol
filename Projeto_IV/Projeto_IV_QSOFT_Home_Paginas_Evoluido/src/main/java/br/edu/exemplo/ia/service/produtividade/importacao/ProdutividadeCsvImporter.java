@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -35,6 +36,8 @@ import java.util.stream.Stream;
  * das colunas são deduzidos dos valores ({@link TipoColuna}), a primeira coluna vira chave primária
  * se terminar em "_id" e tiver valores únicos, e as demais colunas "_id" ganham índice.
  */
+// Roda antes das demais tarefas de subida (ex.: DemonstracaoSeeder), que leem as tabelas importadas.
+@Order(0)
 @Component
 public class ProdutividadeCsvImporter implements ApplicationRunner {
 

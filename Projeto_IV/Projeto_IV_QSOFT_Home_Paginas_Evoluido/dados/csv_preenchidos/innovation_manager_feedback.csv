@@ -1,0 +1,26 @@
+feedback_id,score_id,reviewer_employee_id,submitted_at,clarity_rating,usefulness_rating,decision_support_rating,agrees_with_classification,comment,evidence_type,is_synthetic
+INFB-000001,INS-0000045,C01-E0341,2026-09-21 09:04:00,2,3,2,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000002,INS-0000050,C01-E0130,2026-09-21 09:07:00,4,1,3,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000003,INS-0000053,C01-E0097,2026-09-21 09:09:00,2,1,4,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000004,INS-0000057,C01-E0222,2026-09-21 09:11:00,5,4,1,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000005,INS-0000067,C01-E0055,2026-09-21 09:17:00,4,5,2,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000006,INS-0000149,C02-E0084,2026-09-21 09:21:00,4,5,1,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000007,INS-0000162,C02-E0050,2026-09-21 09:22:00,2,3,2,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000008,INS-0000164,C02-E0051,2026-09-21 09:24:00,2,4,3,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000009,INS-0000170,C02-E0050,2026-09-21 09:27:00,3,3,2,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000010,INS-0000172,C02-E0050,2026-09-21 09:28:00,5,2,1,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000011,INS-0000173,C02-E0031,2026-09-21 09:29:00,3,1,2,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000012,INS-0000175,C02-E0029,2026-09-21 09:31:00,2,2,5,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000013,INS-0000199,C02-E0066,2026-09-21 09:35:00,4,3,3,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000014,INS-0000203,C02-E0013,2026-09-21 09:38:00,4,2,3,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000015,INS-0000257,C02-E0045,2026-09-21 09:43:00,4,2,4,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000016,INS-0000258,C02-E0054,2026-09-21 09:44:00,4,5,2,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000017,INS-0000302,C03-E0017,2026-09-21 09:47:00,3,2,5,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000018,INS-0000303,C03-E0005,2026-09-21 09:48:00,5,1,3,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000019,INS-0000306,C03-E0017,2026-09-21 09:49:00,3,4,4,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000020,INS-0000308,C03-E0008,2026-09-21 09:50:00,4,3,1,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000021,INS-0000614,C06-E0160,2026-09-21 09:52:00,3,2,4,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000022,INS-0001140,C14-E0033,2026-09-21 09:56:00,5,1,5,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000023,INS-0001210,C14-E0078,2026-09-21 09:57:00,2,4,5,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000024,INS-0001386,C17-E0039,2026-09-21 10:05:00,4,4,2,0,SIMULADO: precisamos de mais evidencias antes de concordar com a classificacao.,Feedback simulado; nao coletado da QSOFT,1
+INFB-000025,INS-0001400,C17-E0003,2026-09-21 10:09:00,5,3,3,1,SIMULADO: componentes ajudam a priorizar revisao.,Feedback simulado; nao coletado da QSOFT,1

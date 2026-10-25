@@ -1,0 +1,280 @@
+team_id,company_id,department_id,team_name,is_synthetic
+INEQ-C01-D01-01,C01,C01-D01,Engenharia de Software - equipe 1,1
+INEQ-C01-D01-02,C01,C01-D01,Engenharia de Software - equipe 2,1
+INEQ-C01-D01-03,C01,C01-D01,Engenharia de Software - equipe 3,1
+INEQ-C01-D01-04,C01,C01-D01,Engenharia de Software - equipe 4,1
+INEQ-C01-D01-05,C01,C01-D01,Engenharia de Software - equipe 5,1
+INEQ-C01-D01-06,C01,C01-D01,Engenharia de Software - equipe 6,1
+INEQ-C01-D01-07,C01,C01-D01,Engenharia de Software - equipe 7,1
+INEQ-C01-D01-08,C01,C01-D01,Engenharia de Software - equipe 8,1
+INEQ-C01-D01-09,C01,C01-D01,Engenharia de Software - equipe 9,1
+INEQ-C01-D01-10,C01,C01-D01,Engenharia de Software - equipe 10,1
+INEQ-C01-D02-01,C01,C01-D02,DevOps e Infraestrutura - equipe 1,1
+INEQ-C01-D02-02,C01,C01-D02,DevOps e Infraestrutura - equipe 2,1
+INEQ-C01-D02-03,C01,C01-D02,DevOps e Infraestrutura - equipe 3,1
+INEQ-C01-D03-01,C01,C01-D03,Produto - equipe 1,1
+INEQ-C01-D03-02,C01,C01-D03,Produto - equipe 2,1
+INEQ-C01-D04-01,C01,C01-D04,Qualidade (QA) - equipe 1,1
+INEQ-C01-D04-02,C01,C01-D04,Qualidade (QA) - equipe 2,1
+INEQ-C01-D04-03,C01,C01-D04,Qualidade (QA) - equipe 3,1
+INEQ-C01-D04-04,C01,C01-D04,Qualidade (QA) - equipe 4,1
+INEQ-C01-D05-01,C01,C01-D05,Dados e Analytics - equipe 1,1
+INEQ-C01-D05-02,C01,C01-D05,Dados e Analytics - equipe 2,1
+INEQ-C01-D06-01,C01,C01-D06,Vendas - equipe 1,1
+INEQ-C01-D06-02,C01,C01-D06,Vendas - equipe 2,1
+INEQ-C01-D06-03,C01,C01-D06,Vendas - equipe 3,1
+INEQ-C01-D06-04,C01,C01-D06,Vendas - equipe 4,1
+INEQ-C01-D07-01,C01,C01-D07,Marketing - equipe 1,1
+INEQ-C01-D07-02,C01,C01-D07,Marketing - equipe 2,1
+INEQ-C01-D08-01,C01,C01-D08,Suporte ao Cliente - equipe 1,1
+INEQ-C01-D08-02,C01,C01-D08,Suporte ao Cliente - equipe 2,1
+INEQ-C01-D08-03,C01,C01-D08,Suporte ao Cliente - equipe 3,1
+INEQ-C01-D08-04,C01,C01-D08,Suporte ao Cliente - equipe 4,1
+INEQ-C01-D09-01,C01,C01-D09,RH - equipe 1,1
+INEQ-C01-D09-02,C01,C01-D09,RH - equipe 2,1
+INEQ-C01-D10-01,C01,C01-D10,Financeiro - equipe 1,1
+INEQ-C01-D10-02,C01,C01-D10,Financeiro - equipe 2,1
+INEQ-C01-D11-01,C01,C01-D11,Juridico - equipe 1,1
+INEQ-C02-D01-01,C02,C02-D01,Engenharia de Software - equipe 1,1
+INEQ-C02-D01-02,C02,C02-D01,Engenharia de Software - equipe 2,1
+INEQ-C02-D01-03,C02,C02-D01,Engenharia de Software - equipe 3,1
+INEQ-C02-D01-04,C02,C02-D01,Engenharia de Software - equipe 4,1
+INEQ-C02-D02-01,C02,C02-D02,DevOps e Infraestrutura - equipe 1,1
+INEQ-C02-D03-01,C02,C02-D03,Produto - equipe 1,1
+INEQ-C02-D03-02,C02,C02-D03,Produto - equipe 2,1
+INEQ-C02-D04-01,C02,C02-D04,Qualidade (QA) - equipe 1,1
+INEQ-C02-D05-01,C02,C02-D05,Dados e Analytics - equipe 1,1
+INEQ-C02-D05-02,C02,C02-D05,Dados e Analytics - equipe 2,1
+INEQ-C02-D06-01,C02,C02-D06,Vendas - equipe 1,1
+INEQ-C02-D07-01,C02,C02-D07,Marketing - equipe 1,1
+INEQ-C02-D08-01,C02,C02-D08,Suporte ao Cliente - equipe 1,1
+INEQ-C02-D09-01,C02,C02-D09,RH - equipe 1,1
+INEQ-C02-D10-01,C02,C02-D10,Financeiro - equipe 1,1
+INEQ-C02-D11-01,C02,C02-D11,Juridico - equipe 1,1
+INEQ-C03-D01-01,C03,C03-D01,Engenharia de Software - equipe 1,1
+INEQ-C03-D02-01,C03,C03-D02,DevOps e Infraestrutura - equipe 1,1
+INEQ-C03-D03-01,C03,C03-D03,Produto - equipe 1,1
+INEQ-C03-D04-01,C03,C03-D04,Qualidade (QA) - equipe 1,1
+INEQ-C03-D05-01,C03,C03-D05,Dados e Analytics - equipe 1,1
+INEQ-C03-D06-01,C03,C03-D06,Vendas - equipe 1,1
+INEQ-C03-D08-01,C03,C03-D08,Suporte ao Cliente - equipe 1,1
+INEQ-C03-D09-01,C03,C03-D09,RH - equipe 1,1
+INEQ-C03-D10-01,C03,C03-D10,Financeiro - equipe 1,1
+INEQ-C04-D01-01,C04,C04-D01,Engenharia de Software - equipe 1,1
+INEQ-C04-D01-02,C04,C04-D01,Engenharia de Software - equipe 2,1
+INEQ-C04-D01-03,C04,C04-D01,Engenharia de Software - equipe 3,1
+INEQ-C04-D02-01,C04,C04-D02,DevOps e Infraestrutura - equipe 1,1
+INEQ-C04-D03-01,C04,C04-D03,Produto - equipe 1,1
+INEQ-C04-D04-01,C04,C04-D04,Qualidade (QA) - equipe 1,1
+INEQ-C04-D05-01,C04,C04-D05,Dados e Analytics - equipe 1,1
+INEQ-C04-D06-01,C04,C04-D06,Vendas - equipe 1,1
+INEQ-C04-D07-01,C04,C04-D07,Marketing - equipe 1,1
+INEQ-C04-D08-01,C04,C04-D08,Suporte ao Cliente - equipe 1,1
+INEQ-C04-D09-01,C04,C04-D09,RH - equipe 1,1
+INEQ-C04-D10-01,C04,C04-D10,Financeiro - equipe 1,1
+INEQ-C04-D11-01,C04,C04-D11,Juridico - equipe 1,1
+INEQ-C05-D01-01,C05,C05-D01,Engenharia de Software - equipe 1,1
+INEQ-C05-D02-01,C05,C05-D02,DevOps e Infraestrutura - equipe 1,1
+INEQ-C05-D03-01,C05,C05-D03,Produto - equipe 1,1
+INEQ-C05-D04-01,C05,C05-D04,Qualidade (QA) - equipe 1,1
+INEQ-C05-D05-01,C05,C05-D05,Dados e Analytics - equipe 1,1
+INEQ-C05-D06-01,C05,C05-D06,Vendas - equipe 1,1
+INEQ-C05-D07-01,C05,C05-D07,Marketing - equipe 1,1
+INEQ-C05-D08-01,C05,C05-D08,Suporte ao Cliente - equipe 1,1
+INEQ-C05-D11-01,C05,C05-D11,Juridico - equipe 1,1
+INEQ-C06-D01-01,C06,C06-D01,Operacoes Bancarias - equipe 1,1
+INEQ-C06-D01-02,C06,C06-D01,Operacoes Bancarias - equipe 2,1
+INEQ-C06-D01-03,C06,C06-D01,Operacoes Bancarias - equipe 3,1
+INEQ-C06-D01-04,C06,C06-D01,Operacoes Bancarias - equipe 4,1
+INEQ-C06-D01-05,C06,C06-D01,Operacoes Bancarias - equipe 5,1
+INEQ-C06-D01-06,C06,C06-D01,Operacoes Bancarias - equipe 6,1
+INEQ-C06-D01-07,C06,C06-D01,Operacoes Bancarias - equipe 7,1
+INEQ-C06-D01-08,C06,C06-D01,Operacoes Bancarias - equipe 8,1
+INEQ-C06-D01-09,C06,C06-D01,Operacoes Bancarias - equipe 9,1
+INEQ-C06-D01-10,C06,C06-D01,Operacoes Bancarias - equipe 10,1
+INEQ-C06-D02-01,C06,C06-D02,Risco e Compliance - equipe 1,1
+INEQ-C06-D02-02,C06,C06-D02,Risco e Compliance - equipe 2,1
+INEQ-C06-D02-03,C06,C06-D02,Risco e Compliance - equipe 3,1
+INEQ-C06-D03-01,C06,C06-D03,Tecnologia da Informacao - equipe 1,1
+INEQ-C06-D03-02,C06,C06-D03,Tecnologia da Informacao - equipe 2,1
+INEQ-C06-D03-03,C06,C06-D03,Tecnologia da Informacao - equipe 3,1
+INEQ-C06-D03-04,C06,C06-D03,Tecnologia da Informacao - equipe 4,1
+INEQ-C06-D04-01,C06,C06-D04,Atendimento ao Cliente - equipe 1,1
+INEQ-C06-D04-02,C06,C06-D04,Atendimento ao Cliente - equipe 2,1
+INEQ-C06-D04-03,C06,C06-D04,Atendimento ao Cliente - equipe 3,1
+INEQ-C06-D04-04,C06,C06-D04,Atendimento ao Cliente - equipe 4,1
+INEQ-C06-D04-05,C06,C06-D04,Atendimento ao Cliente - equipe 5,1
+INEQ-C06-D04-06,C06,C06-D04,Atendimento ao Cliente - equipe 6,1
+INEQ-C06-D05-01,C06,C06-D05,Comercial - equipe 1,1
+INEQ-C06-D05-02,C06,C06-D05,Comercial - equipe 2,1
+INEQ-C06-D05-03,C06,C06-D05,Comercial - equipe 3,1
+INEQ-C06-D05-04,C06,C06-D05,Comercial - equipe 4,1
+INEQ-C06-D06-01,C06,C06-D06,Financeiro - equipe 1,1
+INEQ-C06-D06-02,C06,C06-D06,Financeiro - equipe 2,1
+INEQ-C06-D06-03,C06,C06-D06,Financeiro - equipe 3,1
+INEQ-C06-D07-01,C06,C06-D07,RH - equipe 1,1
+INEQ-C06-D07-02,C06,C06-D07,RH - equipe 2,1
+INEQ-C06-D08-01,C06,C06-D08,Juridico - equipe 1,1
+INEQ-C07-D01-01,C07,C07-D01,Operacoes Bancarias - equipe 1,1
+INEQ-C07-D01-02,C07,C07-D01,Operacoes Bancarias - equipe 2,1
+INEQ-C07-D02-01,C07,C07-D02,Risco e Compliance - equipe 1,1
+INEQ-C07-D03-01,C07,C07-D03,Tecnologia da Informacao - equipe 1,1
+INEQ-C07-D04-01,C07,C07-D04,Atendimento ao Cliente - equipe 1,1
+INEQ-C07-D04-02,C07,C07-D04,Atendimento ao Cliente - equipe 2,1
+INEQ-C07-D05-01,C07,C07-D05,Comercial - equipe 1,1
+INEQ-C07-D06-01,C07,C07-D06,Financeiro - equipe 1,1
+INEQ-C07-D07-01,C07,C07-D07,RH - equipe 1,1
+INEQ-C07-D08-01,C07,C07-D08,Juridico - equipe 1,1
+INEQ-C08-D01-01,C08,C08-D01,Operacoes Bancarias - equipe 1,1
+INEQ-C08-D01-02,C08,C08-D01,Operacoes Bancarias - equipe 2,1
+INEQ-C08-D02-01,C08,C08-D02,Risco e Compliance - equipe 1,1
+INEQ-C08-D03-01,C08,C08-D03,Tecnologia da Informacao - equipe 1,1
+INEQ-C08-D04-01,C08,C08-D04,Atendimento ao Cliente - equipe 1,1
+INEQ-C08-D05-01,C08,C08-D05,Comercial - equipe 1,1
+INEQ-C08-D06-01,C08,C08-D06,Financeiro - equipe 1,1
+INEQ-C08-D07-01,C08,C08-D07,RH - equipe 1,1
+INEQ-C08-D08-01,C08,C08-D08,Juridico - equipe 1,1
+INEQ-C09-D01-01,C09,C09-D01,Producao - equipe 1,1
+INEQ-C09-D01-02,C09,C09-D01,Producao - equipe 2,1
+INEQ-C09-D01-03,C09,C09-D01,Producao - equipe 3,1
+INEQ-C09-D01-04,C09,C09-D01,Producao - equipe 4,1
+INEQ-C09-D01-05,C09,C09-D01,Producao - equipe 5,1
+INEQ-C09-D01-06,C09,C09-D01,Producao - equipe 6,1
+INEQ-C09-D01-07,C09,C09-D01,Producao - equipe 7,1
+INEQ-C09-D01-08,C09,C09-D01,Producao - equipe 8,1
+INEQ-C09-D01-09,C09,C09-D01,Producao - equipe 9,1
+INEQ-C09-D01-10,C09,C09-D01,Producao - equipe 10,1
+INEQ-C09-D01-11,C09,C09-D01,Producao - equipe 11,1
+INEQ-C09-D02-01,C09,C09-D02,Manutencao - equipe 1,1
+INEQ-C09-D02-02,C09,C09-D02,Manutencao - equipe 2,1
+INEQ-C09-D02-03,C09,C09-D02,Manutencao - equipe 3,1
+INEQ-C09-D03-01,C09,C09-D03,Logistica - equipe 1,1
+INEQ-C09-D03-02,C09,C09-D03,Logistica - equipe 2,1
+INEQ-C09-D03-03,C09,C09-D03,Logistica - equipe 3,1
+INEQ-C09-D03-04,C09,C09-D03,Logistica - equipe 4,1
+INEQ-C09-D04-01,C09,C09-D04,Qualidade - equipe 1,1
+INEQ-C09-D04-02,C09,C09-D04,Qualidade - equipe 2,1
+INEQ-C09-D05-01,C09,C09-D05,Compras - equipe 1,1
+INEQ-C09-D05-02,C09,C09-D05,Compras - equipe 2,1
+INEQ-C09-D06-01,C09,C09-D06,Comercial - equipe 1,1
+INEQ-C09-D06-02,C09,C09-D06,Comercial - equipe 2,1
+INEQ-C09-D06-03,C09,C09-D06,Comercial - equipe 3,1
+INEQ-C09-D06-04,C09,C09-D06,Comercial - equipe 4,1
+INEQ-C09-D07-01,C09,C09-D07,Financeiro - equipe 1,1
+INEQ-C09-D07-02,C09,C09-D07,Financeiro - equipe 2,1
+INEQ-C09-D08-01,C09,C09-D08,RH - equipe 1,1
+INEQ-C09-D08-02,C09,C09-D08,RH - equipe 2,1
+INEQ-C09-D09-01,C09,C09-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C09-D09-02,C09,C09-D09,Tecnologia da Informacao - equipe 2,1
+INEQ-C10-D01-01,C10,C10-D01,Producao - equipe 1,1
+INEQ-C10-D01-02,C10,C10-D01,Producao - equipe 2,1
+INEQ-C10-D01-03,C10,C10-D01,Producao - equipe 3,1
+INEQ-C10-D01-04,C10,C10-D01,Producao - equipe 4,1
+INEQ-C10-D01-05,C10,C10-D01,Producao - equipe 5,1
+INEQ-C10-D02-01,C10,C10-D02,Manutencao - equipe 1,1
+INEQ-C10-D03-01,C10,C10-D03,Logistica - equipe 1,1
+INEQ-C10-D03-02,C10,C10-D03,Logistica - equipe 2,1
+INEQ-C10-D04-01,C10,C10-D04,Qualidade - equipe 1,1
+INEQ-C10-D05-01,C10,C10-D05,Compras - equipe 1,1
+INEQ-C10-D06-01,C10,C10-D06,Comercial - equipe 1,1
+INEQ-C10-D07-01,C10,C10-D07,Financeiro - equipe 1,1
+INEQ-C10-D08-01,C10,C10-D08,RH - equipe 1,1
+INEQ-C10-D09-01,C10,C10-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C11-D01-01,C11,C11-D01,Producao - equipe 1,1
+INEQ-C11-D02-01,C11,C11-D02,Manutencao - equipe 1,1
+INEQ-C11-D03-01,C11,C11-D03,Logistica - equipe 1,1
+INEQ-C11-D04-01,C11,C11-D04,Qualidade - equipe 1,1
+INEQ-C11-D05-01,C11,C11-D05,Compras - equipe 1,1
+INEQ-C11-D06-01,C11,C11-D06,Comercial - equipe 1,1
+INEQ-C11-D07-01,C11,C11-D07,Financeiro - equipe 1,1
+INEQ-C11-D08-01,C11,C11-D08,RH - equipe 1,1
+INEQ-C11-D09-01,C11,C11-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C12-D01-01,C12,C12-D01,Operacoes de Loja - equipe 1,1
+INEQ-C12-D01-02,C12,C12-D01,Operacoes de Loja - equipe 2,1
+INEQ-C12-D01-03,C12,C12-D01,Operacoes de Loja - equipe 3,1
+INEQ-C12-D01-04,C12,C12-D01,Operacoes de Loja - equipe 4,1
+INEQ-C12-D01-05,C12,C12-D01,Operacoes de Loja - equipe 5,1
+INEQ-C12-D01-06,C12,C12-D01,Operacoes de Loja - equipe 6,1
+INEQ-C12-D01-07,C12,C12-D01,Operacoes de Loja - equipe 7,1
+INEQ-C12-D01-08,C12,C12-D01,Operacoes de Loja - equipe 8,1
+INEQ-C12-D01-09,C12,C12-D01,Operacoes de Loja - equipe 9,1
+INEQ-C12-D02-01,C12,C12-D02,Logistica e Supply Chain - equipe 1,1
+INEQ-C12-D02-02,C12,C12-D02,Logistica e Supply Chain - equipe 2,1
+INEQ-C12-D02-03,C12,C12-D02,Logistica e Supply Chain - equipe 3,1
+INEQ-C12-D02-04,C12,C12-D02,Logistica e Supply Chain - equipe 4,1
+INEQ-C12-D03-01,C12,C12-D03,Comercial e Compras - equipe 1,1
+INEQ-C12-D03-02,C12,C12-D03,Comercial e Compras - equipe 2,1
+INEQ-C12-D03-03,C12,C12-D03,Comercial e Compras - equipe 3,1
+INEQ-C12-D04-01,C12,C12-D04,Marketing - equipe 1,1
+INEQ-C12-D04-02,C12,C12-D04,Marketing - equipe 2,1
+INEQ-C12-D05-01,C12,C12-D05,E-commerce - equipe 1,1
+INEQ-C12-D05-02,C12,C12-D05,E-commerce - equipe 2,1
+INEQ-C12-D06-01,C12,C12-D06,Atendimento ao Cliente - equipe 1,1
+INEQ-C12-D06-02,C12,C12-D06,Atendimento ao Cliente - equipe 2,1
+INEQ-C12-D06-03,C12,C12-D06,Atendimento ao Cliente - equipe 3,1
+INEQ-C12-D07-01,C12,C12-D07,Financeiro - equipe 1,1
+INEQ-C12-D07-02,C12,C12-D07,Financeiro - equipe 2,1
+INEQ-C12-D08-01,C12,C12-D08,RH - equipe 1,1
+INEQ-C12-D09-01,C12,C12-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C13-D01-01,C13,C13-D01,Operacoes de Loja - equipe 1,1
+INEQ-C13-D01-02,C13,C13-D01,Operacoes de Loja - equipe 2,1
+INEQ-C13-D01-03,C13,C13-D01,Operacoes de Loja - equipe 3,1
+INEQ-C13-D02-01,C13,C13-D02,Logistica e Supply Chain - equipe 1,1
+INEQ-C13-D03-01,C13,C13-D03,Comercial e Compras - equipe 1,1
+INEQ-C13-D04-01,C13,C13-D04,Marketing - equipe 1,1
+INEQ-C13-D05-01,C13,C13-D05,E-commerce - equipe 1,1
+INEQ-C13-D06-01,C13,C13-D06,Atendimento ao Cliente - equipe 1,1
+INEQ-C13-D07-01,C13,C13-D07,Financeiro - equipe 1,1
+INEQ-C13-D08-01,C13,C13-D08,RH - equipe 1,1
+INEQ-C13-D09-01,C13,C13-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C14-D01-01,C14,C14-D01,Operacoes de Loja - equipe 1,1
+INEQ-C14-D01-02,C14,C14-D01,Operacoes de Loja - equipe 2,1
+INEQ-C14-D01-03,C14,C14-D01,Operacoes de Loja - equipe 3,1
+INEQ-C14-D01-04,C14,C14-D01,Operacoes de Loja - equipe 4,1
+INEQ-C14-D02-01,C14,C14-D02,Logistica e Supply Chain - equipe 1,1
+INEQ-C14-D02-02,C14,C14-D02,Logistica e Supply Chain - equipe 2,1
+INEQ-C14-D03-01,C14,C14-D03,Comercial e Compras - equipe 1,1
+INEQ-C14-D03-02,C14,C14-D03,Comercial e Compras - equipe 2,1
+INEQ-C14-D04-01,C14,C14-D04,Marketing - equipe 1,1
+INEQ-C14-D05-01,C14,C14-D05,E-commerce - equipe 1,1
+INEQ-C14-D06-01,C14,C14-D06,Atendimento ao Cliente - equipe 1,1
+INEQ-C14-D06-02,C14,C14-D06,Atendimento ao Cliente - equipe 2,1
+INEQ-C14-D07-01,C14,C14-D07,Financeiro - equipe 1,1
+INEQ-C14-D08-01,C14,C14-D08,RH - equipe 1,1
+INEQ-C14-D09-01,C14,C14-D09,Tecnologia da Informacao - equipe 1,1
+INEQ-C15-D01-01,C15,C15-D01,Operacoes - equipe 1,1
+INEQ-C15-D01-02,C15,C15-D01,Operacoes - equipe 2,1
+INEQ-C15-D02-01,C15,C15-D02,Comercial - equipe 1,1
+INEQ-C15-D02-02,C15,C15-D02,Comercial - equipe 2,1
+INEQ-C15-D03-01,C15,C15-D03,Atendimento ao Cliente - equipe 1,1
+INEQ-C15-D04-01,C15,C15-D04,Financeiro - equipe 1,1
+INEQ-C15-D04-02,C15,C15-D04,Financeiro - equipe 2,1
+INEQ-C15-D05-01,C15,C15-D05,RH - equipe 1,1
+INEQ-C15-D06-01,C15,C15-D06,Tecnologia da Informacao - equipe 1,1
+INEQ-C15-D07-01,C15,C15-D07,Consultoria e Projetos - equipe 1,1
+INEQ-C15-D07-02,C15,C15-D07,Consultoria e Projetos - equipe 2,1
+INEQ-C16-D01-01,C16,C16-D01,Operacoes - equipe 1,1
+INEQ-C16-D01-02,C16,C16-D01,Operacoes - equipe 2,1
+INEQ-C16-D02-01,C16,C16-D02,Comercial - equipe 1,1
+INEQ-C16-D03-01,C16,C16-D03,Atendimento ao Cliente - equipe 1,1
+INEQ-C16-D04-01,C16,C16-D04,Financeiro - equipe 1,1
+INEQ-C16-D05-01,C16,C16-D05,RH - equipe 1,1
+INEQ-C16-D06-01,C16,C16-D06,Tecnologia da Informacao - equipe 1,1
+INEQ-C16-D07-01,C16,C16-D07,Consultoria e Projetos - equipe 1,1
+INEQ-C17-D01-01,C17,C17-D01,Criacao - equipe 1,1
+INEQ-C17-D01-02,C17,C17-D01,Criacao - equipe 2,1
+INEQ-C17-D02-01,C17,C17-D02,Midia e Performance - equipe 1,1
+INEQ-C17-D03-01,C17,C17-D03,Atendimento a Clientes (Account) - equipe 1,1
+INEQ-C17-D04-01,C17,C17-D04,Planejamento e Estrategia - equipe 1,1
+INEQ-C17-D05-01,C17,C17-D05,Financeiro - equipe 1,1
+INEQ-C17-D07-01,C17,C17-D07,Tecnologia da Informacao - equipe 1,1
+INEQ-C18-D01-01,C18,C18-D01,Criacao - equipe 1,1
+INEQ-C18-D01-02,C18,C18-D01,Criacao - equipe 2,1
+INEQ-C18-D02-01,C18,C18-D02,Midia e Performance - equipe 1,1
+INEQ-C18-D02-02,C18,C18-D02,Midia e Performance - equipe 2,1
+INEQ-C18-D03-01,C18,C18-D03,Atendimento a Clientes (Account) - equipe 1,1
+INEQ-C18-D03-02,C18,C18-D03,Atendimento a Clientes (Account) - equipe 2,1
+INEQ-C18-D04-01,C18,C18-D04,Planejamento e Estrategia - equipe 1,1
+INEQ-C18-D05-01,C18,C18-D05,Financeiro - equipe 1,1
+INEQ-C18-D06-01,C18,C18-D06,RH - equipe 1,1
+INEQ-C18-D07-01,C18,C18-D07,Tecnologia da Informacao - equipe 1,1

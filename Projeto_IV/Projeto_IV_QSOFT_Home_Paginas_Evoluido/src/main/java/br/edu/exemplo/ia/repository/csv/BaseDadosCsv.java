@@ -16,6 +16,7 @@ public class BaseDadosCsv {
     public static final String FUNCIONARIOS = "employees.csv";
     public static final String DEPARTAMENTOS = "departments.csv";
     public static final String ADMINS = "admins.csv";
+    public static final String TREINAMENTOS = "training_records.csv";
 
     private static final Logger log = LoggerFactory.getLogger(BaseDadosCsv.class);
 

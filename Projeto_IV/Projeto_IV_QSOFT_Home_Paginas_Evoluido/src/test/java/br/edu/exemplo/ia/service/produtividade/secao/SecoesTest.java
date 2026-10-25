@@ -273,6 +273,23 @@ class SecoesTest {
     }
 
     @Test
+    void colaboradoresDevemTrazerONomeDoCadastro() {
+        ColaboradoresConsultas repo = mock(ColaboradoresConsultas.class);
+        when(repo.maisAtivos("C01")).thenReturn(List.of(
+                mapa("id", "C01-E0001", "req", 10), mapa("id", "C01-E0002", "req", 5)));
+        br.edu.exemplo.ia.domain.entity.Funcionario ana = mock(br.edu.exemplo.ia.domain.entity.Funcionario.class);
+        when(ana.getCodigo()).thenReturn("C01-E0001");
+        when(ana.getNome()).thenReturn("Ana Souza Lima");
+        br.edu.exemplo.ia.repository.FuncionarioRepository cadastro = mock(br.edu.exemplo.ia.repository.FuncionarioRepository.class);
+        when(cadastro.findAll()).thenReturn(List.of(ana));
+
+        List<?> top = (List<?>) new ColaboradoresSecao(repo, cadastro).calcular("C01", disp);
+
+        assertEquals("Ana Souza Lima", ((Map<?, ?>) top.get(0)).get("nome"));
+        assertNull(((Map<?, ?>) top.get(1)).get("nome"));
+    }
+
+    @Test
     void requisitosDeDevemUnirConjuntos() {
         assertEquals(Set.of("a", "b"), Requisitos.de(Set.of("a"), Set.of("a", "b")));
     }

@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="Estilo.css">
+<link rel="stylesheet" href="produtividade.css">
 </head><body>
 
 <div class="wrap">
@@ -15,7 +16,6 @@
     <a href="./funcionario.html">Funcionarios</a>
     <a href="./capacitacao.html">Capacitações</a>
     <a href="./consumo.html">Consumo de IA</a>
-    <a href="./dashboard.html">Dashboard</a>
     <a class="active" href="./produtividade.html">Produtividade IA</a>
     <a href="./custos.html">Custos de IA</a>
     <a href="./governanca.html">Governança</a>
@@ -38,11 +38,17 @@
   </header>
 
   <p class="estado" id="estado" role="status">Carregando dados do banco…</p>
-  <div class="kpis" id="kpis" data-secao="kpis"></div>
+  <section data-secao="kpis" aria-labelledby="h-diag">
+    <div class="sec-head"><h2 id="h-diag">Diagnóstico rápido</h2>
+      <span class="legenda-sit"><span class="selo good"><i aria-hidden="true">✓</i>Saudável</span><span class="selo warn"><i aria-hidden="true">!</i>Atenção</span><span class="selo crit"><i aria-hidden="true">✕</i>Agir agora</span></span></div>
+    <div id="diag-resumo"></div>
+    <div class="diag-grid" id="kpis"></div>
+    <div class="kpis volume" id="kpis-volume"></div>
+  </section>
 
   <section data-secao="alertas">
-    <div class="sec-head"><h2>Pontos de atenção</h2><span class="eyebrow">gerados a partir dos dados filtrados</span></div>
-    <ul class="alerts" id="alerts"></ul>
+    <div class="sec-head"><h2>Decisões recomendadas</h2><span class="eyebrow">das mais urgentes às que só pedem acompanhamento</span></div>
+    <ul class="alerts decisoes" id="alerts"></ul>
   </section>
 
   <section data-secao="mensal">
@@ -57,11 +63,12 @@
   </section>
 
   <section data-secao="areas">
-    <div class="sec-head"><h2>Produtividade por área</h2><span class="muted small">Clique no cabeçalho para ordenar</span></div>
+    <div class="sec-head"><h2>Produtividade por área</h2></div>
     <div class="panel">
       <div class="sec-head"><h3>Uso de IA por área</h3>
         <div class="seg" role="group" aria-label="Medida do gráfico de radar">
-          <button type="button" data-m="req" aria-pressed="true">Requisições</button>
+          <button type="button" data-m="adocao" aria-pressed="true">Adoção (%)</button>
+          <button type="button" data-m="req" aria-pressed="false">Requisições</button>
           <button type="button" data-m="usuarios" aria-pressed="false">Usuários</button>
           <button type="button" data-m="req_usuario" aria-pressed="false">Req. por usuário</button>
         </div></div>
@@ -69,15 +76,22 @@
         <div class="radar-side"><span class="eyebrow" id="radar-cap"></span><ol class="rank" id="radar-rank"></ol>
         <p class="note" id="radar-note"></p></div></div>
     </div>
-    <div class="panel"><div class="tbl-wrap"><table id="t-areas"></table></div></div>
+    <div class="panel"><div class="sec-head"><h3>Quais áreas estão abaixo da meta de adoção?</h3><span class="small" id="adocao-resumo"></span></div>
+      <div class="bmeta" id="bm-adocao"></div></div>
+    <details class="panel detalhe"><summary>Ver tabela completa por área (horas poupadas, custo, treinamentos)</summary>
+      <p class="muted small">Clique no cabeçalho para ordenar.</p>
+      <div class="tbl-wrap"><table id="t-areas"></table></div></details>
   </section>
 
   <section data-secao="ferramentas">
     <div class="sec-head"><h2>Ferramentas</h2></div>
     <div class="grid">
-      <div class="panel c5"><h3>Requisições bem-sucedidas por ferramenta</h3><div class="hbars" id="hb-ferr"></div></div>
-      <div class="panel c7"><h3>Custo, licenças e conformidade</h3><div class="tbl-wrap"><table id="t-ferr"></table></div>
-        <p class="note">Licença ociosa: licença ativa cujo titular não usou a ferramenta nos últimos <span class="janela-dias">90</span> dias da base.</p></div>
+      <div class="panel c4"><h3>Quais ferramentas são mais usadas?</h3><div class="hbars" id="hb-ferr"></div></div>
+      <div class="panel c4"><h3>Onde está o custo?</h3><div class="hbars" id="hb-custo"></div></div>
+      <div class="panel c4"><h3>Licenças paradas por ferramenta</h3><div class="hbars" id="hb-lic"></div>
+        <p class="note">Ociosa: licença ativa sem uso nos últimos <span class="janela-dias">90</span> dias da base.</p></div>
+      <details class="panel detalhe c12"><summary>Ver tabela de custo, licenças e conformidade por ferramenta</summary>
+        <div class="tbl-wrap"><table id="t-ferr"></table></div></details>
     </div>
   </section>
 
@@ -87,17 +101,18 @@
     <div class="grid">
       <div class="panel c6"><h3>Pull requests mergeados por mês</h3><div class="chart" id="ch-pr"></div></div>
       <div class="panel c6"><h3>Builds com sucesso por mês (%)</h3><div class="chart" id="ch-build"></div></div>
-      <div class="panel c12"><h3>Uso de IA x entrega por desenvolvedor</h3>
-        <div class="tbl-wrap"><table id="t-coorte"></table></div>
-        <p class="callout" id="eng-note"></p></div>
+      <div class="panel c12"><h3>Quem usa mais IA entrega mais?</h3>
+        <p class="callout" id="eng-note"></p>
+        <details class="detalhe"><summary>Ver comparação por faixa de uso de IA</summary>
+        <div class="tbl-wrap"><table id="t-coorte"></table></div></details></div>
     </div>
   </section>
 
   <section data-secao="gov">
     <div class="sec-head"><h2>Governança e capacitação</h2></div>
     <div class="grid">
-      <div class="panel c6" id="painel-seguranca"><h3>Eventos de segurança por tipo</h3><div class="hbars" id="hb-sec"></div></div>
-      <div class="panel c6" id="painel-treinamento"><h3>Treinamentos em IA por situação</h3><div class="hbars" id="hb-trn"></div></div>
+      <div class="panel c6" id="painel-seguranca"><h3>Que tipo de incidente acontece?</h3><div class="hbars" id="hb-sec"></div></div>
+      <div class="panel c6" id="painel-treinamento"><h3>Treinamentos em IA por situação</h3><div id="hb-trn"></div></div>
     </div>
   </section>
 

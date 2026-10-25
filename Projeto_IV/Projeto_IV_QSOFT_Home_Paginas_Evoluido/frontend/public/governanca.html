@@ -16,7 +16,6 @@
     <a href="./funcionario.html">Funcionarios</a>
     <a href="./capacitacao.html">Capacitações</a>
     <a href="./consumo.html">Consumo de IA</a>
-    <a href="./dashboard.html">Dashboard</a>
     <a href="./produtividade.html">Produtividade IA</a>
     <a href="./custos.html">Custos de IA</a>
     <a class="active" href="./governanca.html">Governança</a>
@@ -25,88 +24,25 @@
 <h1>Governança de IA</h1>
 <p>Publique as políticas de uso responsável de IA da empresa e registre o aceite dos colaboradores.</p>
 
-<section>
-    <h2>Publicar política (Administrador)</h2>
-    <p id="editando" class="callout" hidden></p>
-    <div class="form-row">
-        <div class="ctl">
-            <label for="empresaAdmin">Empresa</label>
-            <select id="empresaAdmin" required>
-                <option value="">Carregando empresas...</option>
-            </select>
-        </div>
-        <div class="ctl">
-            <label for="titulo">Título</label>
-            <input id="titulo" placeholder="Ex.: Uso responsável de IA" maxlength="150" required>
-        </div>
-        <div class="ctl">
-            <label for="obrigatoria">Aceite obrigatório</label>
-            <select id="obrigatoria">
-                <option value="true">Sim (bloqueia o uso de IA até o aceite)</option>
-                <option value="false">Não</option>
-            </select>
-        </div>
-    </div>
+<div class="tabs" role="tablist" aria-label="Funcionalidades da governança">
+    <button type="button" role="tab" id="aba-vigentes" aria-controls="painel-vigentes" data-aba="vigentes">Políticas vigentes</button>
+    <button type="button" role="tab" id="aba-publicar" aria-controls="painel-publicar" data-aba="publicar">Publicar política</button>
+    <button type="button" role="tab" id="aba-aceite" aria-controls="painel-aceite" data-aba="aceite">Aceite do colaborador</button>
+    <button type="button" role="tab" id="aba-historico" aria-controls="painel-historico" data-aba="historico">Histórico de aceites</button>
+</div>
+
+<!-- Empresa das abas do administrador (listagem e publicação) -->
+<div class="form-row barra-aba" data-abas="vigentes publicar">
     <div class="ctl">
-        <label for="conteudo">Texto da política</label>
-        <textarea id="conteudo" maxlength="20000" required
-                  placeholder="Ex.: Não insira dados pessoais de clientes ou colaboradores em ferramentas de IA."></textarea>
+        <label for="empresaAdmin">Empresa</label>
+        <select id="empresaAdmin" required>
+            <option value="">Carregando empresas...</option>
+        </select>
     </div>
-    <div class="form-row">
-        <button type="button" id="publicar">Publicar</button>
-        <button type="button" id="cancelarEdicao" class="secondary-button" hidden>Cancelar nova versão</button>
-    </div>
-    <div id="mensagemAdmin" class="message" aria-live="polite"></div>
-</section>
+</div>
 
-<section>
-    <div class="section-heading">
-        <h2>Políticas vigentes</h2>
-        <button type="button" id="atualizarVigentes" class="secondary-button">Atualizar lista</button>
-    </div>
-    <div class="table-wrap">
-        <table>
-            <thead>
-            <tr>
-                <th>Título</th>
-                <th class="n">Versão</th>
-                <th>Obrigatória</th>
-                <th>Publicada em</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
-            <tbody id="listaVigentes">
-            <tr><td colspan="5">Selecione uma empresa para ver as políticas.</td></tr>
-            </tbody>
-        </table>
-    </div>
-</section>
-
-<section id="secaoVersoes" hidden>
-    <div class="section-heading">
-        <h2 id="tituloVersoes">Histórico de versões</h2>
-        <button type="button" id="fecharVersoes" class="secondary-button">Fechar histórico</button>
-    </div>
-    <div class="table-wrap">
-        <table>
-            <thead>
-            <tr>
-                <th class="n">Versão</th>
-                <th>Título</th>
-                <th>Obrigatória</th>
-                <th>Situação</th>
-                <th>Publicada em</th>
-                <th>Texto</th>
-            </tr>
-            </thead>
-            <tbody id="listaVersoes"></tbody>
-        </table>
-    </div>
-    <pre id="textoVersao" hidden></pre>
-</section>
-
-<section id="colaborador">
-    <h2>Aceite do colaborador</h2>
+<!-- Empresa e colaborador das abas de aceite e histórico -->
+<section id="colaborador" class="barra-aba" data-abas="aceite historico">
     <p class="note">Provisório: enquanto não existe login de colaborador, escolha a empresa e o colaborador. O aceite
         fica registrado com o colaborador, a versão da política e a data.</p>
     <div class="form-row">
@@ -126,55 +62,137 @@
     <div id="mensagemColaborador" class="message" aria-live="polite"></div>
 </section>
 
-<section aria-label="Resumo dos aceites do colaborador">
-    <div class="metric-grid">
-        <div class="metric-card"><span>Políticas vigentes</span><strong id="resumoVigentes">-</strong></div>
-        <div class="metric-card"><span>Pendentes</span><strong id="resumoPendentes">-</strong></div>
-        <div class="metric-card"><span>Aceites registrados</span><strong id="resumoAceites">-</strong></div>
-    </div>
-</section>
+<div role="tabpanel" id="painel-vigentes" aria-labelledby="aba-vigentes" class="painel-aba">
+    <section>
+        <div class="section-heading">
+            <h2>Políticas vigentes</h2>
+            <button type="button" id="atualizarVigentes" class="secondary-button">Atualizar lista</button>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Título</th>
+                    <th class="n">Versão</th>
+                    <th>Obrigatória</th>
+                    <th>Publicada em</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="listaVigentes">
+                <tr><td colspan="5">Selecione uma empresa para ver as políticas.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<section>
-    <h2>Situação das políticas vigentes</h2>
-    <div class="table-wrap">
-        <table>
-            <thead>
-            <tr>
-                <th>Política</th>
-                <th class="n">Versão</th>
-                <th>Obrigatória</th>
-                <th>Situação</th>
-            </tr>
-            </thead>
-            <tbody id="listaSituacao">
-            <tr><td colspan="4">Selecione um colaborador para ver a situação.</td></tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+    <section id="secaoVersoes" hidden>
+        <div class="section-heading">
+            <h2 id="tituloVersoes">Histórico de versões</h2>
+            <button type="button" id="fecharVersoes" class="secondary-button">Fechar histórico</button>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th class="n">Versão</th>
+                    <th>Título</th>
+                    <th>Obrigatória</th>
+                    <th>Situação</th>
+                    <th>Publicada em</th>
+                    <th>Texto</th>
+                </tr>
+                </thead>
+                <tbody id="listaVersoes"></tbody>
+            </table>
+        </div>
+        <pre id="textoVersao" hidden></pre>
+    </section>
+</div>
 
-<section>
-    <h2>Políticas para ler e aceitar</h2>
-    <div id="listaParaAceitar"></div>
-</section>
+<div role="tabpanel" id="painel-publicar" aria-labelledby="aba-publicar" class="painel-aba" hidden>
+    <section>
+        <h2>Publicar política (Administrador)</h2>
+        <p id="editando" class="callout" hidden></p>
+        <div class="form-row">
+            <div class="ctl">
+                <label for="titulo">Título</label>
+                <input id="titulo" placeholder="Ex.: Uso responsável de IA" maxlength="150" required>
+            </div>
+            <div class="ctl">
+                <label for="obrigatoria">Aceite obrigatório</label>
+                <select id="obrigatoria">
+                    <option value="true">Sim (bloqueia o uso de IA até o aceite)</option>
+                    <option value="false">Não</option>
+                </select>
+            </div>
+        </div>
+        <div class="ctl">
+            <label for="conteudo">Texto da política</label>
+            <textarea id="conteudo" maxlength="20000" required
+                      placeholder="Ex.: Não insira dados pessoais de clientes ou colaboradores em ferramentas de IA."></textarea>
+        </div>
+        <div class="form-row">
+            <button type="button" id="publicar">Publicar</button>
+            <button type="button" id="cancelarEdicao" class="secondary-button" hidden>Cancelar nova versão</button>
+        </div>
+        <div id="mensagemAdmin" class="message" aria-live="polite"></div>
+    </section>
+</div>
 
-<section>
-    <h2>Histórico de aceites</h2>
-    <div class="table-wrap">
-        <table>
-            <thead>
-            <tr>
-                <th>Política</th>
-                <th class="n">Versão</th>
-                <th>Data do aceite</th>
-            </tr>
-            </thead>
-            <tbody id="listaAceites">
-            <tr><td colspan="3">Selecione um colaborador para ver os aceites.</td></tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+<div role="tabpanel" id="painel-aceite" aria-labelledby="aba-aceite" class="painel-aba" hidden>
+    <section aria-label="Resumo dos aceites do colaborador">
+        <div class="metric-grid">
+            <div class="metric-card"><span>Políticas vigentes</span><strong id="resumoVigentes">-</strong></div>
+            <div class="metric-card"><span>Pendentes</span><strong id="resumoPendentes">-</strong></div>
+            <div class="metric-card"><span>Aceites registrados</span><strong id="resumoAceites">-</strong></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Situação das políticas vigentes</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Política</th>
+                    <th class="n">Versão</th>
+                    <th>Obrigatória</th>
+                    <th>Situação</th>
+                </tr>
+                </thead>
+                <tbody id="listaSituacao">
+                <tr><td colspan="4">Selecione um colaborador para ver a situação.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>Políticas para ler e aceitar</h2>
+        <div id="listaParaAceitar"></div>
+    </section>
+</div>
+
+<div role="tabpanel" id="painel-historico" aria-labelledby="aba-historico" class="painel-aba" hidden>
+    <section>
+        <h2>Histórico de aceites</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Política</th>
+                    <th class="n">Versão</th>
+                    <th>Data do aceite</th>
+                </tr>
+                </thead>
+                <tbody id="listaAceites">
+                <tr><td colspan="3">Selecione um colaborador para ver os aceites.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
 
 <script>
     const mensagemAdmin = document.getElementById('mensagemAdmin');
@@ -191,6 +209,43 @@
     const secaoVersoes = document.getElementById('secaoVersoes');
     const textoVersao = document.getElementById('textoVersao');
     const listaParaAceitar = document.getElementById('listaParaAceitar');
+
+    // ---------------------------------------------------------------- Abas
+    // Cada aba mostra um painel; as barras de empresa/colaborador aparecem só nas abas que as usam.
+    // A aba aberta fica no endereço (#vigentes, #publicar, #aceite, #historico), então recarregar mantém a aba.
+    const ABAS = ['vigentes', 'publicar', 'aceite', 'historico'];
+    const botoesAba = [...document.querySelectorAll('[role=tab]')];
+
+    function abrirAba(aba, foco) {
+        if (!ABAS.includes(aba)) aba = 'vigentes';
+        for (const botao of botoesAba) {
+            const ativa = botao.dataset.aba === aba;
+            botao.setAttribute('aria-selected', String(ativa));
+            botao.tabIndex = ativa ? 0 : -1;
+            document.getElementById(botao.getAttribute('aria-controls')).hidden = !ativa;
+            if (ativa && foco) botao.focus();
+        }
+        for (const barra of document.querySelectorAll('.barra-aba')) {
+            barra.hidden = !barra.dataset.abas.split(' ').includes(aba);
+        }
+        history.replaceState(null, '', `${location.pathname}${location.search}#${aba}`);
+    }
+
+    botoesAba.forEach((botao, i) => {
+        botao.addEventListener('click', () => abrirAba(botao.dataset.aba));
+        botao.addEventListener('keydown', evento => {
+            const passo = {ArrowRight: 1, ArrowLeft: -1}[evento.key];
+            if (evento.key === 'Home' || evento.key === 'End' || passo) {
+                evento.preventDefault();
+                const alvo = evento.key === 'Home' ? 0 : evento.key === 'End' ? botoesAba.length - 1
+                    : (i + passo + botoesAba.length) % botoesAba.length;
+                abrirAba(botoesAba[alvo].dataset.aba, true);
+            }
+        });
+    });
+
+    // O link do Consumo de IA usa #colaborador: abre direto no aceite.
+    abrirAba(location.hash === '#colaborador' ? 'aceite' : location.hash.slice(1));
 
     // Política vigente que está ganhando uma nova versão; sem ela, "Publicar" cria uma política nova (versão 1).
     let politicaEmEdicao = null;
@@ -310,6 +365,7 @@
         botaoCancelarEdicao.hidden = false;
         botaoPublicar.textContent = `Publicar versão ${politica.versao + 1}`;
         mostrarMensagem(mensagemAdmin, '');
+        abrirAba('publicar');
         tituloInput.focus();
     }
 
@@ -514,7 +570,7 @@
 
         funcionarioSelect.value = funcionarioId;
         await carregarColaborador();
-        document.getElementById('colaborador').scrollIntoView();
+        abrirAba('aceite');
     }
 
     botaoPublicar.addEventListener('click', publicar);

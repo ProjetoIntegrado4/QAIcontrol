@@ -5,7 +5,7 @@ Exemplo didático com:
 - **Spring Boot / Java 17**: domínio de Empresa e Consumo de IA;
 - **PostgreSQL**: persistência;
 - **Node.js Alert Service**: microserviço independente para avaliação de consumo;
-- **Node.js Front/BFF**: serve a interface, atua como proxy e possui endpoint agregado de dashboard;
+- **Node.js Front/BFF**: serve a interface e atua como proxy (BFF) para o backend Java;
 - **Docker Compose**: sobe todo o ambiente.
 
 ## Arquitetura
@@ -129,12 +129,7 @@ Com 6000 tokens, o serviço Node deverá responder com alerta `WARNING`.
 
 ## BFF
 
-O BFF possui dois papéis:
-
-1. **Proxy** em `/api/*`, evitando que o browser conheça diretamente o endereço do Spring;
-2. **Agregação específica da tela** em `GET /bff/dashboard`, combinando empresas e consumos.
-
-Assim, o exemplo não é apenas um reverse proxy: há uma operação genuinamente orientada ao frontend.
+O BFF faz o **proxy** em `/api/*`, evitando que o browser conheça diretamente o endereço do Spring, e só entrega as páginas a quem tem sessão válida. A visão consolidada dos dados fica no Painel de Produtividade de IA (`produtividade.html`), que lê tudo do banco pelo backend.
 
 ## Capacitações e certificações em IA (US PP-19)
 
@@ -147,7 +142,7 @@ nome, porque ainda não existe login de funcionário (o acesso atual é o admin 
 - `GET /api/certificacao/resumo?funcionarioId=...`: total de registros e pontos de AI Literacy.
 
 Regras: nome, instituição e data de conclusão são obrigatórios (nome e instituição com até 150 caracteres), a data
-não pode ser futura e o colaborador precisa existir e ser da empresa informada. A tabela `certificacao` é criada pelo Hibernate (`ddl-auto: update`).
+não pode ser futura e o colaborador precisa existir e ser da empresa informada. Os registros ficam na base de dados em CSV, no mesmo arquivo dos treinamentos (`training_records.csv`, repositório `repository/csv/CertificacaoCsvRepository`): o histórico mostra os treinamentos concluídos que já estão na base e cada novo registro vira uma linha nova (`completion_status` = `Concluido`), com instituição, tipo e data do registro em colunas extras no fim do arquivo.
 
 Os pontos de AI Literacy por registro ficam em `app.ai-literacy` no `application.yml` e são aplicados só em
 `service/PontuacaoAiLiteracy`. Os valores atuais (curso = 10, certificação = 20) são **preliminares** e precisam ser
@@ -322,3 +317,9 @@ O `verify` roda os testes e o JaCoCo. O relatório fica em `target/site/jacoco/i
 e o build falha se a cobertura de linhas ficar abaixo de 70%. No Jenkins, o mesmo comando
 roda na etapa de testes; o relatório é arquivado e publicado pelo plugin Coverage ou JaCoCo
 quando um deles estiver instalado.
+
+## Dados de demonstração
+
+- **Base CSV:** `admins.csv` tem dois admins por empresa (Diretor(a) de Inovação e Gestor(a) de TI) e `employees.csv` tem nome, CPF, e-mail, telefone, matrícula e gestor de cada colaborador. A senha de demonstração de todos é `Qsoft@2026`, guardada só como hash BCrypt. O script que gerou esses dados só preenche células vazias e guardou os originais em `_backup_antes_preenchimento`.
+- **PostgreSQL:** na subida, `service/demonstracao/DemonstracaoSeeder` popula políticas de uso de IA (três por empresa, uma já na versão 2), aceites e consumo de IA, tudo derivado da base. Aceitam as políticas os colaboradores ativos treinados em Governança ou Segurança e cerca de dois terços dos demais; o restante fica pendente. O consumo traz os 15 usos mais recentes de cada empresa (`ai_usage_logs`). Só preenche tabela vazia. Para desligar, use `QSOFT_DEMONSTRACAO=false`.
+

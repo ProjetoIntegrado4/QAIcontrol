@@ -1,0 +1,162 @@
+process_id,company_id,department_id,process_name,criticality,manual_fallback_documented,is_synthetic
+INP-C01-D01,C01,C01-D01,Apoio às atividades de Engenharia de Software,Media,1,1
+INP-C01-D02,C01,C01-D02,Apoio às atividades de DevOps e Infraestrutura,Media,0,1
+INP-C01-D03,C01,C01-D03,Apoio às atividades de Produto,Media,1,1
+INP-C01-D04,C01,C01-D04,Apoio às atividades de Qualidade (QA),Media,1,1
+INP-C01-D05,C01,C01-D05,Apoio às atividades de Dados e Analytics,Media,0,1
+INP-C01-D06,C01,C01-D06,Apoio às atividades de Vendas,Media,1,1
+INP-C01-D07,C01,C01-D07,Apoio às atividades de Marketing,Media,0,1
+INP-C01-D08,C01,C01-D08,Apoio às atividades de Suporte ao Cliente,Media,0,1
+INP-C01-D09,C01,C01-D09,Apoio às atividades de RH,Media,1,1
+INP-C01-D10,C01,C01-D10,Apoio às atividades de Financeiro,Alta,0,1
+INP-C01-D11,C01,C01-D11,Apoio às atividades de Juridico,Alta,1,1
+INP-C02-D01,C02,C02-D01,Apoio às atividades de Engenharia de Software,Media,0,1
+INP-C02-D02,C02,C02-D02,Apoio às atividades de DevOps e Infraestrutura,Media,1,1
+INP-C02-D03,C02,C02-D03,Apoio às atividades de Produto,Media,1,1
+INP-C02-D04,C02,C02-D04,Apoio às atividades de Qualidade (QA),Media,0,1
+INP-C02-D05,C02,C02-D05,Apoio às atividades de Dados e Analytics,Media,1,1
+INP-C02-D06,C02,C02-D06,Apoio às atividades de Vendas,Media,1,1
+INP-C02-D07,C02,C02-D07,Apoio às atividades de Marketing,Media,1,1
+INP-C02-D08,C02,C02-D08,Apoio às atividades de Suporte ao Cliente,Media,1,1
+INP-C02-D09,C02,C02-D09,Apoio às atividades de RH,Media,1,1
+INP-C02-D10,C02,C02-D10,Apoio às atividades de Financeiro,Alta,1,1
+INP-C02-D11,C02,C02-D11,Apoio às atividades de Juridico,Alta,1,1
+INP-C03-D01,C03,C03-D01,Apoio às atividades de Engenharia de Software,Media,1,1
+INP-C03-D02,C03,C03-D02,Apoio às atividades de DevOps e Infraestrutura,Media,0,1
+INP-C03-D03,C03,C03-D03,Apoio às atividades de Produto,Media,1,1
+INP-C03-D04,C03,C03-D04,Apoio às atividades de Qualidade (QA),Media,1,1
+INP-C03-D05,C03,C03-D05,Apoio às atividades de Dados e Analytics,Media,1,1
+INP-C03-D06,C03,C03-D06,Apoio às atividades de Vendas,Media,0,1
+INP-C03-D07,C03,C03-D07,Apoio às atividades de Marketing,Media,1,1
+INP-C03-D08,C03,C03-D08,Apoio às atividades de Suporte ao Cliente,Media,1,1
+INP-C03-D09,C03,C03-D09,Apoio às atividades de RH,Media,0,1
+INP-C03-D10,C03,C03-D10,Apoio às atividades de Financeiro,Alta,1,1
+INP-C03-D11,C03,C03-D11,Apoio às atividades de Juridico,Alta,1,1
+INP-C04-D01,C04,C04-D01,Apoio às atividades de Engenharia de Software,Media,1,1
+INP-C04-D02,C04,C04-D02,Apoio às atividades de DevOps e Infraestrutura,Media,1,1
+INP-C04-D03,C04,C04-D03,Apoio às atividades de Produto,Media,1,1
+INP-C04-D04,C04,C04-D04,Apoio às atividades de Qualidade (QA),Media,1,1
+INP-C04-D05,C04,C04-D05,Apoio às atividades de Dados e Analytics,Media,1,1
+INP-C04-D06,C04,C04-D06,Apoio às atividades de Vendas,Media,1,1
+INP-C04-D07,C04,C04-D07,Apoio às atividades de Marketing,Media,0,1
+INP-C04-D08,C04,C04-D08,Apoio às atividades de Suporte ao Cliente,Media,1,1
+INP-C04-D09,C04,C04-D09,Apoio às atividades de RH,Media,1,1
+INP-C04-D10,C04,C04-D10,Apoio às atividades de Financeiro,Alta,1,1
+INP-C04-D11,C04,C04-D11,Apoio às atividades de Juridico,Alta,1,1
+INP-C05-D01,C05,C05-D01,Apoio às atividades de Engenharia de Software,Media,1,1
+INP-C05-D02,C05,C05-D02,Apoio às atividades de DevOps e Infraestrutura,Media,0,1
+INP-C05-D03,C05,C05-D03,Apoio às atividades de Produto,Media,0,1
+INP-C05-D04,C05,C05-D04,Apoio às atividades de Qualidade (QA),Media,0,1
+INP-C05-D05,C05,C05-D05,Apoio às atividades de Dados e Analytics,Media,1,1
+INP-C05-D06,C05,C05-D06,Apoio às atividades de Vendas,Media,1,1
+INP-C05-D07,C05,C05-D07,Apoio às atividades de Marketing,Media,1,1
+INP-C05-D08,C05,C05-D08,Apoio às atividades de Suporte ao Cliente,Media,0,1
+INP-C05-D09,C05,C05-D09,Apoio às atividades de RH,Media,1,1
+INP-C05-D10,C05,C05-D10,Apoio às atividades de Financeiro,Alta,1,1
+INP-C05-D11,C05,C05-D11,Apoio às atividades de Juridico,Alta,1,1
+INP-C06-D01,C06,C06-D01,Apoio às atividades de Operacoes Bancarias,Alta,1,1
+INP-C06-D02,C06,C06-D02,Apoio às atividades de Risco e Compliance,Alta,1,1
+INP-C06-D03,C06,C06-D03,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C06-D04,C06,C06-D04,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C06-D05,C06,C06-D05,Apoio às atividades de Comercial,Media,1,1
+INP-C06-D06,C06,C06-D06,Apoio às atividades de Financeiro,Alta,1,1
+INP-C06-D07,C06,C06-D07,Apoio às atividades de RH,Media,1,1
+INP-C06-D08,C06,C06-D08,Apoio às atividades de Juridico,Alta,1,1
+INP-C07-D01,C07,C07-D01,Apoio às atividades de Operacoes Bancarias,Alta,1,1
+INP-C07-D02,C07,C07-D02,Apoio às atividades de Risco e Compliance,Alta,1,1
+INP-C07-D03,C07,C07-D03,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C07-D04,C07,C07-D04,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C07-D05,C07,C07-D05,Apoio às atividades de Comercial,Media,0,1
+INP-C07-D06,C07,C07-D06,Apoio às atividades de Financeiro,Alta,1,1
+INP-C07-D07,C07,C07-D07,Apoio às atividades de RH,Media,1,1
+INP-C07-D08,C07,C07-D08,Apoio às atividades de Juridico,Alta,1,1
+INP-C08-D01,C08,C08-D01,Apoio às atividades de Operacoes Bancarias,Alta,1,1
+INP-C08-D02,C08,C08-D02,Apoio às atividades de Risco e Compliance,Alta,1,1
+INP-C08-D03,C08,C08-D03,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C08-D04,C08,C08-D04,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C08-D05,C08,C08-D05,Apoio às atividades de Comercial,Media,1,1
+INP-C08-D06,C08,C08-D06,Apoio às atividades de Financeiro,Alta,0,1
+INP-C08-D07,C08,C08-D07,Apoio às atividades de RH,Media,1,1
+INP-C08-D08,C08,C08-D08,Apoio às atividades de Juridico,Alta,1,1
+INP-C09-D01,C09,C09-D01,Apoio às atividades de Producao,Alta,1,1
+INP-C09-D02,C09,C09-D02,Apoio às atividades de Manutencao,Alta,1,1
+INP-C09-D03,C09,C09-D03,Apoio às atividades de Logistica,Media,1,1
+INP-C09-D04,C09,C09-D04,Apoio às atividades de Qualidade,Media,1,1
+INP-C09-D05,C09,C09-D05,Apoio às atividades de Compras,Media,1,1
+INP-C09-D06,C09,C09-D06,Apoio às atividades de Comercial,Media,1,1
+INP-C09-D07,C09,C09-D07,Apoio às atividades de Financeiro,Alta,1,1
+INP-C09-D08,C09,C09-D08,Apoio às atividades de RH,Media,1,1
+INP-C09-D09,C09,C09-D09,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C10-D01,C10,C10-D01,Apoio às atividades de Producao,Alta,1,1
+INP-C10-D02,C10,C10-D02,Apoio às atividades de Manutencao,Alta,1,1
+INP-C10-D03,C10,C10-D03,Apoio às atividades de Logistica,Media,1,1
+INP-C10-D04,C10,C10-D04,Apoio às atividades de Qualidade,Media,1,1
+INP-C10-D05,C10,C10-D05,Apoio às atividades de Compras,Media,1,1
+INP-C10-D06,C10,C10-D06,Apoio às atividades de Comercial,Media,0,1
+INP-C10-D07,C10,C10-D07,Apoio às atividades de Financeiro,Alta,1,1
+INP-C10-D08,C10,C10-D08,Apoio às atividades de RH,Media,1,1
+INP-C10-D09,C10,C10-D09,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C11-D01,C11,C11-D01,Apoio às atividades de Producao,Alta,1,1
+INP-C11-D02,C11,C11-D02,Apoio às atividades de Manutencao,Alta,1,1
+INP-C11-D03,C11,C11-D03,Apoio às atividades de Logistica,Media,1,1
+INP-C11-D04,C11,C11-D04,Apoio às atividades de Qualidade,Media,1,1
+INP-C11-D05,C11,C11-D05,Apoio às atividades de Compras,Media,0,1
+INP-C11-D06,C11,C11-D06,Apoio às atividades de Comercial,Media,0,1
+INP-C11-D07,C11,C11-D07,Apoio às atividades de Financeiro,Alta,0,1
+INP-C11-D08,C11,C11-D08,Apoio às atividades de RH,Media,1,1
+INP-C11-D09,C11,C11-D09,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C12-D01,C12,C12-D01,Apoio às atividades de Operacoes de Loja,Media,1,1
+INP-C12-D02,C12,C12-D02,Apoio às atividades de Logistica e Supply Chain,Media,1,1
+INP-C12-D03,C12,C12-D03,Apoio às atividades de Comercial e Compras,Media,1,1
+INP-C12-D04,C12,C12-D04,Apoio às atividades de Marketing,Media,1,1
+INP-C12-D05,C12,C12-D05,Apoio às atividades de E-commerce,Media,1,1
+INP-C12-D06,C12,C12-D06,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C12-D07,C12,C12-D07,Apoio às atividades de Financeiro,Alta,1,1
+INP-C12-D08,C12,C12-D08,Apoio às atividades de RH,Media,1,1
+INP-C12-D09,C12,C12-D09,Apoio às atividades de Tecnologia da Informacao,Media,0,1
+INP-C13-D01,C13,C13-D01,Apoio às atividades de Operacoes de Loja,Media,1,1
+INP-C13-D02,C13,C13-D02,Apoio às atividades de Logistica e Supply Chain,Media,1,1
+INP-C13-D03,C13,C13-D03,Apoio às atividades de Comercial e Compras,Media,1,1
+INP-C13-D04,C13,C13-D04,Apoio às atividades de Marketing,Media,1,1
+INP-C13-D05,C13,C13-D05,Apoio às atividades de E-commerce,Media,1,1
+INP-C13-D06,C13,C13-D06,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C13-D07,C13,C13-D07,Apoio às atividades de Financeiro,Alta,1,1
+INP-C13-D08,C13,C13-D08,Apoio às atividades de RH,Media,1,1
+INP-C13-D09,C13,C13-D09,Apoio às atividades de Tecnologia da Informacao,Media,0,1
+INP-C14-D01,C14,C14-D01,Apoio às atividades de Operacoes de Loja,Media,1,1
+INP-C14-D02,C14,C14-D02,Apoio às atividades de Logistica e Supply Chain,Media,1,1
+INP-C14-D03,C14,C14-D03,Apoio às atividades de Comercial e Compras,Media,1,1
+INP-C14-D04,C14,C14-D04,Apoio às atividades de Marketing,Media,0,1
+INP-C14-D05,C14,C14-D05,Apoio às atividades de E-commerce,Media,1,1
+INP-C14-D06,C14,C14-D06,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C14-D07,C14,C14-D07,Apoio às atividades de Financeiro,Alta,1,1
+INP-C14-D08,C14,C14-D08,Apoio às atividades de RH,Media,1,1
+INP-C14-D09,C14,C14-D09,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C15-D01,C15,C15-D01,Apoio às atividades de Operacoes,Media,1,1
+INP-C15-D02,C15,C15-D02,Apoio às atividades de Comercial,Media,1,1
+INP-C15-D03,C15,C15-D03,Apoio às atividades de Atendimento ao Cliente,Media,1,1
+INP-C15-D04,C15,C15-D04,Apoio às atividades de Financeiro,Alta,1,1
+INP-C15-D05,C15,C15-D05,Apoio às atividades de RH,Media,1,1
+INP-C15-D06,C15,C15-D06,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C15-D07,C15,C15-D07,Apoio às atividades de Consultoria e Projetos,Media,1,1
+INP-C16-D01,C16,C16-D01,Apoio às atividades de Operacoes,Media,1,1
+INP-C16-D02,C16,C16-D02,Apoio às atividades de Comercial,Media,1,1
+INP-C16-D03,C16,C16-D03,Apoio às atividades de Atendimento ao Cliente,Media,0,1
+INP-C16-D04,C16,C16-D04,Apoio às atividades de Financeiro,Alta,1,1
+INP-C16-D05,C16,C16-D05,Apoio às atividades de RH,Media,0,1
+INP-C16-D06,C16,C16-D06,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C16-D07,C16,C16-D07,Apoio às atividades de Consultoria e Projetos,Media,1,1
+INP-C17-D01,C17,C17-D01,Apoio às atividades de Criacao,Media,1,1
+INP-C17-D02,C17,C17-D02,Apoio às atividades de Midia e Performance,Media,1,1
+INP-C17-D03,C17,C17-D03,Apoio às atividades de Atendimento a Clientes (Account),Media,1,1
+INP-C17-D04,C17,C17-D04,Apoio às atividades de Planejamento e Estrategia,Media,1,1
+INP-C17-D05,C17,C17-D05,Apoio às atividades de Financeiro,Alta,0,1
+INP-C17-D06,C17,C17-D06,Apoio às atividades de RH,Media,1,1
+INP-C17-D07,C17,C17-D07,Apoio às atividades de Tecnologia da Informacao,Media,1,1
+INP-C18-D01,C18,C18-D01,Apoio às atividades de Criacao,Media,1,1
+INP-C18-D02,C18,C18-D02,Apoio às atividades de Midia e Performance,Media,1,1
+INP-C18-D03,C18,C18-D03,Apoio às atividades de Atendimento a Clientes (Account),Media,1,1
+INP-C18-D04,C18,C18-D04,Apoio às atividades de Planejamento e Estrategia,Media,1,1
+INP-C18-D05,C18,C18-D05,Apoio às atividades de Financeiro,Alta,1,1
+INP-C18-D06,C18,C18-D06,Apoio às atividades de RH,Media,1,1
+INP-C18-D07,C18,C18-D07,Apoio às atividades de Tecnologia da Informacao,Media,1,1

@@ -20,36 +20,6 @@ app.use(async (req, res, next) => {
     }
 });
 
-// BFF: endpoint orientado à tela. Agrega dados de empresas e consumos.
-app.get('/bff/dashboard', async (req, res) => {
-    try {
-        const headers = {Cookie: req.headers.cookie || ''};
-        const [empresasResponse, usagesResponse] = await Promise.all([
-            fetch(`${API}/api/empresa`, {headers}),
-            fetch(`${API}/api/usages`, {headers})
-        ]);
-
-        if (!empresasResponse.ok || !usagesResponse.ok) {
-            return res.status(502).json({error: 'Falha ao consultar o backend Java'});
-        }
-
-        const empresas = await empresasResponse.json();
-        const usages = await usagesResponse.json();
-
-        const totalTokens = usages.reduce((sum, usage) => sum + Number(usage.tokens || 0), 0);
-
-        res.json({
-            totalEmpresas: empresas.length,
-            totalConsumos: usages.length,
-            totalTokens,
-            empresas,
-            usages
-        });
-    } catch (err) {
-        res.status(502).json({error: 'Backend indisponível', detail: err.message});
-    }
-});
-
 // Proxy do BFF para operações CRUD/REST simples do front.
 app.use('/api', async (req, res) => {
     const targetUrl = `${API}${req.originalUrl}`;

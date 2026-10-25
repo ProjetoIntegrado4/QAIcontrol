@@ -1,0 +1,71 @@
+alert_id,score_id,created_at,severity,reason,status,closed_at,is_synthetic
+INAL-000001,INS-0000035,2026-09-18 09:01:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-12.,Aberto,,1
+INAL-000002,INS-0000043,2026-09-18 09:02:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Aberto,,1
+INAL-000003,INS-0000044,2026-09-18 09:03:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-07.,Aberto,,1
+INAL-000004,INS-0000045,2026-09-18 09:04:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-08.,Em acompanhamento,,1
+INAL-000005,INS-0000047,2026-09-18 09:05:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-10.,Em acompanhamento,,1
+INAL-000006,INS-0000048,2026-09-18 09:06:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-11.,Em acompanhamento,,1
+INAL-000007,INS-0000050,2026-09-18 09:07:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-01.,Encerrado,2026-10-15 09:07:00,1
+INAL-000008,INS-0000052,2026-09-18 09:08:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-03.,Encerrado,2026-10-04 09:08:00,1
+INAL-000009,INS-0000053,2026-09-18 09:09:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-04.,Encerrado,2026-09-26 09:09:00,1
+INAL-000010,INS-0000054,2026-09-18 09:10:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-05.,Em acompanhamento,,1
+INAL-000011,INS-0000057,2026-09-18 09:11:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Em acompanhamento,,1
+INAL-000012,INS-0000058,2026-09-18 09:12:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-07.,Encerrado,2026-09-26 09:12:00,1
+INAL-000013,INS-0000060,2026-09-18 09:13:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-09.,Encerrado,2026-10-12 09:13:00,1
+INAL-000014,INS-0000061,2026-09-18 09:14:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-10.,Encerrado,2026-10-07 09:14:00,1
+INAL-000015,INS-0000062,2026-09-18 09:15:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-11.,Encerrado,2026-10-09 09:15:00,1
+INAL-000016,INS-0000065,2026-09-18 09:16:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-02.,Aberto,,1
+INAL-000017,INS-0000067,2026-09-18 09:17:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-04.,Encerrado,2026-10-04 09:17:00,1
+INAL-000018,INS-0000068,2026-09-18 09:18:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-05.,Em acompanhamento,,1
+INAL-000019,INS-0000089,2026-09-18 09:19:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-10.,Encerrado,2026-10-11 09:19:00,1
+INAL-000020,INS-0000147,2026-09-18 09:20:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Encerrado,2026-09-28 09:20:00,1
+INAL-000021,INS-0000149,2026-09-18 09:21:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-08.,Em acompanhamento,,1
+INAL-000022,INS-0000162,2026-09-18 09:22:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-07.,Aberto,,1
+INAL-000023,INS-0000163,2026-09-18 09:23:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-08.,Aberto,,1
+INAL-000024,INS-0000164,2026-09-18 09:24:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-09.,Aberto,,1
+INAL-000025,INS-0000166,2026-09-18 09:25:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-11.,Encerrado,2026-10-04 09:25:00,1
+INAL-000026,INS-0000169,2026-09-18 09:26:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-02.,Em acompanhamento,,1
+INAL-000027,INS-0000170,2026-09-18 09:27:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-03.,Encerrado,2026-10-03 09:27:00,1
+INAL-000028,INS-0000172,2026-09-18 09:28:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-05.,Aberto,,1
+INAL-000029,INS-0000173,2026-09-18 09:29:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-06.,Encerrado,2026-10-03 09:29:00,1
+INAL-000030,INS-0000174,2026-09-18 09:30:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-07.,Em acompanhamento,,1
+INAL-000031,INS-0000175,2026-09-18 09:31:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Encerrado,2026-09-29 09:31:00,1
+INAL-000032,INS-0000193,2026-09-18 09:32:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-10.,Em acompanhamento,,1
+INAL-000033,INS-0000197,2026-09-18 09:33:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-02.,Em acompanhamento,,1
+INAL-000034,INS-0000198,2026-09-18 09:34:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-03.,Aberto,,1
+INAL-000035,INS-0000199,2026-09-18 09:35:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-04.,Em acompanhamento,,1
+INAL-000036,INS-0000200,2026-09-18 09:36:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-05.,Aberto,,1
+INAL-000037,INS-0000201,2026-09-18 09:37:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-06.,Em acompanhamento,,1
+INAL-000038,INS-0000203,2026-09-18 09:38:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Aberto,,1
+INAL-000039,INS-0000206,2026-09-18 09:39:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-09.,Em acompanhamento,,1
+INAL-000040,INS-0000250,2026-09-18 09:40:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-11.,Encerrado,2026-10-03 09:40:00,1
+INAL-000041,INS-0000252,2026-09-18 09:41:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2026-01.,Em acompanhamento,,1
+INAL-000042,INS-0000253,2026-09-18 09:42:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-02.,Em acompanhamento,,1
+INAL-000043,INS-0000257,2026-09-18 09:43:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-06.,Em acompanhamento,,1
+INAL-000044,INS-0000258,2026-09-18 09:44:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2026-07.,Encerrado,2026-10-06 09:44:00,1
+INAL-000045,INS-0000300,2026-09-18 09:45:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-11.,Aberto,,1
+INAL-000046,INS-0000301,2026-09-18 09:46:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-12.,Em acompanhamento,,1
+INAL-000047,INS-0000302,2026-09-18 09:47:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2026-01.,Aberto,,1
+INAL-000048,INS-0000303,2026-09-18 09:48:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-02.,Encerrado,2026-09-26 09:48:00,1
+INAL-000049,INS-0000306,2026-09-18 09:49:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-05.,Aberto,,1
+INAL-000050,INS-0000308,2026-09-18 09:50:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2026-07.,Encerrado,2026-09-28 09:50:00,1
+INAL-000051,INS-0000384,2026-09-18 09:51:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-09.,Em acompanhamento,,1
+INAL-000052,INS-0000614,2026-09-18 09:52:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-03.,Aberto,,1
+INAL-000053,INS-0000623,2026-09-18 09:53:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-11.,Encerrado,2026-09-30 09:53:00,1
+INAL-000054,INS-0000654,2026-09-18 09:54:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2026-04.,Aberto,,1
+INAL-000055,INS-0000657,2026-09-18 09:55:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2026-07.,Em acompanhamento,,1
+INAL-000056,INS-0001140,2026-09-18 09:56:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-06.,Encerrado,2026-10-01 09:56:00,1
+INAL-000057,INS-0001210,2026-09-18 09:57:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-06.,Em acompanhamento,,1
+INAL-000058,INS-0001212,2026-09-18 09:58:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-08.,Em acompanhamento,,1
+INAL-000059,INS-0001215,2026-09-18 09:59:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-11.,Em acompanhamento,,1
+INAL-000060,INS-0001220,2026-09-18 10:00:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-04.,Em acompanhamento,,1
+INAL-000061,INS-0001267,2026-09-18 10:01:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: supervisao. Competencia 2025-07.,Em acompanhamento,,1
+INAL-000062,INS-0001277,2026-09-18 10:02:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-05.,Em acompanhamento,,1
+INAL-000063,INS-0001278,2026-09-18 10:03:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-06.,Encerrado,2026-10-15 10:03:00,1
+INAL-000064,INS-0001385,2026-09-18 10:04:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: governanca. Competencia 2025-07.,Em acompanhamento,,1
+INAL-000065,INS-0001386,2026-09-18 10:05:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-08.,Aberto,,1
+INAL-000066,INS-0001387,2026-09-18 10:06:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: capacitacao. Competencia 2025-09.,Em acompanhamento,,1
+INAL-000067,INS-0001388,2026-09-18 10:07:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2025-10.,Em acompanhamento,,1
+INAL-000068,INS-0001394,2026-09-18 10:08:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-04.,Em acompanhamento,,1
+INAL-000069,INS-0001400,2026-09-18 10:09:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: governanca. Competencia 2025-08.,Encerrado,2026-10-03 10:09:00,1
+INAL-000070,INS-0001519,2026-09-18 10:10:00,Moderada,Cenario sintetico: risco Moderado; maior contribuicao: autonomia. Competencia 2026-07.,Em acompanhamento,,1

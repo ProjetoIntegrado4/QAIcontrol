@@ -24,6 +24,10 @@ spring:
 qsoft:
   dados:
     dir: ${QSOFT_DADOS_DIR:dados/csv}
+  # Carga de demonstração (service/demonstracao/DemonstracaoSeeder): políticas, aceites e consumo de IA,
+  # derivados da base de dados. Só preenche tabela vazia. Desligue com QSOFT_DEMONSTRACAO=false.
+  demonstracao:
+    popular: ${QSOFT_DEMONSTRACAO:true}
 
 services:
   alert:
